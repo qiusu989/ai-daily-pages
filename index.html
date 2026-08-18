@@ -25,3 +25,4 @@ async function load(e){state.current=e;state.group=e.group;tabs();archive();docu
 function select(g){state.group=g;const e=state.entries.find(x=>x.group===g);if(e)load(e);else{state.current=null;tabs();archive();document.querySelector('#current-file').textContent=labels[g];document.querySelector('#content').innerHTML='<div class="empty">暂无报告</div>';document.querySelector('#toc').innerHTML=''}}document.querySelectorAll('.task-card').forEach(b=>b.onclick=()=>select(b.dataset.group));
 (async()=>{document.querySelector('#today').textContent=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'long',day:'numeric'}).format(new Date());try{const r=await fetch('manifest.json');if(!r.ok)throw Error(r.status);state.entries=await r.json();select(state.entries.some(e=>e.group==='brief')?'brief':'papers')}catch(e){document.querySelector('#content').innerHTML='<div class="empty">目录加载失败，请稍后刷新。</div>'}})();
 </script></body></html>
+<!-- redeploy-current-site -->
