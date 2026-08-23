@@ -31,6 +31,11 @@
   },
   {
     "group": "papers",
+    "title": "搜广推论文周报｜2026-08-23",
+    "path": "reports/papers/搜广推论文周报｜2026-08-23.md"
+  },
+  {
+    "group": "papers",
     "title": "搜广推论文日报｜2026-08-22",
     "path": "reports/papers/搜广推论文日报｜2026-08-22.md"
   },
@@ -53,10 +58,5 @@
     "group": "papers",
     "title": "搜广推论文日报｜2026-08-18",
     "path": "reports/papers/搜广推论文日报｜2026-08-18.md"
-  },
-  {
-    "group": "papers",
-    "title": "搜广推论文周报｜2026-08-23",
-    "path": "reports/papers/搜广推论文周报｜2026-08-23.md"
   }
 ]
