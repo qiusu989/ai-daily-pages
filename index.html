@@ -44,6 +44,7 @@ body{background:radial-gradient(circle at 15% 5%,rgba(255,255,255,.95),transpare
 .markdown .reading-priority[data-priority="P0"]{color:#a34228}
 .markdown .reading-priority[data-priority="P1"]{color:#285e86}
 .markdown .reading-priority[data-priority="P2"]{color:#69645d}
+.markdown .reading-category[data-priority="P0"]{padding:1px 5px;border-radius:3px;background:color-mix(in srgb,currentColor 12%,transparent)}
 </style></head><body><div class="shell">
 <header class="masthead"><div><div class="eyebrow">AI DAILY</div><h1 class="brand">AI日报</h1></div><time class="today" id="today"></time></header>
 <nav class="task-tabs" aria-label="选择报告类型"><button class="task-card" data-group="brief"><span class="task-name">每日重点简报</span><span class="task-count">0 篇 Markdown</span></button><button class="task-card" data-group="papers"><span class="task-name">搜广推论文报告</span><span class="task-count">0 篇 Markdown</span></button></nav>
@@ -68,7 +69,7 @@ function decorateReadingOrder(){
         if(!match)return;
         const priority=document.createElement('strong'),category=document.createElement('span'),fragment=document.createDocumentFragment();
         priority.className='reading-priority';priority.dataset.priority=match[2];priority.textContent=match[2];
-        category.className='reading-category';category.textContent=match[4];
+        category.className='reading-category';category.dataset.priority=match[2];category.textContent=match[4];
         let hash=0;for(const c of match[4].trim())hash=(Math.imul(hash,31)+c.codePointAt(0))>>>0;
         category.style.color=topicColors[hash%topicColors.length];
         fragment.append(document.createTextNode(match[1]),priority,document.createTextNode(match[3]),category,document.createTextNode(match[5]+prefix.textContent.slice(match[0].length)));
