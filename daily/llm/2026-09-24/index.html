@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-09-24 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-09-24，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-09-24/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-09-24</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://arxiv.org/abs/2609.26355">PACT: From Credit Assignment to Critic Alignment</a></h3>
+<p>把 LLM RL 后训练的瓶颈从采样规模部分转向 token-level credit 定义与 critic 对齐：论文给出 credit 的唯一表示（条件奖励预测的鞅差），并据此设计 Actor-then-Critic 与 BCE critic，在数学推理与 SWE-bench 上同时超过 GRPO/PPO/SAO，影响后训练算法选型。</p>
+<p>证据：arXiv 预印本并可核验 PDF 正文，含消融（去掉 critic 重要性采样修正后平均 67.74%，加回 72.87%）；无同行评审、无线上 A/B 或生产部署，评测仅限数学推理与 SWE-bench 两任务。</p>
+<h3>2. <a href="https://arxiv.org/abs/2608.02691">Output-Aware Rotation for INT2 KV-Cache Quantization</a></h3>
+<p>把极低比特 KV-cache 量化的优化目标从 cache 重建误差改为 post-WO 注意力输出误差，改变 INT2 KV-cache 不可用于长上下文推理的判断，直接关系长上下文服务的显存与带宽成本。</p>
+<p>证据：arXiv 预印本且已核验 PDF 正文，报告 Qwen3-8B AIME25 与 RULER-NIAH 64K 大幅回升并集成 SGLang paged/prefix-cache；仅离线评测三个模型，无线上 A/B 或生产部署证据。</p>
+<h3>3. <a href="https://arxiv.org/abs/2609.26760">Grow the Harness, Not the Context: From Strategy-Free Scaffolds to Reusable Specialist Agents</a></h3>
+<p>提出 harness 本身为唯一可学习对象、用失败反馈把重复控制固化为可执行代码、LLM 只做语义推理，指向 Agent 在线成本与上下文压力的结构性下降路径，并提升小模型 agent 可用性。</p>
+<p>证据：arXiv 预印本且已核验 PDF 正文，六组 benchmark-model 设置中五组成功率最高，报告 LLM 调用减少 76.0–91.8%；每 benchmark 仅 50 任务、每配置 3 次运行，置信区间较宽，成本统计不含离线优化与重试。</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://arxiv.org/abs/2609.26355">PACT: From Credit Assignment to Critic Alignment</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：AllSpark Team；据邮箱域名推断 Dongyan Zhao 为北京大学、Mu Chuan 为小红书</strong></li>
+<li>作者：Jiayan Fu、Hang Xu、Yong Zhang、Zhaokai Luo、Yao Hu、Dongyan Zhao、Mu Chuan</li>
+<li>来源：arXiv:2609.26355v1</li>
+<li>场景：LLM RL 后训练 token-level credit 与 actor-critic 训练，在 agentic 数学推理和 SWE-bench Verified 上评估</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>论文提出 Completeness、Prefix Consistency、Neutrality 三个正则条件，并证明 token-level credit 唯一表示为 C_i=E[R|F_i]-E[R|F_{i-1}]，即条件奖励预测的鞅差</li>
+<li>PACT 采用 Actor-then-Critic 更新顺序，在 actor 更新后用重要性采样修正 critic 目标，并用 BCE 替代 MSE 训练 critic</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>数学推理：PACT 在 AIME 2025、AIME 2026、BeyondAIME、HMMT Nov. 2025 上 Avg@16 平均 72.87%，比 GRPO 高 8.80 个百分点，比 PPO(λ=1.0) 高 13.16 个百分点，比 SAO 高 21.73 个百分点</li>
+<li>SWE-bench Verified：PACT pass@1 67.4%，比 GRPO 高 2.0 个百分点，比 PPO(λ=1.0) 高 2.4 个百分点，比 SAO 高 3.8 个百分点</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>给出 token-level credit 在三个正则条件下的唯一表示</li>
+<li>并将 critic 对齐工程化（Actor-then-Critic、重要性采样修正、BCE 替代 MSE），是后训练 RL 算法设计中可复现、可迁移的参考，值得精读其推导与消融</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>credit 唯一性依赖作者提出的三个正则条件，换条件可得到不同表示</li>
+<li>credit 是统计而非因果，不等同于 token 的反事实因果效应</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2608.02691">Output-Aware Rotation for INT2 KV-Cache Quantization</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：University of Southern California, Seoul National University, Inha University</strong></li>
+<li>作者：Vincent-Daniel Yun, Woosang Lim, Minsoo Cheong, Sunwoo Lee, Murali Annavaram, Sai Praneeth Karimireddy, Sungjoo Yoo</li>
+<li>来源：arXiv:2608.02691v4</li>
+<li>场景：长上下文大模型推理中的 INT2 KV-cache 量化</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>OptR 将 post-WO attention-output error 分解为 key-induced 与 value-induced 两项，并直接最小化该输出误差，而非优化 cache 重建或 pre-WO 代理误差</li>
+<li>方法先做 attention-equivalent key 均值重参数化，再对每个 KV head 学习正交修正 R=R0 exp(A-A^T)</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Qwen3-8B AIME25：QuaRot-INT2 由 17.33% 提升到 66.67%，OSCAR 由 54.67% 提升到 66.00%，BF16 为 68.00%</li>
+<li>在三个模型与五个推理/编码基准上，OptR 一致提升 QuaRot 和 OSCAR，平均准确率接近 BF16</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把量化误差度量放到输出空间而非 cache 重建</li>
+<li>并保持 paged/prefix-cache 与 fused decoding 兼容，是长上下文推理成本压缩在极低比特方向的参考实现</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>评测限于 Qwen3-4B/8B 和 Phi4-14B 三个推理模型及推理/编码/长上下文基准，未覆盖通用对话、多语言或工业在线服务</li>
+<li>校准使用 GPQA-Diamond 解码轨迹，虽报告校准成本，但未验证跨域与跨模型迁移的鲁棒性</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2609.26760">Grow the Harness, Not the Context: From Strategy-Free Scaffolds to Reusable Specialist Agents</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：中科院深圳先进技术研究院；中国科学院大学；深圳理工大学；澳门大学</strong></li>
+<li>作者：Laizhen Li, Jiarui Li, Juanjuan Zhao, Kejiang Ye, Ye Li, Cheng-zhong Xu, Xitong Gao</li>
+<li>来源：arXiv:2609.26760v1</li>
+<li>场景：LLM Agent harness 学习与网页/深搜任务</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>从无策略脚手架 h0 出发，固定 LLM 与工具接口，harness 本身是唯一可学习对象</li>
+<li>函数级执行 trace 将失败定位到被调用的 harness 函数，优化器在失败窗口内联合修复，并受编辑预算 L 约束</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 BrowseComp-Plus 与 WebArena-Verified 的六个 benchmark-model 设置中，五个平均成功率最高，第六个落后最佳均值 0.7 个百分点</li>
+<li>相对 Tool-Calling，LLM 调用减少 76.0–91.8%，部署 agent 推理成本降低 74.4–98.6%</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把 Agent 能力增长从上下文扩张转为 harness 代码增长，给出失败定位、编辑预算与 held-out gate 回滚的完整闭环，对 agent 系统工程与成本控制有范式参考价值</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>最终评估集每个 benchmark 仅 50 个任务、每配置 3 次运行，95% 置信区间较宽，结果可能受任务划分和优化器选择影响</li>
+<li>在线成本仅统计部署 agent 的 LLM 调用，不含离线优化器、评测器和重试成本</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<h3>P1｜<a href="https://www.xiaoyuzhoufm.com/episode/6ab23423f04646b3a955631f?utm_source=rss">卫诗婕｜漫谈Light the Star｜89.当 AI 进入组织，那些「从没人说过的真相」｜与网易阮良聊 AI Native 与企业 Agent 实战</a>｜近三日补录</h3>
+<p><strong>嘉宾与主题</strong></p>
+<p>来源：播客《卫诗婕｜漫谈Light the Star》第89期（小宇宙，2026-09-23发布）；作者/机构：主播卫诗婕、嘉宾网易集团副总裁兼网易智企CEO阮良；场景：企业 AI Native 组织与 Agent 落地实践；嘉宾提出 AI 进入组织后个人效率与整体交付脱节：网易内部统计个人用 AI coding 提效约300%-500%，但软件交付周期仅从20天缩短到17天，原因归于企业任务链条更长、角色关系更复杂与木桶短板；提出企业落地 AI 的三类判断框架：优先交给…</p>
+<p><strong>核心观点与实践经验</strong></p>
+<p>嘉宾称网易内部个人 AI coding 效率提升300%-500%，但整体软件交付周期仅由20天降至17天，作为个人提效不等于组织提效的一线观察；嘉宾提出 2025 年 AI Coding 已开始兑付价值、2026 年非 Coding 场景开始规模化兑付价值的时间判断（属嘉宾观点，非独立验证）；嘉宾称企业将有几十上百个 Agent，管理能力比模型能力更稀缺，Token 账单数千元量级换取的产能增长足够大（未披露具体统计口径）。</p>
+<p><strong>为什么值得听</strong></p>
+<p>来自一线企业管理者对 AI 组织落地的反共识观察：个人级提效与组织级交付脱节、Agent 与 SaaS/知识库的关系、以及 Agent 规模化后的管理与成本结构，可作为企业 Agent 落地的经验参考。</p>
+<p><strong>与你的关联</strong></p>
+<p>涉及 Agent 落地、企业知识库与 API 编排、AI 原生组织与 Token 成本，对做 Agent/大模型工程与工业落地的团队有实践参考价值。</p>
+<p><strong>来源与局限</strong></p>
+<p>播客官方 RSS 节目页。内容为播客访谈中的嘉宾个人观点与内部经验，300%-500%提效、20天到17天等数字未提供统计口径、样本或核验方式，不可作为工业结论；多数命题（如2026年非Coding场景规模化兑付、Token消耗等同人才信号）为前瞻判断或管理经验…</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/alibaba-unveils-zhenwu-v900-ai-accelerator-claims-its-the-most-powerful-ai-chip-in-china-accelerator-supports-500-000-chip-supercluster-with-a-10t-parameter-qwen-model-on-the-roadmap">Alibaba unveils Zhenwu V900 AI accelerator, claims it's 'the most powerful AI chip in China'</a></h3>
+<p><strong>判断影响</strong></p>
+<p>国产 AI 加速器与超大规模训练集群是算力供给与成本结构的关键变量，V900 的时间表提前并将其与 5–10 万亿参数 Qwen 训练绑定，可能影响后续训练算力可获得性。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Tom's Hardware（第三方媒体报道，非厂商官方公告，引述 AP 对 2026 云栖大会的报道）；作者：Shane Downing；机构：阿里巴巴（宣称方）、Tom's Hardware（媒体）；场景：中国 AI 训练/推理加速器发布与算力基础设施规划；阿里发布真武 V900 AI 训练与推理加速器，标称 216GB 显存、片间互联带宽 1200GB/s，可扩展至最多 50 万卡的 supernode 集群，计划 2027 年一季度量产商用（此前 5 月路线图为 2027 年三季度）；阿里 CEO 吴…</p>
+<p><strong>数据与证据</strong></p>
+<p>报道称 T-Head 已向 400 多家外部客户出货超 56 万颗真武芯片（截至 5 月），客户数现称已超 650 家，真武预计每年迭代；报道称 Qwen3.8-Max 在约一个月自动化运行中完成 33 轮迭代，Artificial Analysis 分数从 40 提升到 45；报道称一项芯片设计实验中超过 1 万次 EDA 工具调用、逾 60 小时测试时间，在无性能损失前提下面积缩减 42%；媒体或社区报道。证据仅为第三方媒体报道，非阿里官方公告，关键指标（FLOPS、制程、功耗、带宽）未披露，3 倍与最强均为厂商宣称；产品距商用尚远（2027Q1 量产）、5–10 万亿参数模型尚未训练、20GW 容量目标为 2032 年规划，均不可验证；报道未给出任何训练/推理实测吞吐、能效或集群…</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>PACT 在 SWE-bench Verified 上 pass@1 67.4%，高于 GRPO、PPO(λ=1.0) 与 SAO；同一日另有 harness 增长路线报告在线 LLM 调用成本大幅下降，两篇同为预印本离线基准，方向一致但不足以支撑强判断。</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>INT2 KV-cache 量化的优化目标改为注意力输出误差后，Qwen3-8B AIME25 由 17.33%/54.67% 回升至 66.67%/66.00%（BF16 68.00%），RULER-NIAH 64K 由 0.04%/57.54% 升至 70.02%/68.65%，把极低比特 KV-cache 的可用范围推向长上下文推理；仅为离线论文自评。</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>真武 V900 标称 216GB 显存、1200GB/s 片间互联、可扩展至 50 万卡集群，并称 T-Head 已出货超 56 万颗、外部客户超 650 家，方向上支持国内超大厂自研加速器持续扩产；关键指标缺失、量产在 2027Q1，且证据为第三方媒体报道而非官方公告。</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

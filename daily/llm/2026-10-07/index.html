@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-10-07 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-10-07，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-10-07/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-10-07</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://arxiv.org/abs/2607.22186">Deconstructing Off-Policy Ratios: Entropy-Normalized Trust Regions for Asynchronous Reinforcement Learning</a></h3>
+<p>异步 RL 已成为长程 Agent 与推理模型后训练的主流系统形态，但陈旧 off-policy 数据易致策略崩溃。该工作把‘哪些 token 可信任’从固定幅度阈值改为按 token 熵标准化的信任域，并给出理论刻画与可落地的逐 token 实现，对自建异步 RL 训练管线有直接参考价值。</p>
+<p>证据：技术报告</p>
+<h3>2. <a href="https://arxiv.org/abs/2610.04344">Hierarchical Credit Assignment for RLVR on Fused Gromov-Wasserstein Geometry</a></h3>
+<p>提出将最优传输/FGW barycenter 用于 group-based RLVR 的分层信用分配，为提升 LLM 后训练探索与推理能力提供新方法，并给出可插拔实现和效率优化。</p>
+<p>证据：技术报告</p>
+<h3>3. <a href="https://arxiv.org/abs/2610.05367">AIProver: Agentic Auto-Formalization of Mathematical Research via Certificate-Driven Evolving Harness</a></h3>
+<p>展示了模型与 agent harness 协同演化加符号验证器奖励的后训练范式，并用 119B 开源权重模型在困难任务上超过部分闭源前沿模型，对 agent harness 自动优化与大模型后训练有直接方法参考价值。</p>
+<p>证据：技术报告</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://arxiv.org/abs/2607.22186">Deconstructing Off-Policy Ratios: Entropy-Normalized Trust Regions for Asynchronous Reinforcement Learning</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：北京邮电大学、北京大学、中国科学技术大学、百度（前三作者在百度实习期间完成）</strong></li>
+<li>作者：Guanqun Zhao、Zijun Xie、Binbin Zheng、Jiafeng Lu、Enlei Gong、Zeyu Chen</li>
+<li>来源：arXiv:2607.22186v4（cs.AI，replace 版）</li>
+<li>场景：LLM 异步强化学习后训练，多轮工具使用与数学推理，非搜广推场景</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>方法：提出 Entropy-Normalized Trust Region（ENTR），逐 token 用 S_t=δ_t²/(H_t+ε)≤τ 的硬掩码替代固定幅度阈值，接受边界 b=√(τ(H_t+ε)) 随 token 熵伸缩</li>
+<li>理论：给出熵–比率标度律，证明 log 重要性比的二阶矩近似随 token 熵线性增长</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>BrowseComp-Plus avg@1 为 37.34，优于最强基线 KPop 34.94 与 M2PO 33.72，距同步 GRPO 38.55 约 1.21 分（摘要表述为相对最强基线提升 6.9%）</li>
+<li>训练效率：DAPO-Math 上 514.84 s/step、214.38 tokens/s/GPU，相对同步 GRPO（1356.47 s/step）约 2.6× 加速，与朴素异步 GRPO 每步耗时差在 5% 内</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把异步 RL 的稳定性问题定位到低熵 token 的比率放大，给出可证明的熵–比率标度律与逐 token 掩码，是当前 agent 长程后训练系统形态下少见的机制加工程并重工作，值得按其 keep rule 复现</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>作者自述研究仅覆盖异步 RL 下的多轮工具使用与数学推理，代码生成与多模态推理留待未来工作</li>
+<li>作者承认未刻画该 keep rule 与 replay correction、value baseline 等互补稳定技术的相互作用</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2610.05367">AIProver: Agentic Auto-Formalization of Mathematical Research via Certificate-Driven Evolving Harness</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：Georgia Institute of Technology、University of Pennsylvania、Foothill College、Rutgers University、Simon Fraser University、University of Texas at Austin</strong></li>
+<li>作者：Prithwish Jana、Viet Bach Hoang、Logan Luna、Viresh Pati 等 12 人</li>
+<li>来源：arXiv:2610.05367v1（cs.LO/cs.AI/cs.LG）</li>
+<li>场景：研究级数学自然语言定理与证明到 Lean 4 的自动形式化与证明合成</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>AIProver 联合后训练 119B 开源权重 LLM（Leanstral-1.5-119B-A6B，MoE，约 6B 激活）并演化其 ReAct 式工具调用 harness：HarnessEvolve 以证书驱动进化搜索改写 harness 全控制流，Agentic RLSF 用 GRPO 在验证器奖励下后训练模型，二者交替并设 held-out 门控回滚</li>
+<li>SAM（Semantic Alignment Model）用带 [PRED] 锚点的双视图对比 InfoNCE 损失加语言建模损失，只训练 LoRA、投影头与 [PRED] 嵌入，把 NL 与 FL 表示对齐到共享语义空间</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>独立 agent 在 LoCoBench-Val（771 实例）pass@4 语义正确（TC+SC）从 Leanstral-1.5 基线的 15.7% 提升到 36.7%，高于最佳开源系统 OpenGauss 21.5% 与 Aristotle 18.4%</li>
+<li>作为 Claude Code 与 Codex 的 skill，语义正确率分别从 41.9%、34.1% 提升到 79.8%、62.4%，高于 Numina-Lean-Agent（72.5%、44.5%）与 OpenGauss（54.3%、41.9%）</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>提出 harness 自动演化与验证器奖励交替训练的组合配方，用证书作为变异反馈而非人工调 harness，对 agent 训练管线设计与评测阶梯构建有直接方法迁移价值</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>论文未评测证明忠实性（proof faithfulness），因缺少可靠检查，只以两个前沿 LLM judge 的四路检查替代语义正确性判定</li>
+<li>验证集来自 Mizar 与一本有界算术教科书，无 Lean gold</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2610.04344">Hierarchical Credit Assignment for RLVR on Fused Gromov-Wasserstein Geometry</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：University of Illinois Urbana-Champaign、Meta</strong></li>
+<li>作者：Qi Yu, Ruizhong Qiu, Zhichen Zeng, Xuying Ning, Yanjun Zhao, Dongqi Fu, Yinglong Xia, Hong Li, Hanghang Tong</li>
+<li>来源：arXiv:2610.04344v1（Preprint, Under review）</li>
+<li>场景：面向 LLM 数学推理的 RLVR 后训练信用分配（非搜广推）</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>HARA 将每条 rollout 表示为隐藏状态与 token 位置的链式属性图/分布，并按结果正负分组计算 Fused Gromov-Wasserstein (FGW) barycenter 作为当前策略的内部推理模式参照</li>
+<li>为降低 FGW 计算开销，HARA 采用 anchor-guided linearization 固定 GW 第二运输计划的推理锚点，将问题转化为可用 Sinkhorn 高效求解的 Wasserstein 形式，时间与空间复杂度随 rollout 长度线性增长</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 Qwen3-8B-Base + GRPO 上，Table 1 报告 HARA-tok 五个数学推理基准平均 63.9，对比 GRPO 59.1 和最佳基线 Entropy Adv. 60.8</li>
+<li>在 Qwen3-8B-Base 上，Table 3 报告 HARA-tok 在 Dr.GRPO 上平均 62.1（基线 59.2），在 DAPO 上平均 63.1（基线 60.2）</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把最优传输 barycenter 引入 group-based RLVR 的 token-level 优势重加权，提供可插拔的探索信号与线性复杂度近似，为 RLVR 信用分配提供不同于熵正则的新思路</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>仅覆盖数学推理基准（MATH500/AMC23/AIME24/AIME25/Minerva Math）与 Qwen3 系列模型，未验证通用推理、代码或工业级在线场景</li>
+<li>论文为 Preprint under review，尚无同行评审或独立复现</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P1｜<a href="https://www.anthropic.com/news/cyber-verification-program">Oct 6, 2026 Announcements Expanding the Cyber Verification Program</a></h3>
+<p><strong>判断影响</strong></p>
+<p>官方量化展示了同一模型在不同安全分类器分级下拦截与任务完成率的差异，可作为分级安全策略与能力访问设计的参考基线。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Anthropic 官方公告，2026-10-06；作者：未披露；机构：Anthropic；场景：AI 模型网络安全能力访问分级与安全分类器评估；将 Project Glasswing 与 Cyber Verification Program 合并为三级访问体系：Defense Access、Red Team Access、Specialized Access，各级覆盖 Claude Opus 5.5、Claude Sonnet 5.5、Claude Mythos 5.1 等模型但对应不同验证要求与安全控制…</p>
+<p><strong>数据与证据</strong></p>
+<p>无 CVP 访问时，CyScenarioBench 每个任务在首个 prompt 即被拦截；Defense Access 层级 50 次试验中 46 次被拦截，4 个任务成功；Red Team Access 层级无拦截，50 个任务中成功完成 34 个，Anthropic 称与无安全防护时 67.6% 成功率（对应 Specialized Access）等效；Project Glasswing 合作方 2026 年 4 月至 7 月报告…；官方发布。CyScenarioBench 为 Anthropic 自有评估，任务构造、评分与统计口径未在候选材料中公开，非独立第三方评测；漏洞计数基于 33 份合作方报告的子集调查数据，Anthropic 自述为低估，补丁率因不足半数合作方披露而明显偏低；未披露各层级误报率、分类器误伤对正…</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>ENTR 与 HARA 均表明长程 rollout 的额外训练/推理计算需按 token 信息量或推理新颖度分配才不崩溃或退化，提示 inference-time compute 的收益高度依赖信任域与信用分配的粒度设计。</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>AIProver 显示 harness 自动演化加形式化验证器奖励可把 119B 开源权重模型的语义正确率从 15.7% 提到 36.7%，并作为 skill 提升 Claude Code 与 Codex 至 79.8% 与 62.4%；改变点在于 agent 能力增益正部分来自 harness 与验证器协同，而非单纯模型规模。</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>AIProver 用 119B 开源权重 MoE（约 6B 激活）在困难形式化任务上超过 OpenGauss 与 Aristotle，且 $0.32/attempt 相对闭源管线更便宜；但为单一离线基准，仅作弱信号。</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

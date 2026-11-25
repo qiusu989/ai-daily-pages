@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>搜广推论文日报｜2026-08-22 · AI日报</title>
+<meta name="description" content="搜广推论文日报｜2026-08-22，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/papers/2026-08-22/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>搜广推论文日报｜2026-08-22</h1>
+<h2>与上一期日报相比</h2>
+<ul>
+<li>漏报补录：DAURA（Scientific Reports 2026，OpenAlex 回填）为 backfill，非本期新增；专注图多模态推荐中用户侧个性化模态对齐与评论情感信号利用，核心为 LLM 评论情感通道+自适应双轨对齐（AD-UCA）+自适应间隔 BPR（DAM）。</li>
+<li>与上一期相比，本期无新的 primary 论文；上一期 BARGE、RecPFN、Multi-Target Token Weighting、UniLang、SCoRD、BRIDGE、PILOT、PCTM、CoRRe 等主要论文均未出现实质性更新或修订。</li>
+<li>检索缺口：本期仅回填一篇 P2 学术论文，无粗排阶段、无广告召回专属证据、无在线 A/B 或工业数据；未检出不代表行业无更新。</li>
+</ul>
+<h2>今日阅读顺序</h2>
+<ul>
+<li>P2｜模型结构与特征交互｜<a href="https://doi.org/10.1038/s41598-026-62299-4">Dual-channel adaptive user-intent routing alignment for multimodal recommendation</a>：唯一入选论文，backfill 性质；虽无工业证据，但其即插即用多模态增强思路（评论情感+用户意图路由）对短视频/电商召回精排有低成本迁移价值，需先评估是否值得补读。</li>
+</ul>
+<h2>模型结构与特征交互</h2>
+<h3>P2｜<a href="https://doi.org/10.1038/s41598-026-62299-4">Dual-channel adaptive user-intent routing alignment for multimodal recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><p><strong>机构：未披露</strong></p>
+</li>
+<li><p>作者：包括 Yang Huang、Yipeng Wang、Tianhao Ren、Fengcheng Wu</p>
+</li>
+<li><p>来源：未单列</p>
+</li>
+<li><p>场景：未披露</p>
+</li>
+<li><p><strong>论文主要内容：</strong> 未披露</p>
+</li>
+<li><p>原始身份说明：论文《Dual-channel adaptive user-intent routing alignment for multimodal recommendation》发表于 Scientific Reports（DOI: 10.1038/s41598-026-62299-4），作者包括 Yang Huang、Yipeng Wang、Tianhao Ren、Fengcheng Wu，机构未披露。</p>
+</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>针对图多模态推荐中用户侧个性化模态对齐缺失和评论情感信号利用不足的问题，提出轻量级意图路由和自适应间隔，提升了多模态特征利用效率。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>提出 DAURA 框架，含 LLM Review Sentiment Channel（从评论提取情感信号）、Adaptive Dual-track User-Centric Alignment（AD-UCA，按用户分配模态权重）、Dual-core Adaptive Margin BPR（DAM，动态排序间隔）。</li>
+<li>在三个 Amazon 数据集和 Yelp 数据集上验证，覆盖商品和餐厅推荐场景，优于基线。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 Amazon 和 Yelp 数据集上 DAURA 一致优于所有基线，但具体指标数值未在摘要中给出。</li>
+<li>消融实验证实三个模块均有贡献。</li>
+<li>方法为即插即用增强框架，可与现有图多模态推荐系统结合。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：多模态特征利用与用户个性化对齐</li>
+<li>次要：评论情感信号增强</li>
+<li>次要：自适应排序间隔优化</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>为工业短视频/电商推荐提供可插拔的多模态增强方案，尤其适用于用户反馈稀疏场景。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>未披露具体性能提升幅度。</li>
+<li>LLM 评论情感提取可能增加离线计算成本。</li>
+<li>仅在 Amazon 和 Yelp 数据集验证，未见大规模工业数据测试。</li>
+</ul>
+<h2>今日最值得立项的实验</h2>
+<p>本期没有证据充分、值得立即立项的实验。</p>
+<h2>一句话总判断</h2>
+<p>本期仅有 DAURA 一篇 backfill 学术论文，证据等级为同行评审但无 PDF 核验、无具体提升数值、无工业验证，不能作为强落地依据。生成式召回和精排方向实质进展仍来自上一期 BARGE、TokenWeighting、BRIDGE 等，建议维持既有实验优先级，DAURA 仅作多模态增强的低优先级参考。</p>
+</article></main></body></html>

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-11-10 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-11-10，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-11-10/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-11-10</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://arxiv.org/abs/2603.16843">Counterfactual Distillation: Internalizing Reflective Experience into LLM Agent</a></h3>
+<p>把 Agent 反思从推理时上下文搬到训练信号：经验引导的重决策再去除经验文本蒸馏回参数，CodeContests Pass@128 相对 GRPO 提升 10.91 个百分点，改变对长程 Agent 后训练上限的判断。</p>
+<p>证据：arXiv 预印本，PDF 正文已核验，机构与实验设置明确；结果为论文自测基准，Pass@128 为固定 rollout 池点估计，无跨随机种子方差，也无工业 A/B 或线上部署。</p>
+<h3>2. <a href="https://arxiv.org/abs/2611.08864">Adaptive Scheduling Pipeline for Multi-Instance Asynchronous Reinforcement Learning</a></h3>
+<p>将长度预测、动态规划分桶与组间负载均衡串成离线预处理，Qwen3-30B-A3B 八节点平均迭代较 verl 降低 59.9%、吞吐约 3.22 倍，改变对异步 RL 后训练 rollout 利用率的成本判断。</p>
+<p>证据：NeurIPS 2026 论文，PDF 已核验，华为等机构参与；但对比是不同执行架构的整系统比较，收敛仅验证 30 个 GRPO 迭代与单任务，不能把差距全归因于调度。</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://arxiv.org/abs/2603.16843">Counterfactual Distillation: Internalizing Reflective Experience into LLM Agent</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：University of California San Diego、Nanjing University</strong></li>
+<li>作者：Rui Ge、Yichao Fu、Yu-Yang Qian、Junda Su、Yiming Zhao、Hao Zhang</li>
+<li>来源：arXiv:2603.16843v2</li>
+<li>场景：长程交互式 LLM Agent 任务（WebShop、ALFWorld、ScienceWorld、Sokoban、CodeContests）</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>第一阶段将探索组织为树：每 K 步或失败时，策略基于历史 h_t 反思，输出回滚步 τ 和自然语言经验 e</li>
+<li>重置环境并重放动作到 τ，在 (hτ,q,e) 下重决策 a′τ，按广度优先扩展分支</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>CodeContests 上 Qwen2.5-72B 的 GRPO→CD 将 Pass@128 从 GRPO 的 36.97% 提到 47.88%，相对 GRPO 提升 10.91 个百分点</li>
+<li>同表 Base 为 33.94%</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>给出可复现的 Agent 后训练新范式：树式回滚定位次优步、经验引导重决策、上下文干预转参数监督</li>
+<li>并与 GRPO 交错</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>方法依赖信息量足够的反馈与可重放环境状态</li>
+<li>反馈稀疏、延迟或含糊时反思经验可能不可靠，高随机或强状态环境中的精确回滚也不现实</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2611.08864">Adaptive Scheduling Pipeline for Multi-Instance Asynchronous Reinforcement Learning</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：École polytechnique、Huawei Technologies、Shenzhen Research Institute of Big Data</strong></li>
+<li>作者：Salah Chikhi、Luis Zuin、Entong Li、Li Zeng</li>
+<li>来源：arXiv:2611.08864v1（NeurIPS 2026）</li>
+<li>场景：多实例异步LLM强化学习后训练的rollout调度</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>长度预测与排序：用少量prompt实测长度微调Qwen2.5-1.5B预测输出长度，按预测值排序数据集</li>
+<li>预测器训练中固定，为后续分桶提供输入</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Qwen3-30B-A3B八节点匹配资源下，ASP平均迭代215.2s，较verl的536.7s降低59.9%，较MindSpeed-RL的927s降低76.8%</li>
+<li>同模型同设置下ASP达58 tokens/s/NPU，MindSpeed-RL为18 tokens/s/NPU，端到端吞吐为3.22×</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把 rollout 调度当作可离线优化的工程问题，直接对应 RL 后训练吞吐与队列抖动</li>
+<li>适合评估大规模异步训练基础设施改造的团队</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>性能对比是完整系统对比，ASP与verl、MindSpeed-RL在执行架构、实现与配置上不同，不能把全部差距归因于调度</li>
+<li>收敛验证仅30个GRPO迭代、Maze-Reasoning任务、约3.3步策略滞后，未覆盖更大滞后、更多任务或更长训练</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2509.00031">End-to-End On-Device Quantization-Aware Training for LLMs at Inference Cost</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：University of Georgia、University of North Texas、Northeastern University、University of Minnesota、University of Virginia、Stevens Institute of Technology</strong></li>
+<li>作者：Qitao Tan 等</li>
+<li>来源：arXiv 2509.00031v3</li>
+<li>场景：通用 LLM 低比特量化训练与端侧推理（非搜广推）</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>ZeroQAT 用零阶有限差分估计梯度：对每个随机方向做两次前向，比较量化目标函数差除以 2ε，取 q 个方向平均</li>
+<li>训练保留全精度权重、前向用量化权重，从而去掉反向传播与 STE</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>W4A4 零样本 5 任务平均准确率：ZeroQAT 在 LLaMA-1-7B、LLaMA-2-7B、LLaMA-3-8B 分别为 63.64、66.14、71.28，FP16 为 65.26、68.96、72.77，FlatQuant 为 63.17、67.14、69.89</li>
+<li>W2A16g128 量化微调 OPT-13B：ZeroQAT 在 bsz=16 下内存 6.8GB、1.73s/更新，低于 EfficientQAT 的 17.2GB、3.26s</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>零阶前向差分替代反向传播与 STE，使 QAT 内存降到推理级，13B 以下模型可在 8GB GPU 与手机端微调</li>
+<li>若关注端侧低比特 LLM 成本，值得读其内存与吞吐权衡</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>评测仅覆盖 13B 及以下模型，30B 以上未验证</li>
+<li>作者将方法定位为资源受限边缘设备</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.servethehome.com/google-tpu-8tx-8i-max-amd-epyc-turin/">Google TPU 8tx Pairs AMD EPYC Turin Hosts with Confidential Computing while TPU 8i Max Doubles Memory Bandwidth</a></h3>
+<p><strong>判断影响</strong></p>
+<p>报道披露 Google 第八代 TPU 新增面向机密计算的主机系统与面向大上下文推理的双芯片封装，并给出内存带宽、SRAM、延迟等硬件规格，属 AI 算力供应链的实质技术事件。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：ServeTheHome（第三方媒体，2026-11-09）；作者：Vic A；机构：Google、AMD（经媒体报道，未附官方公告）；场景：AI 加速芯片与主机 CPU 系统配置；Google 在第八代 TPU 中新增 TPU 8tx 与 TPU 8i Max 两种系统配置，同代共四种配置，但并非四款新芯片设计；TPU 8tx 沿用训练向 TPU 8t 的芯片，搭配定制第 5 代 AMD EPYC Turin 主机 CPU，采用双路 128 条 PCIe Gen5 通道，使四颗 TPU 与高速网卡之间无 I…</p>
+<p><strong>数据与证据</strong></p>
+<p>TPU 8i Max 的 HBM 带宽由单颗 TPU 8i 翻倍至 17.2TB/s，片上 SRAM 翻倍至 768 MB，HBM 容量 384 GB，约为 TPU 8i 的三分之一以上增量；Google 对 TPU 8tx 声称相较 TPU 8t 最多降低 2 倍延迟，性能损失接近为零；这一数据来自厂商说法，未经第三方验证；Google 表示需要数据留在机密计算域内的用户应继续用 TPU 8tx 做推理与服务；EPYC Turin 采…；媒体或社区报道。信息源为第三方媒体报道，未附 Google 官方产品页或规格文档，厂商性能声明未被独立验证；延迟对比仅给“最多 2 倍”的厂商口径，缺少基线配置、负载与测量方法；未披露 TPU 8tx 与 8i Max 的定价、可用时间、区域与配额细节</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">medium</td>
+  <td>ZeroQAT 证明 W4A4 联合权重量化训练可在推理级内存完成，且在手机端 6.7B 微调可行并带来 1.52 倍推理吞吐；但仅论文自测、13B 以下模型，未部署验证。</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

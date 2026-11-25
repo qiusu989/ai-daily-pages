@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-11-17 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-11-17，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-11-17/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-11-17</h1>
+<ul>
+<li>P1｜LLM 论文 / 技术报告｜<a href="https://arxiv.org/abs/2505.24098"><strong>卡内基梅隆大学、UC Santa Barbara、UT Austin等</strong>｜HARDTESTGEN: A High-Quality RL Verifier Generation Pipeline for LLM Algorithmic Coding</a>：代码 RL 与拒绝采样高度依赖测试用例作为奖励信号，而现有合成测试（TACO、CodeContests）在难题上精度很低，假阳性奖励会污染训练；该工作给出可复用的“程序化输入生成 + LLM 生成校验器 + 多 oracle 共识过滤”流水线，并把测试质量与下游 RL/拒绝采样收益直接挂钩，说明验证…</li>
+<li>P1｜LLM 论文 / 技术报告｜<a href="https://arxiv.org/abs/2611.17398"><strong>Duke University、Independent Researcher</strong>｜Alignment with Reflect-Reasoning: Learning How To Follow Principles</a>：把训练目标从“遵循哪些原则”改为“如何推理原则”：训练反思推理过程而非固定原则集，使推理时以系统提示注入的新宪法无需再训练即可获得更高一致性。 无人工标注的两阶段流程：用强模型轨迹做 SFT 冷启动，再用两组成对 LLM judge 奖励（学员 base 对冻结 base、修订对自身 base）驱动…</li>
+<li>P1｜LLM 论文 / 技术报告｜<a href="https://arxiv.org/abs/2611.17857"><strong>Meta</strong>｜Fuse-All MoE Inference Kernel with Load Balancing on TPUs</a>：针对 TPU 上 MoE 推理的中间数据搬运与专家负载不均，给出融合专家计算、输出通信和负载均衡的 Pallas 内核，并在 PD 分离下分别优化 prefill 与 decode；对关注 MoE serving 系统效率的读者有参考价值。</li>
+<li>P2｜关键人物观点 / 播客｜<a href="https://www.dwarkesh.com/p/paul-christiano-2"><strong>Alignment Research Center</strong>｜Paul Christiano – We could be 12 months away from AIs that can overthrow the government</a>：一线对齐研究者对超智能时间线与“先保权重再谈进展”的公开判断，涉及训练对齐与安全基础设施取向，但无实验或系统数据支撑。</li>
+<li>P2｜公司 / 市场 / Quant｜<a href="https://www.tomshardware.com/tech-industry/supercomputers/china-retains-fastest-supercomputer-in-the-world-crown-as-ai-data-centers-soak-up-new-hardware-top500-records-fewest-new-systems-in-33-years"><strong>Tom's Hardware</strong>｜China retains fastest supercomputer in the world crown as AI data centers soak up new hardware</a>：TOP500 新增系统数创 33 年新低，而 AI 算力规模高速扩张，说明增量硬件主要流向商用 AI 数据中心而非传统超算，榜单作为 HPC 采购风向标的代表性下降。</li>
+</ul>
+</article></main></body></html>

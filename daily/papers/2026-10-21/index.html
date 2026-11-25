@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>搜广推论文日报｜2026-10-21 · AI日报</title>
+<meta name="description" content="搜广推论文日报｜2026-10-21，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/papers/2026-10-21/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>搜广推论文日报｜2026-10-21</h1>
+<h2>今日阅读顺序</h2>
+<ul>
+<li>P0｜序列建模与兴趣表征｜<a href="https://arxiv.org/abs/2610.28569">快手｜ECHO: Efficient Cascade with Homogeneous Operators for Distillation-Guided 100K-Sequence Modeling</a>：直接命中短视频精排超长行为序列：用户级选择保留10K原始记录，候选感知全历史教师蒸馏加边界辅助损失，线上7天5%流量A/B总App使用时长+0.613%；两类预算与参数复用可迁移，需自验延迟与成本。</li>
+<li>P0｜生成式召回｜<a href="https://arxiv.org/abs/2610.27898">电子科技大学、中国科学技术大学、HUJING Digital Media、Entertainment Group、西南交通大学｜SPAR: Stepwise Personalized Autoregressive Recommendation with Prefix-Balanced Semantic IDs</a>：生成式召回与SID分支解码最完整的一篇：PATH逐步记忆读取、RQ-PIB前缀负载均衡、DPO偏好对齐；优酷首页7天约10%流量A/B播放转化+3.38%，但收益迁移需按自身流量复盘。</li>
+<li>P0｜生成式召回｜<a href="https://arxiv.org/abs/2610.16979">WeGR: Towards Unified Generative Retrieval via Behavior-aware Tokenization and Preference Alignment</a>：电商搜索生成式召回：量化前对比学习、码本重启、逐层扩展DHPO与同会话多正例监督；线上替换召回通道后订单+2.539%、候选减38.10%、时延降21.7ms，是SID+RL链路工程价值最高的参考。</li>
+<li>P2｜评测与评估｜<a href="https://arxiv.org/abs/2610.26902">Target Corporation，作者邮箱后缀为 @target.com｜MOSS: A Production Framework for Monitoring and Diagnosing Semantic Failures in Search and Recommendation Systems</a>：生产级LLM-as-judge语义失败监控与根因分诊：加权/定向采样、策略感知提示、告警与两阶段诊断；同judge跨surface迁移未重调参，适合建设在线语义质量监控时直接借鉴，但非线上因果实验。</li>
+<li>P2｜序列建模与兴趣表征｜<a href="https://arxiv.org/abs/2610.27691">北京航空航天大学、哈尔滨工业大学、独立研究者｜EASformer: Environment-Action-State Alignment for Industrial Generative Ranking</a>：精排序列与非序列特征对齐：环境-动作-状态解耦、共享对齐空间与掩码动作自监督；离线AUC+0.88%、线上eCPM相对+1.26%/+3.94%为作者自报，适合对照现有序列建模做离线复现。</li>
+<li>P2｜生成式召回｜<a href="https://arxiv.org/abs/2610.27232">BIFOLD、TU Berlin，University of Amsterdam｜Neighborhood-Aware Unlearning for Generative Recommendation</a>：生成式召回SID空间的数据删除与局部效用维护：显式控制目标邻域概率质量，提醒共享SID下全局指标会掩盖局部遗忘损伤；离线证据，适合数据治理与SID设计参考。</li>
+<li>P2｜评测与评估｜<a href="https://arxiv.org/abs/2610.27850">哥本哈根大学、Tuukka Ruotsalo 同时隶属拉彭兰塔-拉赫蒂理工大学｜Robustness Analysis of Pareto-based Joint Evaluation of Fairness and Relevance in Recommender Systems</a>：推荐公平性-相关性联合评测方法：Pareto前沿距离单分加α折中，作者报告常见指标与Pareto最优结论不一致；可作为评测协议风险提示，属离线方法论、非模型结构。</li>
+<li>P2｜LLM 增强与对话推荐｜<a href="https://arxiv.org/abs/2610.26948">前三位作者为悉尼大学，通讯作者 Chen Liu 为南开大学｜LightCRS: Lightweight Multi-Domain Conversational Recommendation System</a>：电商多领域多模态对话推荐：冻结编码器离线表征加5.3M查询条件融合与候选间比较；离线HR@1相对PRIME+35.4%、延迟降266×为整包对比，迁移到搜广推主链路需另验。</li>
+</ul>
+<h2>生成式召回</h2>
+<h3>P0｜<a href="https://arxiv.org/abs/2610.27898">电子科技大学、中国科学技术大学、HUJING Digital Media、Entertainment Group、西南交通大学｜SPAR: Stepwise Personalized Autoregressive Recommendation with Prefix-Balanced Semantic IDs</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：电子科技大学、中国科学技术大学、HUJING Digital Media &amp; Entertainment Group、西南交通大学</strong></li>
+<li>作者：Chunrui Zhang、Gaoyun Lin、Chang Zhou、Zheng Hu、Qiran Song、Shimin Cai、Tao Zhou</li>
+<li>来源：arXiv:2610.27898v1</li>
+<li>场景：优酷首页视频推荐中的 SID 生成式召回</li>
+<li><strong>论文主要内容：</strong> 针对SID生成推荐逐步个性化不足与分支负载失衡，提出PATH解码器、RQ-PIB构造及偏好对齐。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>针对 SID 解码中固定用户表征难以随前缀变化的问题，PATH Decoder 按 SID 深度构造粗到细长期历史视图，用 Q-Former 压缩为记忆库，并以当前解码状态和已生成前缀做 cross-attention 读取，再把近期行为、画像与事件上下文融入每一步 token 决策。</li>
+<li>针对同一父前缀下兄弟分支历史交互负载不均衡、全局码字均衡忽视局部热度的问题，RQ-PIB 在残差 K-Means 冻结码本后按父前缀设负载上限，以最小重构失真增量贪心迁移物品，尽量保留语义结构并压低局部主导分支。</li>
+<li>将 beam search 候选经冻结排序模型构造偏好对，联合 SFT 与 DPO 做偏好对齐，使生成器在保持下一物品监督的同时偏向近期请求偏好，并与 SID 构造、逐步记忆读取组合成统一生成式召回框架。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>PATH Decoder 将长期历史按 SID 深度构造成粗到细视图，用共享 Q-Former 与各视图 query 压缩成记忆库；解码时以近期 SID 序列和已生成前缀为 query 做 cross-attention 取回前缀相关证据，再融合画像 User Token、事件 Event Token 预测下一 SID token。</li>
+<li>RQ-PIB 先用残差 K-Means 学习并冻结各层语义码本，按父前缀统计兄弟分支历史交互负载并设每前缀上限，在超载分支中反复迁移增加重构失真最小的正权重物品到可行子分支，直至满足上限并保留有效 trie。</li>
+<li>训练分 SFT 与偏好对齐：SFT 对目标物品三层 SID token 做下一 token 最大似然；DPO 用 trie 约束 beam search 生成候选、由冻结排序模型打分，取 top-M/bottom-M 组成偏好对，联合 SFT 与 DPO 损失更新生成器。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在优酷首页生产日志上，SPAR 相对最强基线 OneRec 的 HR@10/20/50/100 从 0.4648/0.5492/0.5828/0.6013 提升到 0.4831/0.5662/0.5947/0.6108，四个截断平均相对提升 2.66%。</li>
+<li>7 天线上 A/B 中，SPAR 覆盖优酷约 10% 生产流量，相对生产 Base 将播放转化率提升 3.38%、人均观看时长提升 3.95%、总观看时长提升 3.98%。</li>
+<li>RQ-PIB 在各 SID 层级将流量加权最大子分支占比从 9.8%/36.4%/65.7% 降至 6.4%/23.2%/47.6%，平均相对降低 32.84%。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：整包 SPAR 线上 A/B 相对生产 Base 提升播放转化与人均观看时长；单模块线上因果未核实，离线消融仅支持各组件贡献。</li>
+<li>次要：PATH 逐步记忆读取在离线消融中高于 First-step Reuse，前缀保留改善为整体模型分析；线上单模块因果未核实。</li>
+<li>次要：RQ-PIB 在离线流量加权最大子分支占比上降低集中度，支持局部均衡机制；线上单模块因果未核实。</li>
+<li>次要：DPO 在离线消融中提升 HR@1 等截断，且不改 SID 映射与架构；线上单模块因果未核实。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>相关于生成式召回与 SID 分支解码，可用于视频推荐召回阶段的 SID 构造和用户条件解码；线上收益来自优酷首页特定场景与生产 Base，迁移前需复现。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>线上 A/B 为作者在优酷首页、约 10% 流量、7 天的内部实验，未提供独立审计或复现，结论仅限该生产 Base 与短期窗口。</li>
+<li>离线与消融均基于优酷单场景生产日志；SID 负载权重来自训练期交互计数，论文明确不保证未来曝光平衡，也未讨论冷启动或新物品分配。</li>
+<li>RQ-PIB 为按父前缀的贪心最小失真迁移，作者承认不保证全局最优或严格负载均衡；DPO 还依赖冻结排序模型和 beam 候选质量。</li>
+</ul>
+<h3>P0｜<a href="https://arxiv.org/abs/2610.16979">WeGR: Towards Unified Generative Retrieval via Behavior-aware Tokenization and Preference Alignment</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：未披露</strong></li>
+<li>作者：Jiajun Han、Guoxin Ma、Felix、Liangsheng Xu、Ruiqi Yu、Yingdi Guo、Zongbing Wang、Xinhua Ye、Chenyan Hua、Xin Xie、Pengcheng Yang、Haijun Wu</li>
+<li>来源：arXiv:2610.16979v3</li>
+<li>场景：大规模工业电商搜索的生成式召回与偏好对齐</li>
+<li><strong>论文主要内容：</strong> 针对工业搜索生成式召回的码本塌缩与奖励稀疏，提出协同感知 SID 分词和动态视野偏好对齐。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>CoCo-VAE 将 Q2I/I2I 协同对比约束放在量化前，而非直接约束码本；结合首层 random-restart 变体码本重启，以及样本级多码字保真和码字级碰撞惩罚 FAR，改善协同信息保留与码本使用。</li>
+<li>DHPO 在 GRPO 框架内逐步扩展 SID 奖励匹配与策略更新范围：保持 outcome reward 不变，用前缀匹配奖励计算组相对优势，只更新当前范围内的 token，不依赖辅助奖励模型。</li>
+<li>MSFT 对同会话多个正例 SID 联合监督，在组内奖励差异不足时补充下一 token 学习信号；以上是作者提出的组合与改造，不将 RQ-VAE、GRPO 或随机重启本身视为首次提出。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>CoCo-VAE 在量化前对 query-item 与 item-item 历史共现做 InfoNCE 对比学习，把协同信号注入连续表征，避免直接在码本上施加协同约束而干扰量化。</li>
+<li>CoCo-VAE 对第一层码本按 EMA 使用量检测死码字，用活跃码字加小高斯扰动重启（random-restart 策略变体）；深层用残差保真项聚合多个相似码字扩大梯度，并以码字分配碰撞正则抑制样本向少数码字集中。</li>
+<li>DHPO 沿 SID 层级逐步扩展 horizon，用前 h 个 token 的匹配奖励计算组相对优势，并只对前 h 个 token 做策略更新；MSFT 对同一会话多个正例 SID 联合做下一 token 监督，在组内奖励差异不足时维持检索能力。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>2026-06-22 至 08-04 的线上 A/B 中，V1.2 配置移除其他召回通道 80% 候选后，订单、CTR、CVR 分别相对提升 2.539%、1.508%、1.381%，论文称均 p&lt;0.05。</li>
+<li>同一 V1.2 配置下，进入粗排的候选数为基线 61.90%（减少 38.10%），CPU/GPU 用量降至 74.5%/73.9%（节省 25.5%/26.1%），平均时延下降 21.7ms。</li>
+<li>离线 Click/Order 各 20k 测试中，RL 方法均由 CoCo-VAE 初始化；DHPO 的 HR@6 为 0.2810/0.4217，高于 TPMA-GRPO 的 0.2750/0.4133；CoCo-VAE 的 HR@6 为 0.2759/0.4103，高于 SFT 类最强基线 RQ-Kmeans 的 0.2641/0.4051。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：整包 V1.2 配置的线上 A/B（WeGR 替换其他召回 80% 候选）带来订单 2.539%、CTR 1.508%、CVR 1.381% 的相对提升，以及 CPU/GPU 与平均时延下降；这属于整包配置收益，不能据此推导单模块因果。</li>
+<li>次要：离线消融为模块级证据：移除 q2i、i2i、fid、coll、refresh 均降低 HR@6，其中移除码本重启降幅最大（Click 0.2759→0.2371，Order 0.4103→0.3712，作者自述）。</li>
+<li>次要：DHPO 不引入辅助奖励模型，只改奖励匹配粒度与更新范围；论文另设 GRPO-Ranker 稠密奖励对照，DHPO 仍占优，但未做控制变量拆解各设计的具体作用。</li>
+<li>次要：线上 CPU/GPU 与时延下降被作者归因于进入粗排的候选减少、逐条特征处理与推理开销降低，并指出资源降幅小于候选降幅源于检索与请求处理的固定开销。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>直接命中生成式召回、SID 分词与 RL 偏好对齐；线上候选压缩、CPU/GPU 与时延收益对工业搜索链路有参考，但为单一平台自述结果，迁移需自行验证。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>线上为作者自述的单一工业电商搜索平台 6 周 A/B，只报告相对变化，未给各指标绝对值、置信区间与具体 p 值，也无公开数据或独立复现；PDF 首页未列出机构名称，正文对平台名做了泛化。</li>
+<li>用户分组与查询频次分层是同一 A/B 的异质性切片，作者自己指出这些差异增益的机制仍需进一步受控实验确认，不能当作单模块因果证据。</li>
+<li>离线为固定 31 天日志（末天测试）、Click/Order 各 20k、GPT-2 Small、SID (16384,128,128)；跨场景只在电商直播搜索分别评估 CoCo-VAE 与 DHPO（其 SFT 基线即 CoCo-VAE），未验证完整 WeGR 迁移，也未覆盖其他目录或更长 SID。</li>
+</ul>
+<h3>P2｜<a href="https://arxiv.org/abs/2610.27232">BIFOLD、TU Berlin，University of Amsterdam｜Neighborhood-Aware Unlearning for Generative Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：BIFOLD &amp; TU Berlin（德国，Lubitzsch、Schelter），University of Amsterdam（荷兰，Tang、de Rijke）</strong></li>
+<li>作者：Pierre Lubitzsch、Yubao Tang、Maarten de Rijke、Sebastian Schelter</li>
+<li>来源：arXiv 2610.27232v1</li>
+<li>场景：基于SID的生成式推荐中的交互级遗忘学习</li>
+<li><strong>论文主要内容：</strong> 针对SID生成式推荐遗忘波及语义邻居的问题，提出约束邻居概率质量的邻居感知遗忘方法。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>已有问题：SID token共享使遗忘更新可能波及语义邻居，而全局指标可能掩盖局部变化；新增认识：论文将局部概率重分配识别为SID生成式推荐遗忘的重要失败模式，并用邻域概率质量控制干预；差异与范围：相对仅做交互级遗忘或保留修复，NAU显式控制目标邻域总概率，结论限于论文所测Amazon数据、TIGER骨干与tokenizer/预算，非线上因果。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>论文观察到遗忘更新会波及被遗忘交互SID的语义邻居，而这种局部影响被全局指标掩盖</li>
+<li>NAU以完整目标SID的负对数似然定义物品级损失，在遗忘+保留优化外加入目标分离项与邻域概率质量项；邻域项系数为正时提升邻居总概率以保留合法邻居，为负时抑制邻居概率以服务不想要物品移除，且不改架构与SID、不需二阶信息</li>
+<li>实验以TIGER为骨干，在Amazon Beauty、Sports、Toys 3个数据集与RQ-KMeans、RQ-VAE、LETTER及TRACER兼容的4种SID/tokenization设置上评估；以重训练模型为参考，同时比较全局测试集与目标SID邻居效用</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在Beauty、Sports、Toys 3个数据集与4种SID/tokenization设置下，NAU将spam移除后的推广物品曝光拉近重训练参考，并保留超过95%的重训练效用；在保留≥95%效用的方法中，Beauty/Toys的曝光距离最小，Sports与最佳基线相差0.001。</li>
+<li>Beauty消融中，Forget+Repair整测试集效用为97.0%、邻居效用87.0%；完整NAU在整测试集97.0%的同时把邻居效用提高到108.1%，说明邻域项主要补局部效用。</li>
+<li>论文在Beauty消融中显示：全局测试集效用几乎不变时，被遗忘目标的SID邻居效用可明显下降；因此仅看全局指标会掩盖局部遗忘损伤。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：整包NAU的离线收益：在spam移除中缩小推广物品曝光与重训练参考的距离并保持重训练效用；这是完整目标在论文设置下的配置收益，不是单模块的线上因果。</li>
+<li>次要：消融显示遗忘项主要移除目标曝光，分离项进一步压低目标曝光，邻域质量项主要调节邻居效用，模块作用互补。</li>
+<li>次要：同一邻域控制原则通过改变邻域项符号用于不想要物品移除，但该场景的线上收益未验证。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>面向生成式召回SID空间的遗忘与数据删除，涉及SID共享导致的局部效用维护，可关联推荐系统数据治理与SID设计。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>论文只报告离线实验，未报告线上A/B或生产部署结果；不能据此推断线上收益或部署效果。</li>
+<li>采用近似遗忘，论文未报告形式化删除/隐私保证；删除场景限于spam移除和不想要物品移除，真实系统的多样、重复删除请求未覆盖。</li>
+<li>训练邻域用预量化embedding的top-k余弦邻居，评估邻域按首个SID token划分，口径不完全一致；邻居效用依赖少量测试用例，作者用配对bootstrap报告区间，部分设置未达显著。</li>
+</ul>
+<h2>粗排与预排序</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2610.23863">Xu Wang 属山东大学空天科学、工程学院，Xunkai Li、Rong-Hua Li 属北京理工大学计算机学院，Yinlin Zhu 属中山大学计算机学院｜Measuring the Influence of Modality-Specific Node Representations on Graphs</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Xu Wang 属山东大学（威海）空天科学与工程学院，Xunkai Li 与 Rong-Hua Li 属北京理工大学计算机学院，Yinlin Zhu 属中山大学计算机学院</strong></li>
+<li>作者：Xu Wang、Xunkai Li、Yinlin Zhu、Rong-Hua Li</li>
+<li>来源：arXiv 2610.23863v1</li>
+<li>场景：多模态属性图上的模态特定节点表征影响力测量</li>
+<li><strong>论文主要内容：</strong> 针对多模态属性图节点表征，提出基于替换响应的模态影响力测量任务与MoGI评分方法。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>任务定义：以单个节点–模态向量为决策单元，度量冻结预测器在源节点与一跳、二跳节点上的分布式响应，按模态分别输出完整排名，区别于解释单次预测的归因及面向训练样本/整节点/图元素的数据估值。方法新增点：用仅由训练标签传播得到的类分布定任务方向，并对偏好类概率下降与全分布期望对数损失变化做等权秩共识；训练均值替换、固定步标签传播与秩合并属通用或沿用组件。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>任务输入为编码图、已训练且冻结的预测器、训练划分、每模态训练节点均值参考与固定候选集；一次只把一个节点–模态向量替换为该模态训练均值，重算源节点及一跳、二跳目标上的预测后恢复原输入，每个候选得到一个影响力分数，文本与图像分别排序</li>
+<li>MoGI把训练标签在图上做钳制传播得到类分布Q，与预测概率P混合为R作为任务方向；再基于同一替换响应计算偏好类概率下降与全分布期望对数损失变化，两读数在上下文内取平均秩；不重训预测器、无可学习评分参数，只多一次替换前向</li>
+<li>评测沿用MAG基准五个图（SemArt、Grocery、Toys、Movies、RedditS）与八种预测器（GCN、GraphSAGE、GAT、MMGCN、MGAT、LGMRec、DMGC、DGF），各数据集–种子–预测器共用候选与目标，按top-prefix留出交叉熵增量排名，留出标签只在评分与排序完成后读取</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在五个数据集、八种预测器、三种随机种子的共享协议下，MoGI在5%、10%、20%截断处的聚合top-prefix留出损失增量为0.124982、0.080864、0.047339，高于五种外部归因方法（表1），文本与图像分别排名时同样居首</li>
+<li>对最接近的外部方法Feature Ablation，三个截断的聚合边际为+0.008787、+0.005328、+0.002172，数据集–种子聚类区间均为正（Holm校正后仍显著）</li>
+<li>第4节诊断性实证（五图、三种子）显示：把目标从源节点扩展到一跳、二跳改善排名，直接概率响应优于度数、置信度、不确定性等代理；但响应幅度本身不能识别哪些类别变化支撑任务，故需训练标签方向</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：整包配置收益：MoGI作为整体在同一候选、参考、目标与留出损失增量口径下，聚合排名效用高于五种外部归因方法；内部response-only消融更低说明训练标签方向与双读数秩共识有贡献，但透明加法预测器上response-only居首，故不支持单模块因果归因。</li>
+<li>次要：邻近节点（一跳、二跳）响应提供仅看源节点分数与结构/预测状态代理所遗漏的信息，可分辨响应停留在源节点还是扩散到邻居</li>
+<li>次要：不重训预测器、无可学习参数，标签后验每个数据集–种子只算一次并在多个预测器间复用，候选评分仅一次替换前向，成本低于多步路径积分</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>若工作在推荐或多媒体场景的多模态属性图上，可作为离线诊断：在冻结预测器下比较文本与图像表征的影响力排名、查看响应是否扩散到邻居，辅助分析编码、融合与传播选择的差异；其评价口径是节点分类上的留出损失增量，不等同于召回、粗排、精排的线上指标。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>训练标签辅助而非无标签：依赖训练划分与图，后验可能受体标签噪声、类别不平衡或弱标记连通影响；训练均值参考只是该模态最小二乘代表，不代表语义缺失或因果移除</li>
+<li>评测限于五个公开多模态图的节点分类、每模态固定候选集与有上限的自身/一跳/二跳目标，一次性替换而非联合子集；未报告线上A/B、推荐排序等业务指标，其它模态、任务与归纳图不在证据内</li>
+<li>非普适结论：最高截断处MGAT与RedditS均值低于Feature Ablation，仅以五个数据集为配对单位的检验未达常规显著水平；得分跨预测器与模态未校准，基线归因语义不同且多为非信息对齐比较，优势不能单独归因于秩共识或某一组件</li>
+</ul>
+<h2>序列建模与兴趣表征</h2>
+<h3>P0｜<a href="https://arxiv.org/abs/2610.28569">快手｜ECHO: Efficient Cascade with Homogeneous Operators for Distillation-Guided 100K-Sequence Modeling</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：快手科技</strong></li>
+<li>作者：Wenhao Li, Qinglin Jia, Chenghou Jin, Zihong Xian, Jiezhou Ji, Yanzhi Liu, Zezheng Wang, Ruiming Tang, Chaoyi Ma, Liu Zhaojie, Wenwu Ou</li>
+<li>来源：arXiv:2610.28569v1</li>
+<li>场景：快手最大短视频推荐场景的超长用户行为序列建模与多任务排序</li>
+<li><strong>论文主要内容：</strong> 提出蒸馏选择器保留原始长历史，再做目标感知检索与聚合以降排序开销。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>现有搜索式方法（SIM/TWIN）需为每个候选在原始历史上检索，代价随长度增长；隐式压缩（C-Former、SequenceO1、TWIN V2）在观测目标前压缩，牺牲item级可寻址性。ECHO的选择器只用用户特征，把生产约100K历史保留为K=10,000条带ID、时间戳与side features的原始记录，作为跨请求复用的用户级状态。</li>
+<li>新增点在于用候选感知全历史教师做逐目标分布蒸馏，并加选择边界辅助损失（把教师偏好但落选的事件与低相关已选事件配对），使无候选输入的选择器保留目标相关证据；级联内的相关性参数共享沿用TWIN的评分一致性策略，本文只是把它扩展到教师与下游两级。</li>
+<li>下游TFR在保留记录上按共享Θrel检索至多M=100条再聚合，线上只读K条记录、不执行DS或教师；key侧投影吸收与紧凑记录编码（每条记录43字节）为部署优化，同用户共享输入沿用已有user-level batching原则。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>DS仅用用户特征对历史事件打分并保留Top-K原始记录（生产K=10,000，原始L约100K），记录保留item ID、时间戳与side features，线上请求不执行DS或重扫全序列</li>
+<li>候选感知全历史教师为每个目标计算相关性logits，通过温度softmax的KD损失蒸馏到DS，并加入选择边界辅助损失，将教师偏好但未入选的事件与低相关已选事件组成排序对</li>
+<li>TFR读取DS保留记录，按教师共享的Θrel检索至多M=100条，再用同参数目标注意力聚合后送入多任务ranker；线上路径仅读K条记录，不执行DS或全历史教师</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在KuaiRand-1K四个任务上GAUC相对最强基线提升0.227%–1.520%，在快手工业四任务上提升0.113%–0.345%，八个任务均为最优</li>
+<li>线上7天A/B（快手最大短视频场景，5%流量）相对现有生产系统总App使用时长+0.613%、人均+0.640%</li>
+<li>在L=100K、K=10K设置下，按架构假设估算序列分支训练/推理FLOPs相对STCA降低约160.3×/159.2×</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：整包配置收益：ECHO接入已含TWIN式检索与压缩的现有生产系统，7天5%流量A/B总App使用时长+0.613%、人均+0.640%；未拆分到单模块，不能由此推导某一模块的独立因果。</li>
+<li>次要：机制解释：DS把可搜索历史从约100K压到10K条原始记录，TFR与目标注意力只在有界集合内计算，线上序列分支代价不再随原始长度增长。</li>
+<li>次要：模块级证据：训练目标消融（仅保留预测损失）显示KD与边界辅助损失对选择质量及离线GAUC的贡献，仅支持选择监督有效，不外推为线上整包收益来源。</li>
+<li>次要：既有思路延伸：评分一致性参数共享来自TWIN，本文把教师Θrel导出给检索与聚合，机制上对齐选择与下游匹配，但未单独消融其贡献。</li>
+<li>次要：选择机制与下游骨干解耦：在MLP、RankMixer、MixFormer三种骨干上相对TWIN均有一致离线GAUC增益。</li>
+<li>次要：部署侧：紧凑记录编码把每条记录压到43字节并给出十亿用户规模存储外推（估算，未实测）；key侧投影吸收避免缓存随历史长度增长。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与短视频推荐精排的超长行为序列建模直接相关，可借鉴候选无关的用户级选择加目标感知检索的两级预算、教师蒸馏监督与参数复用；线上为作者自报的7天5%流量A/B，且接入的是已含长序列能力的生产系统，迁移需自行验证延迟与成本。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>约100K压缩到10K仍可能丢弃极端长尾目标所需事件；被排除事件只能依赖后续训练信号与选择刷新恢复，存在适应延迟（作者自述）</li>
+<li>效率为解析FLOPs估算：依赖候选共享数与选择缓存命中率假设，不计特征投影与存储访问，且训练路径仍含随全历史长度增长的教师计算；线上A/B为作者自报的7天5%流量实验，未报告延迟、服务成本或CTR类指标</li>
+<li>离线KuaiRand-1K原始历史上限50K，线上扩展到100K；长度扩展实验中STCA在更长历史下GAUC高于ECHO，作者承认直接全历史建模有小幅优势，效率优势只在预算受限设置下成立</li>
+</ul>
+<h3>P2｜<a href="https://arxiv.org/abs/2610.27691">北京航空航天大学、哈尔滨工业大学、独立研究者｜EASformer: Environment-Action-State Alignment for Industrial Generative Ranking</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：北京航空航天大学、哈尔滨工业大学（深圳）、独立研究者（上海/北京，含华为邮箱作者）</strong></li>
+<li>作者：Bohao Li、Dinglun Cao、Pengcheng Huang、Yingda Tang、Zhiting Zhao、Yi Cao、Jilei Fu、Miao Yan、Tianying Liu、Heng Chang、Bowen Du</li>
+<li>来源：arXiv 2610.27691v1</li>
+<li>场景：真实工业应用市场的生成式排序与精排打分</li>
+<li><strong>论文主要内容：</strong> 针对序列与非序列特征语义不对称问题，提出环境-动作-状态解耦且共享对齐空间的工业生成式排序模型。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>针对工业生成式排序中历史序列与候选侧非序列表示语义不对称、直接点积可能比较不同语义对象的问题，EASformer 将历史交互拆成对齐环境、动作与用户状态，并让历史与候选环境共享编码空间；再用掩码动作自监督复用主预测通路提供辅助监督。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>EASformer 从历史与候选侧抽取语义匹配字段构成共享对齐环境空间，动作从历史交互中独立编码；候选侧完整非序列输入先映射为 K 个静态 NS token，另维护动态 NS token 在每层与候选表示交互。</li>
+<li>时间检索仅用环境序列计算注意力并共享给动作流，动作流提供被检索证据；空间映射用当前环境与用户状态生成状态条件动作表示，两路经门控融合。</li>
+<li>掩码历史动作并复用候选预测通路与预测头构造 Cloze 式自监督目标；作者消融报告移除该目标会降低相对 AUC。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>真实工业应用市场离线 benchmark（部署基线 HyFormer）：AUC 0.89411，相对提升 0.88%。</li>
+<li>作者自报：轻量版 EASformer− 在两个真实排序场景的线上 A/B（对照生产 HyFormer）eCPM 相对提升 1.26% 和 3.94%。</li>
+<li>作者消融（相对完整模型）：移除环境-动作-状态对齐后相对 AUC 下降 0.65%，移除掩码动作自监督后下降 0.30%。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：整包轻量版 EASformer− 相对生产 HyFormer 的线上 A/B 报告 eCPM 改善；离线消融另支持对齐解耦与掩码动作监督的贡献，但不能把整包线上增益归因于单个模块。</li>
+<li>次要：作者消融支持对齐解耦模块的离线贡献，但属作者自报，不能从整包线上 A/B 推导单模块因果</li>
+<li>次要：作者消融支持掩码动作自监督提供辅助训练信号，但属作者自报，不能从整包线上 A/B 推导单模块因果</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与工业推荐精排相关：涉及序列与非序列特征对齐、候选侧上下文建模和自监督训练；应用场景为应用市场，迁移到其他推荐链路需另行验证。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>离线仅一个真实工业应用市场数据集，按日划分且字段因保密省略；未报告精确样本规模、跨域迁移与独立复现。</li>
+<li>线上 A/B 仅两个场景、一个评估周期，为作者自报，缺少第三方复现或更长周期验证。</li>
+<li>工业应用市场之外的短视频、直播、电商广告链路迁移性未验证；线上仅对照 HyFormer，且商业保密限制场景名与绝对指标披露。</li>
+</ul>
+<h2>LLM 增强与对话推荐</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2610.26948">前三位作者为悉尼大学，通讯作者 Chen Liu 为南开大学｜LightCRS: Lightweight Multi-Domain Conversational Recommendation System</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：前三位作者为悉尼大学（University of Sydney, Sydney, NSW, Australia），通讯作者 Chen Liu 为南开大学（liu.chen@nankai.edu.cn）</strong></li>
+<li>作者：He Ma、Lan You、Qiyang Wu、Chen Liu</li>
+<li>来源：arXiv 2610.26948v1</li>
+<li>场景：多领域多模态对话式推荐，将 Reddit 推荐求助对话与 Amazon 商品列表匹配</li>
+<li><strong>论文主要内容：</strong> 针对多领域多模态对话推荐，提出冻结编码器离线表征加轻量查询条件融合，并建 25 领域基准评测。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>针对逐领域各部署一个 VLM 导致成本线性增长、而把所有领域并入单一 VLM 导致准确率下降的矛盾，提出领域参数共享的轻量查询条件融合框架，在线模块仅 5.3M 参数。</li>
+<li>用冻结编码器离线预计算商品多模态表征，在线只做对话意图与商品证据的轻量融合与候选间比较，把多领域扩展成本从模型数量转移到共享小模块。</li>
+<li>构建 25 领域对话推荐基准 MM-R2A-25，把社区真实推荐求助对话与电商商品列表配对，为多领域多模态对话推荐提供可复用评测设置。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>离线用冻结编码器预计算多模态商品表征，在线仅用 5.3M 参数的查询条件交叉注意力模块按对话意图融合商品证据，参数跨全部领域共享</li>
+<li>对融合后的候选用 inter-candidate Transformer 做候选间联合比较，输出对话推荐排序结果</li>
+<li>构建 MM-R2A-25 基准，覆盖 25 个领域，配对自然 Reddit 推荐求助对话与 Amazon 商品列表</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>论文报告在MM-R2A-25的25领域离线评测中平均HR@1、NDCG@5、MRR最高；HR@1较最强任务特定基线PRIME相对提升35.4%。</li>
+<li>论文报告相比PRIME，每查询延迟降低266×；该数为整包系统离线对比，不是单模块因果。</li>
+<li>论文报告联合多领域训练相比分别训练的单领域模型，HR@1提升15.2%；NDCG@5和MRR亦提升。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：整包 LightCRS 在 MM-R2A-25 离线评测中，相对 PRIME 改善平均 HR@1 并降低每查询时延；多领域联合训练对照支持参数共享的价值，不能据此推导单模块因果或生产部署收益。</li>
+<li>次要：参数跨25领域共享，机制上减少逐领域复制模型的需要；部署成本收益未做在线A/B。</li>
+<li>次要：离线预计算商品五视图表征，在线仅跑轻量模块；延迟收益来自整包系统对比PRIME，非单模块消融。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与电商多领域对话式推荐、多模态商品理解相关；场景为候选重排式对话推荐，非短视频/直播搜广推主链路，迁移需另验。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅报告MM-R2A-25离线benchmark结果，未见在线A/B、生产部署或真实服务延迟证据。</li>
+<li>MM-R2A-25对话取自Reddit、商品取自Amazon，与工业电商或内容平台分布存在差距；未见跨平台迁移验证。</li>
+<li>方法为候选重排，性能受第一阶段SBERT检索器质量约束；离线预计算图像描述的一次性成本高，在线低延迟以缓存为代价。</li>
+</ul>
+<h2>评测与评估</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2610.26902">Target Corporation，作者邮箱后缀为 @target.com｜MOSS: A Production Framework for Monitoring and Diagnosing Semantic Failures in Search and Recommendation Systems</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Target Corporation（Data Sciences；Minneapolis, MN 与 Sunnyvale, CA），作者邮箱后缀为 @target.com</strong></li>
+<li>作者：Alina Nesen, Prathyusha Kanmanth Reddy, David Relyea, Rohit Avinash Mujumdar, Samaneh Karimi, Bo Shen, Jordan Hashemi</li>
+<li>来源：arXiv:2610.26902v1</li>
+<li>场景：大型美国零售商推荐与搜索系统的语义失败监控与根因诊断</li>
+<li><strong>论文主要内容：</strong> 将 LLM 相关性打分嵌入生产监控循环，用采样、告警与诊断提示持续检测并归类搜推语义失败。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>已有行为指标滞后数天、人工审核不可扩展、多数 LLM 评测框架面向离线固定数据集；作者把 LLM judge 嵌入周期性生产监控循环，补持续运营监测的缺口。新增组合包括加权/定向采样、策略感知提示、结构化告警、两阶段诊断追问和按策略漂移检测；失败被归入可审查根因类别，而非只给离线分数。以同一 judge、评分尺度与推荐基准选定阈值跨到搜索 surface 的实证结果，展示单套监控框架在多个产品发现场景复用的可能性，但仅限论文所测数据、提示与阈值设置。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>MOSS 将 LLM 相关性打分嵌入周期性监控循环，通过加权/定向采样从生产排序输出选取样本，并用策略感知提示按推荐、搜索、offer surface 的业务策略打分；分数进入结构化告警，低于配置阈值触发第二阶段诊断提示，把失败归入预定义根因类别。</li>
+<li>在同一 judge、评分尺度与推荐基准选定阈值下，仅做 surface 专用提示适配即迁移到覆盖 21 条 query、466 对的搜索基准，未在搜索上重新调参。</li>
+<li>离线以 498 对人工标注推荐基准评估 judge；生产嵌入仅覆盖部分样本，主要匹配比较在覆盖子集上进行，原始提示的前沿 LLM judge 的 F1 与 AUC 点估计高于内部生产嵌入与 SBERT 非 LLM 基线。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 498 对人工标注推荐基准的、生产嵌入可覆盖的匹配子集上，原始提示的前沿 LLM judge 总体 F1、AUC 点估计高于内部生产嵌入与 SBERT；按策略看，优势集中在 Bundles 与 Substitutes，Related 上生产嵌入仍有竞争力；置信区间部分重叠，作者未宣称正式显著。</li>
+<li>同一 judge、评分尺度与推荐基准选定阈值仅经 surface 专用提示适配，迁移到覆盖 21 条 query、466 对的搜索基准，未重新调参，F1 与 AUC 点估计较强。</li>
+<li>系统在大型美国零售商推荐、搜索与 offer surface 生产运行超过六个月，报告两个确认的线上服务缺陷；其中一个回填混合缺陷的修复方案经离线受控比较，告警率相对下降 76.4%。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：作为监控与分诊层，用 LLM judge 周期性检测语义失败，并把低分案例归入可审查的根因类别，弥补行为指标滞后与人工审核不可扩展的问题；论文明确它不是自动质量裁决器。</li>
+<li>次要：机制解释：加权/定向采样在优先高流量项的同时保留长尾覆盖，策略感知提示按业务策略提供评分 rubric；论文未做单模块消融，不能把整体收益归因于单个模块。</li>
+<li>次要：诊断式追问把低分案例转为结构化失败模式标签，支持根因聚合与人工分诊；论文未量化排查时间缩短。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>若团队需要为推荐或搜索质量建立在线语义监控与 LLM-as-judge 评估，该框架的采样、提示、告警与跨 surface 迁移设计可直接借鉴。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>证据以内部人工标注基准和作者报告的生产事故为主，未提供在线 A/B 或因果实验；76.4% 告警率下降来自离线受控比较，不是线上业务收益。</li>
+<li>阈值与校准提示结果为回顾性估计；bootstrap 置信区间为边际而非配对，部分比较重叠，作者未作正式显著性声明；冻结提示的前瞻测试仍属未来工作。</li>
+<li>校准提示具模型特异性，作者报告用于其他 judge 会降低 AUC；部署提示仅用 item title 与策略上下文，而标注者见完整元数据，标题含糊可致误报；各 surface 评测设计不同限制直接比较。</li>
+</ul>
+<h3>P2｜<a href="https://arxiv.org/abs/2610.27850">哥本哈根大学、Tuukka Ruotsalo 同时隶属拉彭兰塔-拉赫蒂理工大学｜Robustness Analysis of Pareto-based Joint Evaluation of Fairness and Relevance in Recommender Systems</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：哥本哈根大学（University of Copenhagen，四名作者均列此机构）；Tuukka Ruotsalo 同时隶属拉彭兰塔-拉赫蒂理工大学（LUT University，位于芬兰拉赫蒂）</strong></li>
+<li>作者：Theresia Veronika Rampisela, Maria Maistro, Tuukka Ruotsalo, Christina Lioma</li>
+<li>来源：arXiv 2610.27850v1</li>
+<li>场景：推荐系统公平性与相关性联合评测</li>
+<li><strong>论文主要内容：</strong> 针对公平性与相关性评测割裂问题，提出基于 Pareto 前沿距离的联合评测方法。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>提出 DPFR：用测试集数据构造相关性-公平性 Pareto 前沿，以模型点到前沿参考点的距离给出单一联合分数，并用 α 控制两目标折中。本稿是在前作基础上扩展的 robustness analysis，新增真 PF 对比、人工推荐、距离度量/α 变化及与简单度量一致性等分析；不应把整个 DPFR 框架都算作本稿首次提出。作者离线实验指出常见单方面/联合度量与 Pareto 最优性结论不一致；该结论为作者 claim，需与独立复现和部署验证区分。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>DPFR 从用户-物品交互数据生成相关性-公平性分数构成的 Pareto 前沿，以前沿上的 Pareto 最优点表示两类指标不同折中，再用模型结果点到前沿上参考点的距离作为公平性与相关性的联合评分。</li>
+<li>DPFR 复用已有相关性度量与公平性度量作为模块化外层评价器；论文称其可与现有度量配合，未报告需要改动被评推荐器或重排器内部结构。</li>
+<li>论文在 6 个真实数据集上评测 4 个推荐器与 3 个公平性感知重排器，比较已有度量与 DPFR 的关联一致性，并用人工推荐与不同公平性-相关性折中设置检验 DPFR 的稳健性。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>作者结论（非独立复现）：已有公平性和相关性度量与 DPFR 的关联不一致，因此作者认为这些度量不能作为 Pareto 最优性评估的可靠代理。</li>
+<li>作者结论（非独立复现）：在人工推荐及多组公平性-相关性折中实验中，DPFR 比已有联合评测方法更稳健；并分析与简单公平性、相关性度量的一致性。</li>
+<li>作者用穷举真 PF 对比生成 PF，并做人工推荐/折中设置分析，作为 PF 生成与稳健性的离线验证。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：提供基于 Pareto 前沿距离的单一联合评测分数，用于离线比较模型/重排器的公平性-相关性折中；这是评测方法收益，不等于推荐性能或线上业务收益。</li>
+<li>次要：模块化复用已有相关性/公平性度量，降低接入联合评测的工程成本；论文未做模块消融，不能据此推断单模块因果。</li>
+<li>次要：作者报告常见指标与 Pareto 最优性结论不一致，可作为评测协议风险提示；该发现为作者实验结论，非独立复现。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>属于推荐系统离线评测方法论，可用于公平性-相关性联合评估与模型选择；不直接改变召回或排序模型结构。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>证据为离线实验；论文未报告线上 A/B 或生产部署指标，实际业务收益未知。</li>
+<li>Pareto 前沿由测试集用户-物品交互数据构造（原文以测试集 ground truth 生成），前沿质量受数据分布及 Rel/Fair 度量对是否兼容影响；未做跨域迁移或生产验证。</li>
+<li>作者提供代码链接，但结果尚未见独立复现；实验仅覆盖 4 个推荐器与 3 个重排器的离线设置，未覆盖线上部署或跨域迁移。</li>
+</ul>
+<h2>今日最值得立项的实验</h2>
+<h3>用户级长序列选择+目标感知检索的两级预算离线对照</h3>
+<ul>
+<li>假设：用仅用户特征的选择器把约100K历史压到10K条原始记录，再用目标感知检索与聚合，能在预算受限下接近全历史建模精度并显著降低序列分支计算。</li>
+<li>Control：现有搜索式长序列基线（逐候选在原始历史上检索）与全历史直接建模基线，同骨干同训练数据。</li>
+<li>Treatment：照ECHO：选择器仅用用户特征保留Top-K原始记录，候选感知全历史教师蒸馏加选择边界辅助损失；下游在保留记录上按共享相关性参数检索至多M条再聚合。</li>
+<li>保持变量：同一SID/特征口径与样本、同一多任务ranker骨干、同一训练步数与评测集、同一序列长度上限。</li>
+<li>离线指标：各任务GAUC与相对提升；K与M变化下GAUC—计算量曲线；序列分支训练/推理FLOPs估算</li>
+<li>线上 Guardrail：线上序列分支P99延迟与QPS不退化；总App使用时长与人均时长不出现负向；长尾目标召回覆盖不下降</li>
+</ul>
+<h3>SID前缀负载均衡与逐步记忆读取的生成式召回离线消融</h3>
+<ul>
+<li>假设：按父前缀限制兄弟分支负载的RQ-PIB可降低流量加权最大子分支占比，PATH逐步前缀条件读取可提升HR截断，二者叠加优于仅固定全局码本均衡。</li>
+<li>Control：现有SID生成式召回：全局码本均衡加固定用户表征解码（如OneRec类基线）。</li>
+<li>Treatment：RQ-PIB冻结码本后按父前缀设上限、最小重构失真贪心迁移物品；PATH按SID深度构造粗到细记忆库，以近期序列与已生成前缀做cross-attention读取。</li>
+<li>保持变量：同一SID层级与码本规模、同一训练日志与评测集、同一beam与Top-K设置、同一骨干与训练预算。</li>
+<li>离线指标：HR@10/20/50/100；各层流量加权最大子分支占比；前缀保留与消融组件差值</li>
+<li>线上 Guardrail：线上播放转化率与人均观看时长不回退；SID解码P99延迟在预算内；新物品与冷启动分支召出率不下降</li>
+</ul>
+<h3>量化前协同对比与首层码本重启的SID分词离线对照</h3>
+<ul>
+<li>假设：在量化前对query-item/item-item共现做对比学习、并对首层死码字做random-restart，可减少码本塌缩并提升生成式召回HR，且不改现有解码架构。</li>
+<li>Control：RQ-VAE/RQ-Kmeans式SID分词加标准GRPO偏好对齐的现有生成式召回基线。</li>
+<li>Treatment：照WeGR：CoCo-VAE量化前InfoNCE加首层随机重启与深层残差保真/碰撞正则；DHPO逐层扩展奖励与更新horizon；MSFT同会话多正例联合监督。</li>
+<li>保持变量：同一训练日志窗口与测试集、同一GPT-2 Small级骨干、同一SID元组、同一离线评测协议。</li>
+<li>离线指标：Click/Order HR@6及消融差值；码字使用分布与死码字比例；移除码本重启的HR降幅</li>
+<li>线上 Guardrail：进入粗排候选数与现网召回覆盖不塌缩；CPU/GPU用量与平均时延不上升；订单、CTR、CVR分桶无显著负向</li>
+</ul>
+<h2>一句话总判断</h2>
+<p>证据概况：收录 9 篇，全文核验 9 篇；标记为线上 A/B 证据 2 篇。</p>
+<p>本期方法主线仍集中在生成式召回的SID侧：SPAR把前缀逐步个性化与分支负载均衡组合，WeGR把协同信号前置到量化前并用逐层扩展的偏好对齐，二者分别给出优酷首页与工业电商搜索的线上A/B自报结果，但均为单平台短期实验，不能外推到其他链路。精排侧ECHO用候选感知教师蒸馏的用户级长序列选择加目标感知检索，是本期与短视频主链路最直接相关的工作，其效率数字为解析FLOPs估算。MOSS提供生产级LLM语义失败监控的工程范式，属评测与分诊层，不是质量裁决；其余公平性评测、SID遗忘与多模态节点影响力测量为离线方法论，宜按机制借鉴而非立项依据。</p>
+</article></main></body></html>

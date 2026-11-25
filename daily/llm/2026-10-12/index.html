@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-10-12 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-10-12，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-10-12/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-10-12</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://huggingface.co/tencent/Youtu-Parsing-Omni">Youtu-Parsing-Omni</a></h3>
+<p>官方发布 5B 全模态解析模型及技术报告，统一多类输入到结构化 JSON，并开源权重和 vLLM 插件；可作为多模态文档理解或 Agent 工具链候选，但非搜广推核心链路，且结果未独立核验。</p>
+<p>证据：技术报告</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://huggingface.co/tencent/Youtu-Parsing-Omni">Youtu-Parsing-Omni</a>｜近两日补录</h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：腾讯</strong></li>
+<li>作者：未单列</li>
+<li>来源：官方模型卡（Hugging Face tencent/Youtu-Parsing-Omni）</li>
+<li>场景：多模态文档、图像、图表、几何、音频和视频解析为结构化 JSON</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>官方称 Youtu-Parsing-Omni 为紧凑 5B 全模态解析模型，支持文档、自然图像、图表/流程图/几何图、音频、自然视频和文本密集视频等输入，输出统一 JSON envelope</li>
+<li>采用单一 Youtu-Omni-Encoder，由预训练文本语言模型初始化</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>官方模型卡称 OmniDocBench v1.6 上达到 96.96 Overall，为 state-of-the-art</li>
+<li>官方模型卡称 OmniParsingBench 上达到 75.08 Avg，为最佳开放权重模型，仅次于 Gemini-3-Pro</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>官方发布紧凑 5B 全模态解析模型，用单一编码器与统一 (t,h,w) 位置编码把文档、图表、几何、音频、视频映射到同一 token 空间并输出结构化 JSON，对多模态统一表征与 Agent/RAG 前处理工具链路线有参考价值</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>输入未提供技术报告 PDF 正文，方法、数字与评测口径未在本次核验中确认</li>
+<li>OmniDocBench 和 OmniParsingBench 指标来自官方自报，无独立 benchmark 复现或第三方评测</li>
+</ul>
+<h3><a href="https://huggingface.co/mistralai/LIDstral-Arabic">LIDstral-Arabic</a>｜近两日补录</h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：Mistral AI</strong></li>
+<li>作者：未单列</li>
+<li>来源：Hugging Face 官方模型卡（mistralai/LIDstral-Arabic）</li>
+<li>场景：阿拉伯文字的语种/方言识别与预处理分流，非搜广推任务</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>方法为三级流水线：fastText one-vs-all 分类器给出各类独立分数 → 64 单元 LayerNorm MLP stacker（144 维特征，含原始分数、先验修正、置信边际、熵、区域汇总）→ 每类 isotonic 回归校准后再跨类归一化，校准可改变置信度与预测标签</li>
+<li>推理需 lid_ova_full.bin、mlp_stacker_ln.pt、isotonic_calibration.pkl 三个文件，classify.py 在 CPU 上运行，每个预处理后非空输入输出标签与全部 51 类校准概率</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>摩洛哥 Darija 上 F1 达 88.67%，对比 LahjatBERT ALDi CL 72.65%、GlotLID v3 71.28%（官方自评口径）</li>
+<li>评测集为 84,870 条阿拉伯语样本，来源包括 NADI、MADAR、QADI、Casablanca、FLEURS、SMOL、Omnilingual ASR、Hassaniya 等公开基准</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把语种/方言识别做成 fastText 分数、MLP stacker 与逐类 isotonic 校准的三级流水线</li>
+<li>并在摩洛哥 Darija 上给出高于既有基线的 F1，说明轻量校准栈在多语内容分流与数据清洗前置环节仍有增益</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>仅摩洛哥 Darija 给出具体 F1 与基线对比数字，其余方言与语种的逐类结果只以图片呈现，正文无数据</li>
+<li>训练数据构成、训练集与评测集是否隔离、以及推理延迟与吞吐均未披露</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<p>今日无可能改变公司、市场或 Quant 判断的新变量。</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>腾讯开源 5B 全模态解析模型权重与 vLLM 插件、Mistral 发布 CPU 可推理的轻量语种识别组件，方向一致地显示开放权重侧持续以低成本专用模型覆盖解析与预处理环节；但均为官方自报指标，无独立评测与生产部署。</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-11-16 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-11-16，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-11-16/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-11-16</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<p>今日无达到 P0/P1 与证据门槛的新变量。</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<p>近两日无达到质量门槛、值得进入重点简报的 LLM 论文或官方技术报告。</p>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.infoq.com/news/2026/11/claude-code-review/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering-news">Anthropic Outlines its AI-Powered Code Review Process for Claude Code</a></h3>
+<p><strong>判断影响</strong></p>
+<p>给出 AI 生成代码规模化后的一线审查工程实践：验证左移、多 agent 交叉审查、按风险分级人工审批与轮次预算，并用回滚率与审查轮次分布衡量效果。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：InfoQ 新闻（2026-11-15）；作者：Robert Krzaczyński 报道 Addy Osmani、Morgan Westlee Lunt、Qing Wang 的实践；机构：Anthropic（Claude Code 团队）；场景：AI 生成代码的 PR 审查与合并流程；提交 PR 前，Claude 先运行测试、构建与 lint，另一个独立上下文的 agent 复审改动；每个 PR 由 Claude 驱动的多个审查 agent 独立排查潜在 bug，再由另一组 agent 交叉验证；独立安全审…</p>
+<p><strong>数据与证据</strong></p>
+<p>据 Anthropic，6 月至 9 月 Claude Code 仓库合并 PR 数翻倍以上，需回滚改动比例下降超 40%；据 Anthropic，单轮审查加修复即通过 PR 占比从 65% 升至 78%，需 5 轮及以上占比从 8.9% 降至 1.5%；媒体或社区报道。数据为 Anthropic 自述，未经独立审计或线上 A/B 验证；未披露 PR 总量、回滚定义与统计口径，指标可比性有限；流程依赖 Claude 自身模型能力，迁移到其他 agent 栈的效果未验证</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>新增一线审查流程证据：多 agent 独立排查加交叉验证、按风险分级人工审批与 3 轮上限，把 coding agent 的落地瓶颈具体化为验证与审批设计，但效果数据为单一厂商自述，仅小幅上调。</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>搜广推论文日报｜2026-11-16 · AI日报</title>
+<meta name="description" content="搜广推论文日报｜2026-11-16，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/papers/2026-11-16/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>搜广推论文日报｜2026-11-16</h1>
+<h2>今日阅读顺序</h2>
+<ul>
+<li>P1｜生成式召回｜<a href="https://arxiv.org/abs/2611.10357">Uber Technologies, Inc.｜LEGIT: Live Eligibility Gating over Identifier Tries for Constrained Decoding of Heterogeneous Pages</a>：整页生成式推荐解码时，需要同时实施请求资格、跨页去重和连锁唯一约束；本文用叶编号区间二分把约束执行移出GPU关键路径，给出36种实现的开销网格与页面合法性检查，可用于召回侧约束解码的工程改造。</li>
+<li>P1｜生成式召回｜<a href="https://arxiv.org/abs/2611.17921">阿里巴巴、上海交通大学｜RecMem: Recurrent Memory Compression for Long-Sequence Generative Recommendation</a>：在长用户序列生成式召回中，固定槽位循环记忆把每用户状态压到8KiB、解码上下文固定216 token，离线保留HSTU-1200约87.9% R@10，对固定在线记忆预算与解码延迟有直接参考。</li>
+<li>P1｜训练优化与蒸馏｜<a href="https://arxiv.org/abs/2611.18244">华为技术有限公司、浙江大学｜RACE: Ranking-Uncertainty Aware Capacity-Adaptive Customization for Efficient Sequential Recommendation</a>：用列表级排序不确定性给每个样本分配通道与序列剪枝预算，离线报告约2.4倍FLOPs下降与单次CPU延迟改善，适合资源受限端上序列精排的算力自适应改造。</li>
+<li>P1｜LLM 增强与对话推荐｜<a href="https://arxiv.org/abs/2604.14833">山东师范大学计算机、人工智能学院、山东师范大学图书馆等｜SF-UBM｜Federated User Behavior Modeling for Privacy-Preserving LLM Recommendation</a>：面向非重叠跨域推荐，仅共享加密物品文本表征、用户交互留本地，用反事实偏好差蒸馏并软提示注入LLM，可为跨域冷启与合规约束下的LLM推荐提供流程参考，但隐私保证仅扰动式。</li>
+<li>P2｜LLM 增强与对话推荐｜<a href="https://arxiv.org/abs/2604.14586">哈尔滨工业大学、武汉大学计算机学院｜CPGRec+: A Balance-oriented Framework for Personalized Video Game Recommendations</a>：交互级带符号边权与LLM生成的偏好描述可迁移到内容/电商的过平滑抑制与多目标平衡；但提供全文止于实验章节前，主结果仅摘要级，阅读时需先确认可核验性。</li>
+</ul>
+<h2>生成式召回</h2>
+<h3>P1｜<a href="https://arxiv.org/abs/2611.10357">Uber Technologies, Inc.｜LEGIT: Live Eligibility Gating over Identifier Tries for Constrained Decoding of Heterogeneous Pages</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Uber Technologies, Inc.</strong></li>
+<li>作者：Felix Fang、Zheng Liu、Robert Saliba</li>
+<li>来源：arXiv:2611.10357v2</li>
+<li>场景：Uber Eats 搜索页的生成式推荐，单次解码生成20个店铺及每家5个菜品的结果页</li>
+<li><strong>论文主要内容：</strong> 针对生成式推荐整页解码的动态资格与去重约束，设计trie区间查询并优化CPU/GPU执行。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>提出LEGIT约束类：合法集同时依赖请求资格、逐token增长的阻断集和店铺-菜品嵌套，三者叠加使预编译或固定grammar无法精确表达，已有trie工作只覆盖单层或固定约束。</li>
+<li>数据设计上用一套深度优先叶编号把两类identifier、两个trie和三个排序索引对齐，使资格、去重和连锁规则都化为区间二分计数，且无需为每个菜单建trie，反转嵌套也不需要新离线产物。</li>
+<li>用36个实现的三轴网格定位开销：placement、trie布局和launch结构强烈交互，硬件计数器显示SM活跃仅3.42-5.42%而报告利用率12.3-27.8%，支持kernel launch与CPU-GPU等待是主因。</li>
+<li>给出可复用的构建顺序：CPU走ragged trie并在forward期间重叠、菜单子trie压缩、blocked set缓存与批量写入，把约束执行移出GPU关键路径，且不依赖自定义kernel。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>离线把每个店铺和菜品编码为5个离散Semantic ID token，分别建store trie与global item trie，并按深度优先给叶节点编号，使任一节点的后代叶id成为连续区间；同时建map-cell→store、store→item、store→chain三个排序索引。</li>
+<li>在线解码时，候选子token合法当且仅当其叶区间内可选叶数大于已阻断叶数；可选集E(h)由请求地图单元经索引得到，阻断集S含已上页店铺及其连锁、当前carousel已用菜品，因此用两次二分计数同时约束存在性、配送/菜单资格、去重与连锁唯一。</li>
+<li>实现上以0.6B Qwen3初始化decoder、vLLM连续批处理、单张B200；最快full CPU stack在CPU走ragged trie并与GPU forward重叠，使用菜单子trie压缩、每行blocked set缓存、numpy trie和每步一次合法token列表批量拷贝，无需自定义kernel。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在单张B200、0.6B模型、20店铺×5菜品、页面中位843 token、light load下，直接GPU trie控制组为10.22 ms/token（约5倍无约束的2.09 ms）；full CPU stack相对控制降65.9%，按此推得约3.6 ms/token（约1.7倍无约束）。</li>
+<li>九个sweep共125,800页、36个实现；独立catalog check覆盖2,401,522个店铺与11,851,173个菜品，存在性、配送到请求地图单元、店铺/菜品行内去重、菜品在所属店铺菜单上等违规均为0；去掉location filter的阳性对照24,000店铺中23,937不可达。</li>
+<li>饱和负载下full CPU stack相对控制降97.9% time/token，但论文注明该数字主要反映控制组排队；item-first布局下light/saturated分别降51.2%/75.8%，full CPU stack在两种页面布局均为最快。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：把trie walk从GPU逐group launch改为CPU在forward期间执行，并用ragged trie、菜单子trie压缩、blocked set memo和每步一次批量写入消除kernel launch与CPU-GPU等待；消融显示这些模块共同贡献主要加速。</li>
+<li>次要：CPU walk避免逐group kernel launch，饱和负载收益更大；并发扫描显示每步1行时无收益，4/16/64/256行时收益约7.7%/24-25%，支持per-group成本解释。</li>
+<li>次要：inner subtrie compaction在饱和时使CPU walk快22.3%，但在GPU walk上慢9.1%且校正后不显著，说明收益依赖placement与负载。</li>
+<li>次要：深度优先叶编号与共享索引让资格、去重和连锁规则共用区间查询，减少离线产物并支持item-first布局复用同一目录。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>适用于在SID/item-token空间生成整页或整组候选的生成式推荐/搜索系统，尤其是需按请求资格、已出物料去重和层级归属做精确约束解码的场景；迁移需有可排序的叶id目录、资格索引和CPU/GPU流水线。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>主排名仅0.6B模型、单张B200、4个CPU核、20店铺×5菜品（生产为10店铺）和Uber Eats单目录；更大模型只在附录对CPU recipe有限测量，完整排名未验证，更短页面、更少CPU核或其他GPU也未系统测试，饱和结果还受控制组排队影响。</li>
+<li>只报告速度与页面合法性，未测推荐质量或线上A/B；无同条件外部基线，试过的grammar engine既不精确也不快，GPU trie系统面向宽beam短identifier，属不同regime。</li>
+<li>一个Semantic ID可对应多个实体（店铺ID比Semantic ID多5.7%，约10个item共享一个item ID），约束只保证存在任一合格实体，映射回具体实体及一店一链规则未被catalog check覆盖；full CPU stack与full GPU stack也未paired运行。</li>
+<li>论文为preprint under review，来自Uber单一工业系统；未提供独立复现或线上A/B，不能把离线页面合法性检查当作部署效果。</li>
+</ul>
+<h3>P1｜<a href="https://arxiv.org/abs/2611.17921">阿里巴巴、上海交通大学｜RecMem: Recurrent Memory Compression for Long-Sequence Generative Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：上海交通大学、阿里巴巴淘天集团</strong></li>
+<li>作者：Haoyi Hu、Gaoyang Guo、Yunjia Xi、Wen Chen、Weiwen Liu、Jian Wu、Yuning Jiang、Weinan Zhang</li>
+<li>来源：arXiv:2611.17921v1</li>
+<li>场景：MerRec 数据集上的长序列生成式下一物品推荐</li>
+<li><strong>论文主要内容：</strong> 将长用户历史切成段并压入固定槽位循环记忆，以固定解码上下文做生成式下一物品推荐。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>已有生成式推荐直接读取长历史会使上下文、显存与延迟随长度增长，固定窗口或检索又会丢弃历史；本文将归档前缀压成固定数量记忆槽，使记忆状态和解码上下文都与历史长度无关。</li>
+<li>共享底层、分离记忆编码与下一物品解码的分叉结构配合槽位级 forget gate 更新；门控残差在消融中保持16个槽的多样性，避免注意写入或擦除写入造成的槽坍缩。</li>
+<li>用 stream-consistency 对齐顺序与打包处理的预测分布，并在收缩与近似半群一致性假设下给出与历史长度无关的状态差异界；该界是条件性理论结果，不等同于推荐质量保证。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>把用户历史拆成最近 Lr=200 的后缀和归档前缀；前缀按 Ls=200 切段，逐段用 M=16 个记忆槽循环更新，解码器输入为 [M_K; 最近200物品]，共216个token，状态与上下文不随历史长度增长。</li>
+<li>记忆更新对每段物品嵌入取 mask-aware 均值，经线性层和 Sigmoid 得到每槽标量门，按 M_t=G_t⊙M_{t-1}+(1-G_t)⊙候选记忆融合；空段跳过更新，每槽向量投影到半径c=10的球内，编码器上层输出投影做谱归一化。</li>
+<li>训练以最近窗口的 NCE 为主损失，并用 KL(stopgrad(p_pack)||p_seq) 对齐同一历史顺序和打包处理的预测；先无梯度 burn-in 再梯度 rollout，课程把 K_roll 从1增至5，λ_stream=0.05。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>MerRec 标准协议 t∈[1200,2000) 下，RecMem-Stream 用216个解码token取得 R@10=42.36、R@50=60.12、N@10=26.74、R@200=72.20，保留 HSTU-1200 的87.9% R@10和97.0% R@200。</li>
+<li>同协议下 RecMem-Stream 比 PHSTU 高9.622 R@10点和11.096 R@200点，比单独训练的 HSTU-Recent-200 高1.433 R@10点和4.454 R@200点，比 Ret-HSTU-16 高1.332 R@10点。</li>
+<li>batch=64、历史长度2000的单GPU bfloat16模型计算基准中，RecMem 热预测7.653 ms、8363 users/s、每用户状态8 KiB；PHSTU 为9.245 ms、432 KiB，HSTU-1200 为106.613 ms、6.285 GB。</li>
+<li>同一 RecMem-Stream checkpoint 在固定6442用户 cohort 上不重训评估到10000次交互，R@10在各位置区间为40.519至40.689，R@200为69.867至70.379，未见质量坍塌。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：固定槽位循环记忆压缩与固定216-token解码上下文，在离线MerRec上保留长历史预测信号并降低每用户状态与热预测计算。</li>
+<li>次要：槽位级 forget gate 的残差写入维持槽间多样性，消融中槽余弦相似度0.891，而注意写入或擦除写入接近1，避免16槽退化为单向量。</li>
+<li>次要：stream-consistency 在种子42和123上均提升四项指标，R@10分别增益0.089和0.813点；课程训练在消融中提升R@50 1.83点。</li>
+<li>次要：近参数容量控制中 SharedStack-16 和 SplitTop-6/5/5 仍优于 PHSTU，说明增益不能仅由额外参数量解释。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>适用于长用户行为序列的生成式召回或下一物品预测，尤其是需要固定在线记忆状态与解码预算的场景；迁移需有可切段的物品ID序列、固定最近窗口和可训练生成式主干。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅在 MerRec 的离线 ID-based 推荐和 HSTU 家族主干上评测，无线上A/B，未覆盖其他数据集、主干或文本/多模态输入。</li>
+<li>10k 长历史结果只使用一个训练好的 RecMem-Stream checkpoint 和固定6442用户 cohort，且未重训；Main/Stream 对比仅两个配对种子。</li>
+<li>系统数据为单GPU、bfloat16、合成item-ID输入的模型计算基准，排除数据加载、网络、远程状态存储与服务调度，不能外推生产延迟。</li>
+</ul>
+<h2>LLM 增强与对话推荐</h2>
+<h3>P1｜<a href="https://arxiv.org/abs/2604.14833">山东师范大学计算机、人工智能学院、山东师范大学图书馆等｜SF-UBM｜Federated User Behavior Modeling for Privacy-Preserving LLM Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：山东师范大学计算机与人工智能学院、山东师范大学图书馆、山东财经大学计算机与人工智能学院</strong></li>
+<li>作者：Hongyun Yang、Shicheng Wang、Xinhua Wang、Xinchang Zhang、Hui Liu、Lei Guo</li>
+<li>来源：arXiv:2604.14833v2</li>
+<li>场景：非重叠隐私保护跨域推荐（PPCDR）中的下一物品预测</li>
+<li><strong>论文主要内容：</strong> 非重叠隐私保护跨域推荐，提出语义增强联邦建模，将文本语义蒸馏进ID序列并软提示注入LLM预测下一物品</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>针对非重叠隐私保护跨域推荐，已有 LLM 方法多依赖重叠用户/物品且集中式训练；本文以物品自然语言文本为跨域桥，在联邦架构中只共享加密物品文本表征、用户数据留本地。</li>
+<li>为融合域共享文本语义与域内 ID 序列，提出 FKD：把事实与随机反事实序列上 ID/文本两模态的用户偏好差作为学生-教师中介做蒸馏，并加重建与推荐损失，缓减模态特征空间错位。</li>
+<li>将 SASRec 用户表征和增强物品嵌入经投影器映射为软提示，与静态指令组成混合提示微调 OPT-6.7B，使协同信号和跨域语义进入 LLM 的下一物品预测，区别于只做简单 MLP 映射的 LLM 推荐。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>Stage 1 将每个域视为客户端：用 SBERT 把物品标题和描述编码为 768 维文本向量，加入高斯噪声后以余弦最近邻替换做加密，仅上传物品文本表征，用户交互与 ID 嵌入保留本地。</li>
+<li>服务器对两域上传的加密物品向量做 K-means++ 聚类，用簇中心替换原文本向量并回传为跨域共享语义；本地预训练并冻结 SASRec 建模 ID 序列，FKD 以事实/随机反事实序列上 ID 与文本偏好差作教师-学生中介，并联合重建与推荐损失蒸馏文本语义。</li>
+<li>Stage 2 用两个投影器把 SASRec 用户表征和融合后的物品嵌入映射成软提示，与静态任务指令组成混合提示，微调 OPT-6.7B，以 token 级交叉熵生成下一物品。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 Health-Beauty 上完整模型 Hit@1=0.4144，高于 SASRec 0.3889、A-LLMRec 0.3735、TALLRec 0.3350；消融 Base+KD 与 Base+acFKD 分别降至 0.4008、0.4075。</li>
+<li>在 Food-Kitchen 上 Hit@1=0.3662，略高于 TALLRec 0.3660，高于 SASRec 0.2685 与 FFMSR 0.2806；有效输出率 99.49%。</li>
+<li>在 Books-Movielens 上 Hit@1=0.2900，高于 A-LLMRec 0.1757、TALLRec 0.1922、SASRec 0.0617；有效输出率 99.15%。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：离线对比显示，跨域文本语义经 FKD 蒸馏进 ID 编码、再经软提示注入 LLM 的整体配置带来 Hit@1 提升；无线上 A/B，不能把增益因果拆分到单一模块的线上收益。</li>
+<li>次要：FKD 用事实/反事实偏好差对齐文本与 ID 模态，消融中去掉跨域蒸馏或提示对齐会降低 Hit@1，支持其缓解非重叠域知识迁移与特征空间错位。</li>
+<li>次要：加密物品文本表征与聚类中心共享让非重叠域在不共享用户数据的情况下获得跨域语义，同时保持用户交互本地化。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>适用于需要跨域或跨平台序列推荐、用户或物品不重叠且要求用户数据不出域的推荐系统；迁移时需具备物品标题/描述文本、可本地部署 SBERT/SASRec，并能接受离线 Hit@1 评估与扰动式隐私保护。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>作者自述扰动式加密缺少形式化隐私保证（未采用本地差分隐私等可证明机制）；隐私强度主要以加噪前后余弦相似度的下降为口径，正文表格未见反演攻击成功率等攻击实验，故“抗反演”的实证支持有限。</li>
+<li>评估仅在 Amazon/Movielens 构造的三个非重叠域对上离线进行，指标为 Hit@1 与有效输出率，无在线 A/B、生产部署或独立复现；Food-Kitchen 上完整模型 0.3662 仅略高于 TALLRec 0.3660，该域对优势不稳健。</li>
+<li>客户端需本地运行 SBERT 与 SASRec，作者指出资源受限设备部署可能受阻；聚类数等超参对结果敏感，跨平台泛化只在这三组域对上检验。</li>
+</ul>
+<h3>P2｜<a href="https://arxiv.org/abs/2604.14586">哈尔滨工业大学、武汉大学计算机学院｜CPGRec+: A Balance-oriented Framework for Personalized Video Game Recommendations</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：哈尔滨工业大学（深圳）及武汉大学计算机学院（Shanshan Feng，依据首页 affiliation 与 whu.edu.cn 邮箱）</strong></li>
+<li>作者：Xiping Li、Aier Yang、Jianghong Ma、Kangzhe Liu、Shanshan Feng、Haijun Zhang、Yi Zhao</li>
+<li>来源：arXiv:2604.14586v5（Manuscript submitted to ACM，未见正式接收信息）</li>
+<li>场景：Steam 视频游戏个性化推荐，为玩家生成未玩过的 top-K 游戏列表并兼顾准确率与多样性</li>
+<li><strong>论文主要内容：</strong> 在 CPGRec 基础上加入偏好感知边重加权与 LLM 描述生成两模块，兼顾准确率与多样性地推荐游…</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>交互级偏好建模：已有 GNN 推荐把所有历史交互视为同等反映兴趣，本文用单次停留时长与游戏平均评分的统计比较，为每条边赋带符号权重，区分显著兴趣与显著不兴趣并量化强度，用以抑制图卷积过平滑导致的表示趋同。</li>
+<li>统计空间对齐方法：针对停留时长与评分量纲不同不可直接比较的问题，用 Box-Cox 加 Z-score 把两者映射到标准正态空间，使 Fisher 分布可作为偏好显著性的判定依据，并用 KS 检验验证映射效果，为后续游戏推荐研究提供可复用前提。</li>
+<li>LLM 作为偏好推理补充：先按平均评分生成强调全局兴趣的游戏描述，再让 LLM 比较个人停留时长与全局评分生成玩家描述，把推理结果编码回表示，区别于仅用 LLM 编码协同信号或仅生成物品文本的做法。</li>
+<li>偏好边权与流行度边权相加形成平衡边权：把面向准确率的偏好重加权与面向多样性的流行度重加权写入同一图卷积，而非分别用不同损失项折衷，使准确率与多样性在同一传播过程中耦合。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>PER 的空间对齐与符号决策：先用 Box-Cox 变换加 Z-score 归一化，把玩家对单款游戏的停留时长（个人兴趣）与游戏平均评分（全局兴趣）映射到标准正态空间，再以 Fisher 统计量 F=t²/r² 与上分位数 Qα 比较，判定该交互是否为显著兴趣（正号）、显著不兴趣（负号）或无显著偏好（0）。</li>
+<li>PER 的强度量化与平衡边权：用信息量 I=−log P(T=t)P(R=r) 作为显著偏好的强度，把符号与强度相乘得到交互级边权 Θ_pre，再与 PENR 的流行度边权相加形成平衡边权，替换图卷积中原来的边权，使准确率驱动与多样性驱动在同一传播公式内耦合。</li>
+<li>PRG 的 LLM 描述生成与融合：以标题、平均评分、价格和发售日期构造提示，让 Qwen2.5 生成强调全局兴趣的游戏描述；再把玩家历史游戏描述与归一化的停留时长、平均评分一并给 LLM，令其比较个人与全局兴趣生成玩家描述；两类文本经 M3-Embedding 编码、2 层 MLP 对齐后与原表示拼接融合。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>KS 单样本检验显示，Box-Cox 加 Z-score 后 Electronic Super Joy 的 76 名玩家停留时长 KS 统计量 0.0861、p 值 0.5950，2,675 款游戏的平均评分 KS 统计量 0.0159、p 值 0.5024，均高于 0.05，论文据此认为变换后数据与标准正态统计上不可区分。</li>
+<li>PENR 案例研究（2 游戏 2 玩家的三层传播）中，长尾游戏 i0 对玩家 u1 的影响指数在无重加权时为 0.0747，取 e_h/n_h/n_l=5/0.2/6 时升至 0.3908，作者用以说明流行度引导重加权可放大长尾游戏影响。</li>
+<li>摘要称在两个 Steam 数据集上，CPGRec+ 的准确率与多样性均优于 CPGRec 及对比的 SOTA 模型；但所提供的 PDF 正文止于第 25 页，第 7 节实验与主结果表未包含，具体指标、基线和提升幅度未能核验。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：用交互级符号与信息量边权重区分显著兴趣和不兴趣，抑制图卷积过平滑；并用 LLM 生成的偏好描述精炼玩家与游戏表示，从而在保持多样性的同时提升排序准确率。</li>
+<li>次要：PER 的符号决策可在表示空间主动拉远玩家与其显著不感兴趣游戏的距离，为边权设计提供除流行度之外的第二种信号来源。</li>
+<li>次要：PRG 把评分与停留时长的比较交给 LLM 生成文本、再嵌入为可离线缓存的辅助表示，可作为协同过滤信号之外的补充特征复用到其他模型。</li>
+<li>次要：PER 的偏好边权与 PENR 的流行度边权相加，使准确率导向与多样性导向共享同一次图卷积传播，省去多目标损失调参的折衷环节。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>适用于需要在用户-物品二部图上做排序打分、并希望用交互级信号抑制过平滑的推荐场景；把停留时长与全局评分这类双源指标映射到同一分布后做显著性判定、以及用 LLM 生成用户或物品描述补充协同信号的做法，可迁移到内容平台和电商推荐，但需自行核验垂类数据上的效果。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>所提供的 PDF 正文只到第 25 页，实验章节与主结果表缺失，准确率与多样性的具体提升幅度、基线构成均无法核验，主效果目前只有摘要级证据。</li>
+<li>评测限于两个 Steam 数据集上的离线实验，未见在线 A/B、部署指标或工业链路验证；游戏垂类数据与其他物料域的迁移性未验证。</li>
+<li>PRG 依赖 Qwen2.5 生成与 M3-Embedding 编码，可见正文未报告生成质量、推理成本、描述偏差及提示敏感性分析。</li>
+<li>论文为作者前作 CPGRec 的扩展，PER、PENR、SGC 等模块与 SOTA 对比的公平性依赖各模块超参设置，可见正文未给出完整的超参选择与显著性检验流程。</li>
+</ul>
+<h2>训练优化与蒸馏</h2>
+<h3>P1｜<a href="https://arxiv.org/abs/2611.18244">华为技术有限公司、浙江大学｜RACE: Ranking-Uncertainty Aware Capacity-Adaptive Customization for Efficient Sequential Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：浙江大学、华为技术有限公司</strong></li>
+<li>作者：Tianqi Liu, Kaipu Sun, Kairui Fu, Wenkai Wang, Sihao Liu, Hui Zang, Ran Chen, Tao Wang, Shengyu Zhang</li>
+<li>来源：arXiv:2611.18244v1（WSDM '27）</li>
+<li>场景：资源受限的端上序列推荐/下一物品预测</li>
+<li><strong>论文主要内容：</strong> 针对资源受限序列推荐，用列表级排序不确定性自适应裁剪模型通道与输入序列，以提效并保精度。</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>针对统一压缩忽略用户意图复杂度的问题，提出列表级排序不确定性：用VBLL预测方差与Top-K成对胜出概率的负对数似然度量排序稳定性，把实例复杂度从输入启发式转为模型内在信号。</li>
+<li>把该不确定性变为前瞻资源分配器：用早期层特征自监督预测通道与序列剪枝比率，无需完整前向后分配算力，区别于静态统一压缩。</li>
+<li>在参数与数据空间联合做实例级瘦身：超网络式通道敏感度掩码与位置感知累积注意力序列过滤在同一前向中降低模型和输入冗余。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>以变分贝叶斯最后一层同时输出物品预测均值与方差，基于Top-K内成对胜出概率的负对数似然构造列表级排序不确定性Urank，作为实例复杂度代理。</li>
+<li>用早期层最后有效token作为动态用户嵌入，经两层MLP阈值预测器自监督回归由Urank归一化得到的伪标签，输出通道剪枝比率与序列剪枝比率。</li>
+<li>按通道剪枝比率在FFN通道敏感度分数的分位点处生成掩码并用STE训练；按序列剪枝比率基于头平均注意力的位置感知累积重要性逐块保留Top项，训练用软掩码、推理丢弃未选token。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在MovieLens-100k、Douban、Amazon-CD、Amazon-Game四数据集及SASRec/BSARec上，作者报告平均NDCG提升40.87%/47.73%、Hit提升35.12%/41.77%，FLOPs降低2.37×/2.49×。</li>
+<li>在SASRec上，RACE将骨干FLOPs从1.8432降至0.7549 MFLOPs（降59.0%），辅助FLOPs为0.0490 MFLOPs，4核CPU单次延迟5.780 ms，较Finetune/DIET降低40.6%/45.0%。</li>
+<li>在Amazon-CD+SASRec上，低不确定性十分位的NDCG更高、高不确定性十分位下降；预测通道剪枝率与不确定性呈负相关（Pearson r=-0.319，Spearman ρ=-0.496）。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：列表级排序不确定性驱动的实例级资源分配：对复杂样本保留更多FFN通道和序列token、对简单样本更激进剪枝，从而在序列推荐推理中降低FLOPs并尽量保持排序精度。</li>
+<li>次要：复用骨干早期隐状态生成动态用户嵌入与通道敏感度，避免额外重型特征提取器；论文报告辅助FLOPs约0.0490M。</li>
+<li>次要：按块渐进过滤序列token，训练时软掩码保持批次稳定、推理时丢弃未选token以获得实际计算节省。</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>适用于资源受限的序列推荐、端上重排与推理加速；若线上使用SASRec类序列精排且可接受额外不确定性头与自监督训练，可迁移其按实例分配通道/序列预算的思路。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅给出四个公开数据集的离线全排序评测，未提供线上A/B、真实设备端到端部署或业务指标，线上收益未验证。</li>
+<li>效率证据主要是解析FLOPs与单次4核CPU延迟，缺少不同硬件、批量大小、候选池规模下的吞吐、内存与能耗对比。</li>
+<li>方法依赖VBLL校准与由Urank生成的伪标签，K=20、目标剪枝率r0及损失权重等设置对跨域校准和稳定性的影响未充分展开。</li>
+</ul>
+<h2>今日最值得立项的实验</h2>
+<h3>LEGIT式CPU侧约束解码用于整页生成式召回</h3>
+<ul>
+<li>假设：把资格、去重与层级唯一约束的trie走查从逐group GPU launch移到CPU并与GPU forward重叠，可显著降低每token约束开销而不改变页面合法率。</li>
+<li>Control：当前GPU侧逐group约束解码实现。</li>
+<li>Treatment：CPU ragged trie走查+菜单子trie压缩+每行blocked set缓存+每步批量合法token写入。</li>
+<li>保持变量：同一SID目录、同一模型与beam/行数配置、同一资格索引与请求样本集。</li>
+<li>离线指标：每token延迟；吞吐(页/秒)；页面合法性违规率；约束结果与基准一致性</li>
+<li>线上 Guardrail：页面合法性违规率为0；端到端P99延迟不升；CPU核占用与CPU-GPU重叠比例监控</li>
+</ul>
+<h3>RecMem固定记忆预算的长序列生成式召回</h3>
+<ul>
+<li>假设：以固定槽位循环记忆压缩归档前缀、解码只看固定窗口，可在保持召回率的同时使每用户状态与预测延迟不随历史长度增长。</li>
+<li>Control：固定最近窗口或直接截断长历史的序列模型。</li>
+<li>Treatment：分段记忆槽更新+最近窗口解码+stream-consistency对齐。</li>
+<li>保持变量：同一用户样本集与历史长度分布、同一主干容量预算、同一top-K评估协议。</li>
+<li>离线指标：R@10/R@200；N@10；每用户状态字节；热预测延迟</li>
+<li>线上 Guardrail：状态存储配额不超预算；长历史尾部分位召回不显著下降</li>
+</ul>
+<h3>RACE实例级剪枝用于序列精排推理降本</h3>
+<ul>
+<li>假设：以排序不确定性预测每实例的通道与序列剪枝比率，可在FLOPs明显下降时保持排序质量。</li>
+<li>Control：统一压缩或微调的同等序列精排模型。</li>
+<li>Treatment：VBLL不确定性头+阈值预测器输出实例级通道/序列剪枝比率。</li>
+<li>保持变量：同一序列模型骨架、同一候选集与评估切分、同一CPU环境。</li>
+<li>离线指标：NDCG@K；Hit@K；FLOPs；单次预测延迟</li>
+<li>线上 Guardrail：高不确定性样本分位NDCG不下降；延迟收益在目标硬件复现；校准漂移监控</li>
+</ul>
+<h2>一句话总判断</h2>
+<p>证据概况：收录 5 篇，全文核验 5 篇；标记为线上 A/B 证据 0 篇。</p>
+<p>本期方法集中在生成式召回的约束执行与状态预算：LEGIT把动态资格/去重约束做成CPU与GPU重叠的trie区间查询，RecMem用固定槽位记忆把长历史压成常数状态；效率侧RACE以排序不确定性分配实例级剪枝预算。工程上可借鉴其把约束与状态从GPU关键路径移出的思路，但五篇均为离线证据、无线上A/B，且CPGRec+正文实验缺失，效果与部署收益不能外推。</p>
+</article></main></body></html>

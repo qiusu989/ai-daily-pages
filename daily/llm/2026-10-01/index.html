@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-10-01 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-10-01，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-10-01/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-10-01</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://arxiv.org/abs/2605.14483">COLLATOR: Compositional Multi-Agent Orchestration with Counterfactual Reinforcement Learning</a></h3>
+<p>提出统一编排规格与局部反事实信用分配的 LLM 多智能体训练方法，在多个推理/编码基准上兼顾准确率与 token 效率，属于 agent 编排与 RL 后训练方向的新研究。</p>
+<p>证据：证据未核实</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://arxiv.org/abs/2605.14483">COLLATOR: Compositional Multi-Agent Orchestration with Counterfactual Reinforcement Learning</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：Griffith University、Arizona State University、Northwestern University</strong></li>
+<li>作者：Xudong Chen、Yixin Liu、Hua Wei、Kaize Ding</li>
+<li>来源：arXiv:2605.14483v2</li>
+<li>场景：面向数学推理、选择题推理与代码生成的多智能体编排设计（MMLU/GSM8K/AQuA/MultiArith/SVAMP/HumanEval）</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>COLLATOR 让 LLM 编排器为每个任务生成统一 YAML 规格，组合定制化 agent 职责、容量等级（small/medium/large 对应 Qwen2.5 7B/14B/32B）和依赖关系（refs）</li>
+<li>训练在 orchestration-level GRPO 上叠加局部反事实信用分配：对依赖删除、角色回滚或容量降级中的单个字段做编辑，执行后把奖励差 ΔR 只作用到被编辑字段的 token span</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>六个基准上平均得分 90.72%，比 SC-CoT、Tree-MAS、AgentPrune、AFlow 分别高 3.96、2.19、2.59、5.39 个百分点，五项第一、MMLU 第二（落后 ARG-Designer 0.98 个百分点）</li>
+<li>在 MMLU/GSM8K/AQuA/SVAMP 上处于 accuracy-token Pareto 前沿</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把多智能体编排从手工流水线推向可训练的统一 YAML 规格</li>
+<li>并用局部反事实信用分配把奖励差只落到被编辑字段，说明 orchestration 本身可作为 RL 对象而非固定脚手架</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>基于执行反馈的强化学习需要反复调用 worker，训练成本较高</li>
+<li>论文用节点级缓存降低冗余，但未消除该开销</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<h3>P2｜<a href="https://arstechnica.com/google/2026/09/google-announces-gemini-4-argon-ai-model-but-you-cant-use-it-yet/">Google announces Gemini 4 Argon AI model, but you can't use it yet</a></h3>
+<p><strong>判断影响</strong></p>
+<p>前沿模型能力与百万级输出上限、API 定价同时公布，且 agent 被用于大规模代码迁移与网络安全防御，若落地会改变 coding/agent 工具链与安全审计的成本结构。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Ars Technica 报道；作者：Ryan Whitwam；机构：Google（被报道方）；场景：Gemini 4 Argon 前沿模型发布与受限测试；Google 称 Gemini 4 Argon 在编码、知识工作和网络安全上具备行业领先性能，但尚未开放公众使用，仅限内部工程师与少量可信测试者；官方宣称 Argon 使用 fleet-wide telemetry data 帮助 Google 数据中心节省 300 TiB 内存，其 agent 将 re2、libgav1 及 Fuchsia Zircon…</p>
+<p><strong>数据与证据</strong></p>
+<p>DeepSWE v1.1 软件工程基准得分 77.9%，Google 称高于 GPT-6 Astra、Fable 5.1 与 Opus 5.5；Google 称 Argon 在经济分析 Vals Index 测试中取得行业领先分数，但未披露具体数值；Wiz 声称使用 Argon 发现一个可能暴露全球医院系统个人信息的严重漏洞，且称其他前沿模型未能发现，Google 未提供细节；媒体或社区报道。模型仍处受限测试，Google 未给出企业及消费者正式可用时间表，第三方无法复现基准；所有性能、Vals Index 分数、漏洞发现与 300 TiB 节省数据均来自 Google 或合作伙伴自述，无独立验证；Ars Technica 为第三方媒体报道，非 Google 官方公告…</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/geekbench-7-results-suggest-openais-dots-agent-runs-on-nine-core-amd-epyc-vms-with-nearly-10gb-of-memory-newest-runs-score-about-six-times-meta-muse-in-multi-core">Geekbench 7 results suggest OpenAI's dots run on nine-core AMD EPYC VMs</a></h3>
+<p><strong>判断影响</strong></p>
+<p>以第三方跑分数据间接暴露 Agent 云沙箱的 CPU 核数与内存配置差异，可作为 Agent 基础设施算力成本的量化参考。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Tom's Hardware 新闻（Geekbench 7 公开数据库）；作者：Shane Downing；机构：Tom's Hardware；场景：对 OpenAI dots Agent 云主机硬件配置与跑分的第三方报道；报道称一条 9 月 25 日（发布前四天）上传的 Geekbench 7 结果显示单核 1,667、多核 9,435，硬件为 AMD EPYC 9V74 的九核切片、9.73GB 内存；报道称该站点自行检索 Geekbench 7 公共库，找到发布后同配置 6 条记录，单核 1,512-1…</p>
+<p><strong>数据与证据</strong></p>
+<p>报道称 dots 发布后运行的单核中位数约 1,570、多核约 8,550，相对 Meta Muse 约为 1.5x 单核与 6x 多核；报道称发布前那次 9,435 的多核成绩约比发布后最好成绩高近 5%、比中位数高约 10%；报道称其为该文独立复跑的 Muse 结果为单核 1,000、多核 1,433，与库内其他 Muse 记录一致；媒体或社区报道。证据全部来自 Geekbench 公开条目与媒体解读，非厂商官方公告，也非受控工业 A/B；发布前那条成绩的提交者身份与测试条件未知，报道自认为可能是离群值；跑分差异同时受核数、频率、架构与虚拟化设置影响，报道也承认无法完全归因</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

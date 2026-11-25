@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-11-19 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-11-19，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-11-19/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-11-19</h1>
+<ul>
+<li>P1｜LLM 论文 / 技术报告｜<a href="https://arxiv.org/abs/2611.22215"><strong>Mila - Quebec AI Institute, McGill University, Periodic Labs</strong>｜EchoMoE｜Communicate the Change: Efficient Expert Parallelism via Activation Compression</a>：EchoMoE 利用 Transformer 残差流逐层增量更新的特性，只同步传输与早期参考状态的压缩差值，并周期性刷新参考状态。它在预训练 MoE 上轻量改造，报告通信量降 58%、吞吐升 22.6%，受限以太网吞吐最高 2.38x，18 基准平均差距 3.8pp 内。</li>
+<li>P1｜LLM 论文 / 技术报告｜<a href="https://arxiv.org/abs/2611.23034"><strong>A*STAR、VinUniversity</strong>｜MOPD｜M3OPD-Reasoner: An Open Recipe for Post-Training Multimodal Reasoning with Multi-Teacher On-Policy Distillation</a>：作者以Qwen3.5-9B为起点，按域用GSPO训练教师再用MOPD蒸馏为单一学生，并与MixSFT/MixRL对比；21个去污染基准上MOPD最佳，再叠加MixRL得到M3OPD-Reasoner-9B，且全流程数据、代码与权重开放。</li>
+<li>P1｜LLM 论文 / 技术报告｜<a href="https://arxiv.org/abs/2608.12253"><strong>Northeastern University、New York University、UC Berkeley等</strong>｜Co-Training｜One Frozen Simulator Is Not Enough: Simulator Collapse in Multi-Agent RL</a>：论文指出单 LLM 模拟用户训练 MARL 策略会因模拟器模式坍缩而泛化失败。提出推理期 Verbalized Sampling 从语言化回复分布采样，及训练期 Co-Training 让模拟器与策略协同演化。三个基准上成功率提升 9% 至 14%，真实用户研究结果类似，并开源 SCOPE 框架。</li>
+<li>P2｜公司 / 市场 / Quant｜<a href="https://spectrum.ieee.org/typesafe-ai-hallucination-decision-models"><strong>TypeSafe AI、卡内基梅隆大学、复旦大学</strong>｜AI Companies Develop Decision Models to Avoid Hallucinations</a>：IEEE Spectrum 综述决策模型热：TypeSafe AI 的 Jev 以受限结构化输出实现单次前向判定，宣称毫秒级延迟与极低成本，引发大厂跟进。CMU 预印本测得其延迟优势，但复旦等基准指出其在推理密集型与专业领域弱于 LLM，值得关注其真实适用边界。</li>
+<li>P2｜关键人物观点 / 播客｜<a href="https://www.xiaoyuzhoufm.com/episode/6afd12c6a4a79edf137afd61?utm_source=rss"><strong>蚂蚁灵光</strong>｜157. 复盘Personal Agent集体诞生背后：和蔡伟聊AI产品史、需求真伪、入口与未来想象</a>：播客访谈蚂蚁灵光负责人蔡伟，复盘Personal Agent集中诞生的产品史，讨论需求真伪、入口可能及未来格局，并提及灵光2.0与多家同类产品涌现。</li>
+</ul>
+</article></main></body></html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-11-02 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-11-02，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-11-02/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-11-02</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://huggingface.co/tencent/Youtu-Parsing-Omni">Youtu-Parsing-Omni</a></h3>
+<p>用一个共享 Omni 编码器替代分别预训练的视觉与音频塔，并以统一 JSON schema 覆盖七类解析任务，减少多模态解析的多模型编排；5B 规模在 OmniDocBench v1.6 和 OmniParsingBench 给出可核验分数，且配套 vLLM 插件，具备工程验证价值。</p>
+<p>证据：技术报告</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://huggingface.co/tencent/Youtu-Parsing-Omni">Youtu-Parsing-Omni</a>｜近两日补录</h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：腾讯</strong></li>
+<li>作者：未单列</li>
+<li>来源：arXiv:2610.39301（腾讯官方技术报告）</li>
+<li>场景：将文档、图像、图表、几何图、音频和音视频解析为结构化 JSON</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>统一 OmniSchema：由任务提示选择七类解析任务，同一 JSON 信封同时包含感知字段（布局、文本、表格、公式、bbox、时间戳、ASR、OCR、声学事件、相机运动）与认知字段（caption、narrative、report）</li>
+<li>单编码器 Youtu-Omni-Encoder：由预训练文本语言模型初始化，模态专用 stem 将像素和 log-mel 映射为 token，共享双向 Transformer 在统一 (t,h,w) 位置编码下混合图像、音频块和视频</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>OmniDocBench v1.6 Overall 得分为 96.96，模型卡/技术报告称达到 SOTA</li>
+<li>OmniParsingBench 平均分为 75.08，称在开源权重模型中最佳、仅次于 Gemini-3-Pro</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>值得读共享编码器如何用模态专用 stem 与 (t,h,w) 统一位置编码混合图文音视频 token，以及 OmniSchema 如何用同一信封同时承载感知与认知字段</li>
+<li>为多模态解析的模型收敛与下游字段对接提供工程样本</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>评测为作者自报，缺独立复现、置信区间及与 Gemini-3-Pro 的具体分数差距</li>
+<li>候选材料未披露训练数据规模、消融细节与推理吞吐/延迟/成本，无法判断各模块贡献</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.tomshardware.com/tech-industry/data-centers/sam-altman-travels-to-south-korea-to-meet-samsung-leadership-to-secure-more-ram-for-data-centers-amid-crushing-shortages-openai-ceo-meets-samsung-leadership-to-discuss-future-ai-data-centers">Sam Altman meets with Samsung leadership to secure more RAM for data centers amid crushing shortages</a></h3>
+<p><strong>判断影响</strong></p>
+<p>反映 AI 数据中心对 DRAM/HBM 的抢购与供给紧张，头部存储厂商议价权集中，但本次会面无实质协议与技术参数更新。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Tom's Hardware 报道（引 Bloomberg、Samsung Korea 声明）；作者：Newton Gitonga；机构：未披露；场景：AI 数据中心内存（DRAM/HBM）供应链与会谈；OpenAI CEO Sam Altman 在韩国龙仁 Samsung 资源开发中心与约50名三星高管会面，讨论 AI 技术方向、未来市场与商业机会；三星确认会谈围绕既有关系，包括此前签署的全球 AI 基础设施合作意向书（含为 Stargate 供应存储半导体），但未宣布新的内存供货协议；报道引用 Count…</p>
+<p><strong>数据与证据</strong></p>
+<p>AMD 预测 DRAM 收入 2026 年增长 177% 至约 4160 亿美元（媒体转述，未核实原始报告）；Micron 警告新增产能周期长，内存短缺可能持续到 2028 年（媒体转述）；会谈未披露任何新增供货量、价格或交付时间等可核验交易条款；媒体或社区报道。证据来自第三方媒体报道与厂商公开声明，无供货合同、数量或价格细节；DRAM 收入预测与供需缺口为二手转述，未核实原始报告口径；会面描述包含大量页面模板与社区评论，事实密度低</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

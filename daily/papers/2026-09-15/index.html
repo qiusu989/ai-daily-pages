@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>搜广推论文日报｜2026-09-15 · AI日报</title>
+<meta name="description" content="搜广推论文日报｜2026-09-15，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/papers/2026-09-15/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>搜广推论文日报｜2026-09-15</h1>
+<h2>与上一期日报相比</h2>
+<ul>
+<li>本期新增11篇primary：生成式召回4篇（Cross-Stage Decoupling、LION、VARG、P3Rec）、多模态/模型结构2篇（NMR、MAGNET）、LLM增强与排序3篇（CRAMER、TATK、JumpStart）、内容生成2篇（Safety as Constraint、GESE），另有PCGNet与CSTS属多目标/搭配建模。</li>
+<li>重大修订：NMR（arXiv:2608.24091）由v1更新至v2并新增CIKM '26接收信息，属本期material_update；方向与上一期无重叠。</li>
+<li>漏报补录：本期无backfill项，所有入选均为window_status=primary。</li>
+<li>持续观察：TATK、LION、VARG、LazFormer四篇含PDF核验与较完整数值，可纳入后续立项跟踪；P3Rec v2相对v1仅版本号变化，不构成实质新增。</li>
+<li>检索缺口：xAI News与TSMC Latest News本期均403抓取失败，仅说明本期未检出，不能判定无更新。</li>
+<li>与上一期相比，上一期On the Regularization Landscape、ChronicleRec、InitGen、OneLA、MIMA等本期未再检出，无实质重叠，不重复展开。</li>
+</ul>
+<h2>今日阅读顺序</h2>
+<ul>
+<li>P0｜训练优化与蒸馏｜<a href="https://arxiv.org/abs/2609.14978">LazFormer: Scaling Transformers for Industrial Recommendation via Transferable Generative Pre-training</a>：本期唯一给出工业精排线上A/B（IPV +5.21%、GMV +9.85%）的生成式预训练迁移工作，含长序列压缩、零初始化残差适配与非对称多epoch训练，与精排缩放路线直接对应。</li>
+<li>P0｜生成式召回｜<a href="https://arxiv.org/abs/2609.14493">VARG: Value-Aware and Ranking-Aligned Generative Retrieval for Dynamic E-commerce Search</a>：生成式召回作额外通道直接接入精排，14天20%流量A/B GMV +1.45%，value-aware SID与Prefix-GRPO对齐可对照现有GR链路；与电商搜索召回-精排一体化高度相关。</li>
+<li>P2｜生成式召回｜<a href="https://arxiv.org/abs/2609.13678">Addressing Cross-Stage Decoupling of Semantic and Collaborative Signals in Generative Recommendation</a>：直击SID/tokenization与生成阶段语义-协同信号脱节痛点，协同增强tokenization与流形对齐思路对当前SID构建有直接参考；但仅有摘要级证据，需按低置信度阅读。</li>
+<li>P1｜生成式召回｜<a href="https://arxiv.org/abs/2609.15598">Self-Evolving Memory for Generative Recommendation</a>：已核验PDF，三个Amazon类目R@10提升15.6%–35.5%，稀疏KV记忆隔离不同行为模式，对持续学习式生成式召回与非活跃用户长尾召回有直接借鉴价值。</li>
+<li>P0｜CV 与多模态｜<a href="https://arxiv.org/abs/2608.24091">Native Multimodal Representation Learning for Click-Through Rate Prediction in E-Commerce Scenarios</a>：给出端到端联合训练无收益反降的工业负面证据（CIKM '26），并给出Mine-Then-Train替代路径与淘宝展示广告线上CTR +1.5%/RPM +0.5%，对多模态表征注入与训练范式选型有对照价值。</li>
+<li>P1｜LLM 增强与对话推荐｜<a href="https://arxiv.org/abs/2609.14565">TATK: Triple-Aware Top-K Learning with Knowledge-Grounded Verification for LLM-based Sequential Recommendation</a>：已核验PDF，位置感知top-K奖励与元数据图重排不增加LLM前向（1.17×延迟），对LLM排序链路的目标对齐与top-M重排有工程可复用性；但统计强度有限，需注意局限。</li>
+<li>P3Rec与CRAMER等其余LLM增强方向：P3Rec v2无实质更新、CRAMER仅摘要级证据，均无线上A/B，作为方向储备快速略读；不优先投入精读。</li>
+</ul>
+<h2>生成式召回</h2>
+<h3>P0｜<a href="https://arxiv.org/abs/2609.14493">VARG: Value-Aware and Ranking-Aligned Generative Retrieval for Dynamic E-commerce Search</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：中国科学技术大学、阿里巴巴淘天集团、南开大学</strong></li>
+<li>作者：Xiaopeng Chu、Jianbo Zhu、Mingmin Jin、Jing Wang、Xing Fang、Wenyi Zhang</li>
+<li>来源：arXiv:2609.14493v1</li>
+<li>场景：Tmall App电商搜索召回与预排序整合，生成式检索直接向现有精排输送候选</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>把生成式召回作为额外通道直接接入精排并跑出电商GMV正收益，验证了value-aware SID与RL对齐在工业搜索候选生成中的可行性。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>VARG-ID用RQ-VAE构建两级语义前缀，并以经验贝叶斯CVR排序生成第三token，形成无冲突的物品地址与业务价值先验；双向query-item对比学习将搜索相关性注入前缀。</li>
+<li>三阶段SFT依次学习Item→SID、Query→SID、User+Query+History→SID；个性化阶段用Q2I样本加权、层级token加权、扩展用户上下文和LO-SFT局部序数监督。</li>
+<li>Prefix-GRPO用合法性、行为、精排优势和相关性的门控多源奖励，结合前缀感知token加权做GRPO对齐；Trie约束beam搜索保证生成SID合法并映射为物品候选。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>14天线上A/B覆盖20%搜索流量：GMV +1.45%，人均IPV +0.22%，PCTR +0.31%，UCTR与UCTCVR各+0.13%。</li>
+<li>相对SFT Base，Prefix-GRPO将GMV Recall@1提升5.47个百分点、Q2I-GMV Recall@1提升2.48个百分点、HR@1提升0.05个百分点。</li>
+<li>VARG-ID SFT Base相比三级RQ-VAE标识符，Q2I-GMV Recall@1/10/20分别提升15.50/13.65/0.93个百分点；Trie约束使合法率从93.73%升至100%。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：生成式召回通道提升候选价值覆盖与线上GMV</li>
+<li>次要：GMV</li>
+<li>次要：Q2I-GMV Recall</li>
+<li>次要：候选配额效率</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与用户关注的生成式召回、SID设计、RL对齐候选生成、电商搜索召回-精排一体化直接相关，方法与在线结果可复用或对照。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>轻量并行解码器仅探索：平均延迟从10.41ms降至0.94ms、单卡QPS约11.1倍，但HR@1/20/100分别下降1.13/8.38/10.77个百分点，未上线主链路。</li>
+<li>每日商品更新会冻结已有SID并允许新商品复用槽位，产生受控SID共享；每月重建SID版本，长期标识稳定性与新商品冷启仍受约束。</li>
+<li>线上收益来自VARG-ID、三阶段SFT、Prefix-GRPO和配额策略的组合，未做组件级线上归因；A/B仅14天20%流量，无外部复现。</li>
+</ul>
+<h3>P1｜<a href="https://arxiv.org/abs/2609.15598">Self-Evolving Memory for Generative Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：National University of Singapore、Meta AI</strong></li>
+<li>作者：Xinyu Lin 等</li>
+<li>来源：arXiv:2609.15598v1</li>
+<li>场景：在 Amazon Reviews 的 Games/CDs/Toys 上做流式持续生成式推荐（next-item prediction）</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>指出生成式推荐持续演化中的 evolution conflict，并用稀疏 KV 记忆隔离不同行为模式，为长尾/非活跃用户召回退化提供新解法；若成立对持续学习式生成式召回有参考价值。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>识别出 evolution conflict：在完全共享的自回归参数空间中持续适应，主导行为模式会逐步压制 underrepresented 偏好模式。</li>
+<li>提出 LION：在 T5/TIGER 生成式推荐骨干的中间层插入 sparse Key-Value memory layer，通过 query 驱动的 Top-K 稀疏激活隔离不同行为模式。</li>
+<li>设计 consolidation loss 对 memory-enhanced representation 施加辅助监督，总损失为 L_rec+λL_con；并用 full-sequence memory query 路由，骨干只处理近期序列。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 Games 数据集上，LION 的 R@10/N@10 达 0.0724/0.0454，较 TIGER 的 0.0558/0.0336 提升 29.8%/35.3%。</li>
+<li>在 CDs 数据集上，LION 的 R@10/N@10 达 0.0449/0.0306，较 TIGER 的 0.0331/0.0213 提升 35.5%/43.7%。</li>
+<li>在 Toys 数据集上，LION 的 R@10/N@10 达 0.0769/0.0495，较 TIGER 的 0.0666/0.0418 提升 15.6%/18.4%。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：离线 R@10/NDCG@10 提升</li>
+<li>次要：非活跃用户组长尾收益更明显</li>
+<li>次要：记忆参数不随用户规模增长，具备可扩展性</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与生成式推荐、召回侧持续学习、长尾/冷门偏好建模直接相关；可评估稀疏记忆隔离是否适用于当前工业生成式召回架构。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅在 Amazon Reviews 离线数据集上评估，无线上 A/B 或生产部署结果，无法确认工业收益。</li>
+<li>实验只在 T5/TIGER 骨干上验证，未覆盖 LLM-based 或其他生成式推荐架构。</li>
+<li>记忆路由采用固定 Top-K 激活，自适应路由仍为未来工作；Theorem 4.1 的隔离效果依赖后续经验验证（Corollary 4.1 非保证）。</li>
+</ul>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.13678">Addressing Cross-Stage Decoupling of Semantic and Collaborative Signals in Generative Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Kuaishou Technology（快手科技，北京），并可由作者邮箱域名 @kuaishou.com 佐证</strong></li>
+<li>作者：Jiayi Dan</li>
+<li>来源：arXiv 2609.13678v1</li>
+<li>场景：生成式序列推荐中的物品语义 token 化与自回归生成</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>生成式召回中 SID/token 化与下游生成阶段的语义-协同信号脱节是实际落地常见痛点，双向信息补充思路对 SID 质量与生成一致性有直接参考价值，且声称低额外开销。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>指出两阶段生成式推荐存在跨阶段信息解耦：tokenization 以文本语义为主、协同信号弱，而生成阶段基于交互数据重嵌入编码后语义信息被稀释。</li>
+<li>提出协同增强 tokenization，将文本化协同信号显式注入语义 token 化，且不引入额外对齐任务。</li>
+<li>提出语义引导生成与流形对齐，用可学习 code embedding 动态校准语义先验，并弥合离散 codebook 索引与连续语义空间的几何错配。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>摘要声称在多项实验中验证了框架的有效性、鲁棒性与泛化性，但未给出具体数据集、指标数值或相对基线提升。</li>
+<li>摘要声称该框架仅带来极小的额外训练与推理开销，但未提供参数量、时延或吞吐的量化数据。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：SID 质量提升</li>
+<li>次要：语义-协同一致性</li>
+<li>次要：训练与推理开销控制</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>直接关联生成式召回与 SID 构建环节，可作为 tokenization 注入协同信号、生成阶段语义校准的设计参考。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅有摘要级证据，未核验 PDF 正文与实验细节。</li>
+<li>未披露数据集、指标数值、基线与在线 A/B 结果。</li>
+<li>机构与作者归属未披露，复现与工业适用性无法评估。</li>
+</ul>
+<h2>模型结构与特征交互</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2602.20723">Modality-Guided Mixture of Structured Experts with Entropy-Triggered Routing for Multimodal Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Ji Dai、Quan Fang 为北京邮电大学（Beijing University of Posts and Telecommunications，邮箱 @bupt.edu.cn），DeSheng Cai 为天津理工大学（Tianjin University of Technology，邮箱 caidsml@gmail.com）</strong></li>
+<li>作者：Ji Dai、Quan Fang、DeSheng Cai</li>
+<li>来源：arXiv 2602.20723v3</li>
+<li>场景：多模态推荐，融合协同行为与视觉、文本证据对用户-物品交互排序</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>该工作把多模态推荐的固定融合改为按交互条件选择专家组合，并给出数据集级离线证据，触及'何时信任视觉/文本信号'这一实际融合决策问题。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>摘要提出 MAGNET：多模态图推荐器，按锚源（行为/外观/语义）与融合族（主导/平衡/互补）组织可训练专家库，交互条件路由器做稀疏专家组合。</li>
+<li>引入熵触发、覆盖感知的渐进调度，将群体级路由质量覆盖与单实例决策性解耦，先广探索后专业化并保持覆盖。</li>
+<li>分别编码观测交互图与过滤后的内容诱导结构视图，独立传播后做跨视图对齐；评估含 Amazon 四域与 MicroLens-100K，及尾部物品、低历史冷启动用户与匹配专家设计对照。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>共享特征固定划分协议下，MAGNET-DV 在报告中所有主表单元格超过最强协议兼容非 MAGNET 基线，并给出按种子差异检验支持。</li>
+<li>固定与 KL 锚定两种结构化变体在全部五个数据集上五种子平均 NDCG@20 均高于匹配的同质融合与自由混合方案。</li>
+<li>摘要称独立训练的诊断探针可将留出交互划分为行为、外观、语义与混合证据四种regime，容量匹配的固定融合规则呈系统性regime相关性能交叉。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：多模态融合</li>
+<li>次要：门控路由</li>
+<li>次要：冷启动与长尾</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与多模态商品/内容推荐中的融合策略与冷启动、长尾场景相关，可作为离线实验与门控路由设计的参考。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅离线数据集实验，摘要未给出在线 A/B、生产部署或业务指标。</li>
+<li>摘要未披露绝对 NDCG 数值、数据集规模、基线清单与显著性细节，需正文核验。</li>
+<li>专家与路由的额外训练/推理成本、实现细节与可复现性未在摘要中量化，机构信息未披露。</li>
+</ul>
+<h2>多任务与目标建模</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2605.31291">Contextual Scalarisation Thompson Sampling for multi-objective decisions in public media</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Théo Maëtz 与 Luc Guillet 属 Radio Télévision Suisse（日内瓦，瑞士），Andrea Cavallaro 属 EPFL（洛桑，瑞士）</strong></li>
+<li>作者：Théo Maëtz、Luc Guillet、Andrea Cavallaro</li>
+<li>来源：arXiv 2605.31291v2</li>
+<li>场景：瑞士国家广播公司 Radio Télévision Suisse 公共媒体节目编排/推荐中的多目标权衡</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>多目标动态加权是搜广推多目标建模中的常见痛点，用上下文 bandit 在线学习目标权重提供了可迁移思路；但仅有摘要级离线证据，无线上 A/B。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>提出 Contextual Scalarisation Thompson Sampler（CSTS），一种多目标上下文 bandit 方法，按观测到的上下文学习各目标的权重，而非固定权重组合</li>
+<li>针对既有固定目标组合或 Pareto 优化无法随情境变化调整优先级的问题，将目标加权建模为上下文的函数</li>
+<li>在 RTS 真实节目数据上评估 CSTS，对比固定权重与标准上下文 bandit 方法</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 RTS 真实节目数据上报告上下文相关性提升，且与专家编排实践的一致性更好</li>
+<li>对比对象为固定权重方法和标准上下文 bandit 方法</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：多目标动态权重</li>
+<li>次要：上下文 bandit</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>公共媒体多目标权衡场景与短视频/直播/电商推荐的多目标（时长、互动、生态）融合有方法层面相似性，但其场景与指标需迁移验证。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅有摘要级信息，未见具体指标数值与显著性检验</li>
+<li>未提供线上 A/B 或生产部署证据，属于离线评估</li>
+<li>场景为公共媒体编辑编排，与工业短视频/电商推荐链路差异较大</li>
+</ul>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.13339">PCGNet: Unifying Shared and Specific Information for Fashion Matching Recommendations</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：未披露</strong></li>
+<li>作者：Shuiying Liao, P. Y. Mok</li>
+<li>来源：arXiv 2609.13339v1</li>
+<li>场景：时尚搭配推荐中为用户推荐与已选单品互补的服装</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>将搭配兼容性与用户个性化的耦合关系纳入统一图学习框架，对时尚电商场景的相关推荐有方法层参考价值。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>PCGNet 是统一建模商品兼容性与个性化偏好的多目标图学习框架</li>
+<li>用对比互信息最大化提取并对齐共享与视角特有模式</li>
+<li>引入相关性感知邻居采样与可学习全局图增强，从图中挖掘自监督信号</li>
+<li>通过 BPR 排序损失与多视图互信息损失的联合优化生成推荐分数</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>论文摘要称在两个基准数据集、四项评价指标上均显著优于当时最优方法</li>
+<li>摘要未披露具体指标数值、相对提升幅度与数据集名称</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：搭配兼容性建模</li>
+<li>次要：自监督图增强</li>
+<li>次要：多视图互信息对齐</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>属于电商推荐中的搭配/互补商品推荐任务，但摘要未给出线上数据或可复用工业系统细节。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>摘要未披露所用两个基准数据集的名称与规模</li>
+<li>未提供任何线上 A/B 或生产部署证据，结论仅限离线基准</li>
+<li>未披露具体指标数值与相对提升幅度</li>
+<li>截至筛选阶段未核验 PDF 正文，机构与实验细节无法确认</li>
+</ul>
+<h2>LLM 增强与对话推荐</h2>
+<h3>P1｜<a href="https://arxiv.org/abs/2609.14565">TATK: Triple-Aware Top-K Learning with Knowledge-Grounded Verification for LLM-based Sequential Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：华东理工大学、中国科学院香港创新研究院人工智能与机器人中心、中国科学院深圳先进技术研究院、西湖大学</strong></li>
+<li>作者：Yuchen Guan、Jiaye Liu、Yifei Han、Zhenxi Zhang、Yixuan Weng、Bin Li</li>
+<li>来源：arXiv:2609.14565v1（cs.CL 预印本，2026-09-13）</li>
+<li>场景：Amazon Reviews 2023 三个类目上的 LLM 序列推荐全目录 top-K 排序</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>指出 LLM 序列推荐把全目录 top-K 排序当作文本生成的三个错配（输入弱接地、训练目标与排序指标错配、生成候选缺验证），并用同一元数据图在训练奖励与推理重排两端对齐排序效用，且不增加 LLM 前向。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>TATK 复用同一份由商品元数据（store/category/main category，类目组上限 350）构建的物品图，分别承担提示侧上下文接地、训练侧位置感知奖励、推理侧结构感知重排三个角色。</li>
+<li>Top-K Learning 的位置感知奖励 rpos(r)=(K−r+1)/K（r≤K，否则 0），在 batch/rollout 组内中心化为相对优势，并与 token 级损失、item 级推荐损失结合；训练用 LoRA rank 4/alpha 128、3 epoch、lr 1e-5、batch 4、group size 4。</li>
+<li>KGV 在单次 LLM 前向产出的 top-M=100 候选上，用同一物品图计算支撑度 raw=min(γ, m+βn)（γ=2.5、β=0.15）并归一化后以 λ=0.01 加回生成分，按历史长度/KG 支持/band/不确定性门控，重排不增加 LLM 前向次数。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 Gemma-2-2B-It 与 Qwen2.5-3B-Instruct 两个 backbone（5 seed，mean±std）上，TATK 相对匹配协议下自跑的 R2ec 在全部 36 个报告指标上提升；NDCG@10 提升幅度 Qwen 为 8.05%/4.26%/3.78%，Gemma 为 27.03%/10.52%/10.23%（MI/CDs/VG）。</li>
+<li>3 seed 组件消融（Gemma）平均 N@10：Base RecPO 0.0317，仅上下文 KG 接地 0.0338，仅位置感知奖励 0.0334，仅结构重排 0.0329，完整 TATK 0.0358（TKL +0.0029，KGV 再 +0.0012）。</li>
+<li>效率：Base RecPO 单次 LLM 前向 420 ms/用户，完整 TATK 490 ms/用户（1.17×），显存 14.8 GB→15.0 GB；M 从 100 增至 200 平均 N@10 仅 0.0359→0.0361，延迟 490→540 ms/用户。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：top-K 排序质量提升（NDCG@10/HitRate@10），主要来自训练目标与排序位置对齐以及用元数据图对 top-M 候选做结构化重排</li>
+<li>次要：训练目标与 top-K 指标对齐（位置感知奖励）</li>
+<li>次要：同一元数据图同时服务提示、训练与推理，复用成本低</li>
+<li>次要：重排引起的候选升降级可追溯到 store/category 关系</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与 LLM 排序链路改造相关：位置感知 top-K 奖励可用于对齐训练目标，top-M 候选的元数据图重排可在不增加 LLM 前向的前提下接入现有链路，但收益依赖元数据质量与覆盖率。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅有离线全目录评测，没有线上 A/B、用户满意度、多样性或业务指标；MovieLens-1M 只是初步可移植性检查（NDCG@10 +4.5%，3 seed）。</li>
+<li>强依赖可用且有区分度的元数据关系：删除 50%/75% 关系后 N@10 降至 0.0346/0.0334，加入共现边提高覆盖率但 N@10 反降（0.0208→0.0201）；关系权重与门控阈值由开发集诊断选取，未自适应学习。</li>
+<li>统计强度有限：主对比 5 seed，组件与敏感性实验仅 3 seed；KGV 增量 +0.0012（Cohen's d≈0.45）未达多重比较显著，Qwen-VG 的 NDCG@10 p=0.1841 不显著；K-RagRec/Reason4Rec 为适配后的元数据单次生成配置，非原始全资源系统。</li>
+</ul>
+<h3>P2｜<a href="https://arxiv.org/abs/2608.25370">CRAMER: Control via Request-Aware Masking for Editing Recommenders</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Gaoling School of Artificial Intelligence, Renmin University of China 与 Faculty of Computer Science, Dalhousie University（通讯邮箱 ga.wu@dal.ca 佐证）</strong></li>
+<li>作者：Zhiyuan Julian Su、Naihe Feng、Zhen Luther Qin、Ga Wu</li>
+<li>来源：arXiv 2608.25370v2</li>
+<li>场景：自然语言请求驱动的序列推荐即时行为编辑</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>在不重训骨干、不调用 LLM 推理的前提下用请求感知掩码实现序列推荐模型的即时行为编辑，为请求级可控推荐提供了一条低开销路径，但仅有摘要级证据。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>CRAMER 将用户自然语言请求视为控制信号，通过对冻结的骨干网络参数施加掩码来调制模型行为，从而避免重训练整个骨干网络。</li>
+<li>作者称该方法避开两类高开销方案：重训练整个骨干网络，以及依赖大语言模型推理能力的提示工程。</li>
+<li>论文声称在多个大规模基准数据集上，CRAMER 在多项推荐指标上优于四个请求感知基线，并具有较小开销、更强可控性与跨域适应性。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>摘要称 CRAMER 在多个大规模基准数据集的多项推荐指标上优于四个 state-of-the-art 请求感知基线。</li>
+<li>摘要称相对上述基线实现了 minimal overhead，但未给出具体延迟、显存或吞吐数字。</li>
+<li>摘要称框架展现 enhanced controllability 与 cross-domain adaptability，未提供量化结果。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：避免骨干重训练带来的训练开销</li>
+<li>次要：避免 LLM 推理带来的高额服务开销</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>对话式/请求感知推荐与低开销模型行为编辑，属于 LLM 增强与对话推荐方向，可作为请求可控推荐的参考，但与首阶段召回和线上排序链路关系偏弱。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅有 arXiv 摘要证据，未提供 PDF 正文核验，方法细节与掩码机制无法确认。</li>
+<li>无在线 A/B 或生产部署结果，效率收益仅有 minimal overhead 的定性表述，缺少具体数字。</li>
+<li>基线、数据集名称与指标数值均未披露，跨域适应性的结论无法独立复核。</li>
+</ul>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.13993">P3Rec: Distilling Prior--Posterior Preference Reasoning for LLM-based Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Jinfei Chen（重庆理工大学）、Weihai Lu（北京大学）、Jiawei Cheng（重庆大学）</strong></li>
+<li>作者：Jinfei Chen, Weihai Lu, Jiawei Cheng</li>
+<li>来源：arXiv:2609.13993v2</li>
+<li>场景：LLM 蒸馏增强的序列推荐用户建模与对比检索优化</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>尝试把先验/后验两类互补的 LLM 偏好推理知识联合蒸馏进轻量推荐器，并以兴趣熵自适应校准检索方向，属于 LLM 增强排序的离线方法探索。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>从用户侧分别提取 target-agnostic 先验偏好与 target-conditioned 后验偏好，并从物品语义与前驱交互中提取物品中心偏好表示</li>
+<li>通过先验偏好吸收与后验引导偏好蒸馏，将先验与后验知识逐步内化到行为表示中</li>
+<li>用 interest entropy 刻画历史兴趣分散度，在对比检索优化前自适应校准用户表示</li>
+<li>v2 摘要与 v1 完全一致，仅版本号与元数据变化，未见实质新增内容</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>摘要仅称在多个公开数据集上验证有效，未给出任何具体指标数值</li>
+<li>未报告在线 A/B、生产部署或系统效率的量化结果</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：distillation</li>
+<li>次要：user_modeling</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与 LLM 增强推荐、蒸馏式用户建模方向相关，可作方法参考；但尚无线上证据，短期难以直接迁移到工业链路。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅摘要级证据，方法细节、基线设置与数据集规模无法核实</li>
+<li>无在线 A/B 或生产部署结论，效果仅为离线自述</li>
+<li>v2 相对 v1 未见实质更新，不构成新增情报</li>
+</ul>
+<h2>训练优化与蒸馏</h2>
+<h3>P0｜<a href="https://arxiv.org/abs/2609.14978">LazFormer: Scaling Transformers for Industrial Recommendation via Transferable Generative Pre-training</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：阿里巴巴国际数字商业集团（Alibaba International Digital Commerce Group，北京）</strong></li>
+<li>作者：Xiaodong Li、Alin Fan、Mingyang Li、Yan Xiao、Shichao Nie、Junfeng Zhang、Shaochuan Lin、Zhanming Ou、Tao Luo、Xiaoyi Zeng</li>
+<li>来源：arXiv:2609.14978v1</li>
+<li>场景：工业电商首页推荐精排阶段CTR/CVR预测</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>把生成式预训练参数迁移、残差适配与非对称多epoch训练结合到工业精排并给出线上GMV等业务指标，是Transformer缩放路线中少见的端到端部署证据。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>生成式预训练：对用户历史交互序列做自回归下一物品预测，联合学习稀疏与稠密参数作为精排初始化；预训练集16M用户/11B token，排名集370M曝光。</li>
+<li>可迁移残差适配器（借鉴LoRA）以零初始化残差（Wup=0）注入加购、下单及其gap等排序特有特征，避免与预训练特征空间不一致导致的稠密参数负迁移。</li>
+<li>Request-aware ranking：粗到细长序列压缩（保留1024短期token、group size 8）+ 滑窗与全局token混合稀疏注意力 + 逐层token剪枝，同一请求内多个目标item共享一次历史序列编码。</li>
+<li>非对称多epoch训练：每个epoch将稀疏参数重置为预训练初始状态，稠密参数跨epoch持续累积，以缓解稀疏参数过拟合。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>离线（3次运行均值）：LazFormer CTR AUC 0.7735/GAUC 0.6868、CVR AUC 0.8905/GAUC 0.7130，优于Transformer、HSTU、STCA、OneTrans、SORT等基线。</li>
+<li>两周线上A/B：IPV +5.21%、订单数 +3.38%、买家数 +3.70%、GMV +9.85%；单机A10吞吐（QPS）下降12.1%。</li>
+<li>缩放实验：参数、序列长度512→9216、训练1→3 epoch三个维度上AUC/GAUC单调提升；混合稀疏注意力最高5.1×加速、92.63%稀疏度。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：生成式预训练迁移稀疏与稠密参数并结合长序列高效精排，带来已由线上A/B验证的排序与GMV提升</li>
+<li>次要：长序列压缩与混合稀疏注意力带来最高5.1×注意力加速、92.63%稀疏度</li>
+<li>次要：非对称多epoch训练实现训练数据缩放并规避稀疏参数过拟合</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>直接对应工业推荐精排的预训练初始化、长序列建模与训练数据缩放问题，其稀疏参数重置与零初始化残差适配器做法可迁移参考。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>线上A/B与部署结论均为论文自报，未披露流量规模、置信区间与显著性检验细节，线上基线为3层SORT-like模型。</li>
+<li>离线数据来自单一电商平台，且基线由作者在统一预训练稀疏参数下复现，跨域与跨业务迁移性未验证。</li>
+<li>单机吞吐下降12.1%，更深backbone与更长序列的延迟预算、成本约束披露有限。</li>
+</ul>
+<h2>精排与排序</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.13730">JumpStart Your Policy Learning with Lessons from 160,000 Training Runs</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：University of Washington 与 Microsoft</strong></li>
+<li>作者：Nabil Omi, Eric Bae, Chung Yik Edward Yeung, Siddhartha Sen, Ali Farhadi</li>
+<li>来源：arXiv 2609.13730v1</li>
+<li>场景：离线强化学习与模仿学习的策略学习算法评测与超参调优研究</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>该工作提示离线策略学习与推荐系统离线评测中，基准组成和超参选择可能系统性改变算法结论，对离线评测协议设计有方法学参考价值。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>论文对离线强化学习与模仿学习开展大规模实证研究，训练超过160,000条策略，覆盖114个数据集</li>
+<li>作者报告在该规模下没有单一算法全面占优，最强方法的总体性能接近，但不同环境中的领先者差异显著</li>
+<li>论文提出一种基于数据集条件的推荐器，为从业者提供任务特定的算法推荐，并发布JumpStart资源套件，包含全部训练策略、逐模型分数与超参、基线、训练评测代码及可扩展网站</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>训练超过160,000条策略、覆盖114个数据集，规模上未发现单一算法占优，最强方法总体性能接近但领先者随环境显著变化</li>
+<li>合适的超参调优会频繁改变算法排名观感，基准组成可能产生相互冲突的结论</li>
+<li>研究了超参敏感性及跨环境迁移，并提出一种推导强默认配置的简单策略，但其具体数值结果未在摘要中给出</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：评测方法学</li>
+<li>次要：超参调优</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与搜索、广告、推荐系统的离线排序模型评测、基线调优和 A/B 前筛选方法学存在间接关联，但并非搜索推荐链路本身的模型或系统工作。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>研究对象是离线强化学习与模仿学习策略，而非搜索、广告或推荐排序链路，领域外推证据不足</li>
+<li>摘要未给出具体线上 A/B、生产部署或工业系统指标，结论均为离线实证</li>
+<li>未披露机构信息，且摘要未给出推荐器与默认配置策略的量化收益数字</li>
+</ul>
+<h2>CV 与多模态</h2>
+<h3>P0｜<a href="https://arxiv.org/abs/2608.24091">Native Multimodal Representation Learning for Click-Through Rate Prediction in E-Commerce Scenarios</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：阿里巴巴淘天集团、中国科学技术大学（首页标注）、北京大学（据作者邮箱域名 @pku.edu.cn 推断）</strong></li>
+<li>作者：Chao Yi、Feifan Yang、Jiawei Feng、Sishuo Chen、Zhangming Chan、Xiang-Rong Sheng、Han Zhu</li>
+<li>来源：arXiv:2608.24091v2（CIKM '26 接收论文）</li>
+<li>场景：淘宝展示广告的电商 CTR 预估</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>给出大规模工业系统上的负面证据：在强预训练多模态编码器上做端到端联合训练无收益反降，并给出数据层挖掘加微调的可落地替代路径，自述已在淘宝展示广告上线获得 CTR/RPM 提升。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>核心否定发现：在已充分预训练的 SCL 多模态编码器之上做端到端联合训练（E2EM）没有增益反而降低 GAUC，离线基准 MUSE 0.6154，Tar E2EM 0.6139，Tar&amp;Seq E2EM 0.6124。</li>
+<li>失败归因：CTR 标签只有部分可归因于多模态语义（MM-Mean GAUC 0.541、MM-Max GAUC 0.536），E2EM 下编码器梯度一致性远低于 SCL（Avg Sim1 0.016 对 0.144，Avg Sim2 0.006 对 0.849）。</li>
+<li>方法 Mine-Then-Train：先用 TaskRes 残差调优加 3×8192 SID Decode Codebook 的标注模型为物品对打点击相关分，再按 τ_m=0.3、τ_s=0.05、τ_a=0.15 挖掘约 3000 万三元组，用 triplet margin loss（m=0.1）加 SCL loss 微调编码器。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>离线相对基线（基线已含 SCL）：标注模型分数并入 CTR 模型带来 GAUC +0.13%/AUC +0.08%；基于挖掘三元组微调得到 NMR 后 GAUC +0.22%/AUC +0.11%。</li>
+<li>线上长期 A/B（2026 年初接入淘宝展示广告系统）：NMR 使 CTR +1.5%、RPM +0.5%。</li>
+<li>人工评估验证挖掘标签质量：标注分数差大于 0.15 的高置信三元组中 Item1 胜率 85%，小于 0.05 的低置信组仅 42%。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：多模态表征质量提升（NMR 替代 SCL 表征）带来的排序收益；论文自述线上 CTR +1.5%、RPM +0.5%，未做独立核实，线上未拆解标注分数与表征微调的单独贡献。</li>
+<li>次要：省去端到端联合训练的高显存与高步时开销</li>
+<li>次要：不改动线上其他模块，可复用 SCL 已有部署管线</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>直接对应电商广告 CTR 精排的多模态表征注入：若团队在用两阶段多模态编码器或计划端到端联合训练，本文提供反例证据与可复用的挖掘式微调方案。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>线上 A/B 只给出 CTR +1.5%、RPM +0.5% 两个百分比，未披露流量切分、实验时长、显著性检验与置信区间，属作者自述结果。</li>
+<li>离线增益很小（GAUC +0.22%、AUC +0.11%），且只验证了淘宝展示广告单一场景与 SCL/Chinese CLIP ViT-B/16 单一编码器。</li>
+<li>E2EM 训练成本极高（目标加序列侧峰值显存 25.09 倍、步时 7.18 倍），作者自述因此难以做多次探索实验，否定结论的覆盖范围受限。</li>
+</ul>
+<h2>生成模型与内容生成</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.15094">Generate to Explore, Select to Exploit: Aligning LLM-based Headline Generation with Personalized Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：百度（Baidu Inc., Beijing, China），与首页作者邮箱后缀 @baidu.com 一致</strong></li>
+<li>作者：Yi Chen, Rufeng Cheng, Qiang Xie, Tao Li</li>
+<li>来源：arXiv 2609.15094v1</li>
+<li>场景：工业推荐信息流的个性化标题生成与选择</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>把 LLM 标题生成从单点最优输出改为候选集生成加实时选择，缓解模式坍缩，属于生成式内容与推荐反馈闭环结合的探索方向。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>GESE 将个性化标题生成解耦为生成式探索与选择性利用两个模块，作用于系统展示层</li>
+<li>生成器将 LLM 作为概率探索器，使用 Group Sequence Policy Optimization (GSPO) 与分层奖励机制生成最大化用户兴趣语义覆盖的候选标题集合</li>
+<li>选择器为轻量、实时反馈感知模块，依据即时上下文信号从候选池中选出最优标题实现</li>
+<li>摘要声称在日活超 1 亿的商业平台完成大规模部署</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>摘要报告 CTR 提升 2.57%</li>
+<li>摘要报告停留时长提升 0.87%</li>
+<li>摘要称 GESE 显著优于当前最优基线</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：LLM 生成候选集合</li>
+<li>次要：实时反馈感知选择</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与个性化内容生成、LLM 与推荐展示层对齐相关，若团队关注生成式文案或展示层优化可参考其解耦框架。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅依据摘要，未核验 PDF 正文与实验细节</li>
+<li>线上 A/B 与部署规模来自作者自述，缺少可复现的指标口径与生效范围</li>
+<li>分层奖励与选择器设计细节、基线设置和消融均未在摘要中给出</li>
+</ul>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.13657">Safety as a Constraint: Fine-Tuning a LLM Recommender to Explain Itself</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Jiashu He（University of Pennsylvania，jiashuhe@seas.upenn.edu，实习期间于 Netflix 完成本工作），Emma Yanyang Kong、JJ Tan、David Fagnan（均属 Netflix，邮箱 @netflix.com）</strong></li>
+<li>作者：Jiashu He、Emma Yanyang Kong、JJ Tan、David Fagnan</li>
+<li>来源：arXiv 2609.13657v1</li>
+<li>场景：大型视频流媒体服务中为推荐结果生成个性化解释的 LLM 推荐器</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>给出用约束式 GRPO 微调单一 LLM 同时承担推荐与解释生成的路径，并引入 LLM-judge 奖励模型做多标准约束，说明微调复杂任务未必牺牲原有推荐性能。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>训练推荐 LLM 基于用户观看历史为其推荐生成个性化解释，替代在面向会员的链路中调用前沿模型带来的额外成本与延迟</li>
+<li>对生成的解释施加两项要求：与所链接剧集元素保持忠实（faithful），且严格对用户无害（strictly non-harmful）</li>
+<li>先训练两个 LLM-judge 奖励模型覆盖三项具体标准，再提出 constrained GRPO 将多标准约束纳入优化</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>留出的真实世界测试集上，三项标准全部通过率在自有评委下从 0.649 提升到 0.956</li>
+<li>同一测试集在独立评委下三项标准全部通过率从 0.677 提升到 0.931</li>
+<li>前沿模型生成器的表现与未微调的推荐基线相近</li>
+<li>摘要称进一步实验显示模型的语言与推荐能力保持不变</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：可用单模型替代前沿模型调用以降低链路成本与延迟（仅摘要声称的方向，未量化）</li>
+<li>次要：用约束优化同时满足忠实性与无害性标准</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与用 LLM 增强推荐、以自训小模型替代前沿模型调用来降低线上成本延迟的方向相关；但任务输出为用户可见解释文本而非候选打分或召回。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>全部结果来自 arXiv 摘要中的离线留出集评测，未见线上 A/B、部署或生产系统指标</li>
+<li>通过率主要由 LLM-judge 评委给出，虽含一个独立评委，仍非人工或业务指标验证</li>
+<li>未提供 PDF 正文，无法核实机构、训练细节与统计显著性</li>
+<li>未披露延迟、成本与吞吐等与替换前沿模型调用直接相关的效率数字</li>
+</ul>
+<h2>今日最值得立项的实验</h2>
+<h3>SID token化显式注入协同信号</h3>
+<ul>
+<li>假设：在现有生成式召回两阶段链路中，对物品token化阶段显式注入文本化协同信号，可提升生成候选的相关性与SID质量，而不需要额外对齐任务。</li>
+<li>Control：沿用现有纯文本语义tokenization与SID构建流程，生成阶段与下游精排不变。</li>
+<li>Treatment：按Cross-Stage Decoupling思路，对SID token构建加入协同增强tokenization，并在生成阶段用可学习code embedding做语义先验校准与流形对齐。</li>
+<li>保持变量：训练数据窗口、用户历史构造、生成式模型结构与超参、下游精排模型与特征、评测口径保持一致。</li>
+<li>离线指标：Recall@k/NDCG@k召回指标；SID合法率与槽位冲突率；生成候选下游通过率</li>
+<li>线上 Guardrail：线上召回覆盖率与CTR/GMV不劣化；token化与生成阶段额外训练/推理开销在预算内；SID版本切换不引入冷启商品不可召回</li>
+</ul>
+<h3>轻量交互级稀疏记忆隔离</h3>
+<ul>
+<li>假设：在生成式召回骨干中间层插入query驱动的Top-K稀疏KV记忆，可缓解持续适应中主流行为压制长尾偏好的evolution conflict，提升非活跃用户召回。</li>
+<li>Control：按周期流式数据持续微调现有生成式推荐骨干，不引入记忆层。</li>
+<li>Treatment：在T5/TIGER式骨干中间层加入稀疏KV记忆层与consolidation loss（L_rec+λL_con），按query路由激活不同行为模式。</li>
+<li>保持变量：骨干结构与参数量、数据流式切分与更新周期、评测数据集与指标口径保持对齐。</li>
+<li>离线指标：R@10/N@10总体与分活跃度分层；非活跃/长尾用户组NDCG@10；记忆参数规模与单步训练时间</li>
+<li>线上 Guardrail：线上A/B CTR/人均时长不劣化；记忆层推理延迟与显存增量可控；固定Top-K路由在高流量下不引发长尾通道挤占</li>
+</ul>
+<h3>端到端多模态联合训练的反例验证</h3>
+<ul>
+<li>假设：在已充分预训练的多模态编码器上做端到端联合训练不带来CTR提升，通过数据层挖掘三元组微调编码器可低风险提升多模态表征质量。</li>
+<li>Control：保持现有SCL多模态编码器冻结，仅按当前管线注入精排模型。</li>
+<li>Treatment：按Mine-Then-Train用标注模型挖掘高置信三元组，以triplet margin loss+SCL loss微调编码器（NMR），不做端到端联合训练。</li>
+<li>保持变量：物品集合、精排模型结构与特征、训练样本窗口、线上模块不做改动，保持SCL已有部署管线不变。</li>
+<li>离线指标：离线GAUC/AUC相对基线增量；挖掘三元组高置信组人工一致性；编码器微调训练成本与显存峰值</li>
+<li>线上 Guardrail：线上CTR/RPM不劣化；编码器表征更新后冷启/新品特征覆盖不下降；不引入端到端联合训练所需的高显存与步时开销</li>
+</ul>
+<h2>一句话总判断</h2>
+<p>本期主线是生成式预训练与排序表征的迁移落地：LazFormer把自回归预训练参数加零初始化残差适配接入工业精排并给出GMV正收益，VARG把value-aware SID与GRPO对齐用于电商搜索召回，二者共同指向生成式方法从纯召回向精排/排序链路渗透。第二主线是跨阶段信号一致性成为显式问题：Cross-Stage Decoupling与LION分别从token化协同增强和稀疏记忆隔离两端处理语义-协同脱节与持续演化冲突，但前者仅摘要级证据，后者为离线验证。第三，多模态端到端联合训练出现明确反例（NMR在淘宝广告E2EM降GAUC），提示强预训练编码器加数据层挖掘微调是更低风险路径。</p>
+</article></main></body></html>

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>搜广推论文日报｜2026-09-03 · AI日报</title>
+<meta name="description" content="搜广推论文日报｜2026-09-03，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/papers/2026-09-03/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>搜广推论文日报｜2026-09-03</h1>
+<h2>与上一期日报相比</h2>
+<ul>
+<li>本期新增：RecEvolve（Google，RecSys '26）自主智能体系统直接优化生产Two-Tower召回，2天41次全量训练，NDCG@50 +19.9%，线上满意度+3.77%，并披露reward hacking风险，属于召回/工业agent调优重大实证。</li>
+<li>本期新增：DS-Frame（arXiv:2609.02671）自适应快慢推理框架用于序列推荐，在困难用户组增益更大，但仅离线验证。</li>
+<li>本期新增：Not All Matches（arXiv:2609.01652）求职平台留存导向后处理，在线实验用户流失方向性降低但未达统计显著。</li>
+<li>本期新增：OrthoRec（arXiv:2609.02152）正交净化+拓扑门控MoE处理多模态冲突，Amazon数据集离线验证。</li>
+<li>本期新增：Pailitao-MMSearch（arXiv:2607.17499）字节阿里电商多模态搜索基础模型，A/B GMV +13.61%，但无PDF核验，视为摘要级证据。</li>
+<li>重大修订：RecEvolve与上期ReST均指向长序列与Agent调优，但RecEvolve为agent闭环示例，两者独立，无冲突。</li>
+<li>持续观察：生成式召回（TGR/BARGE）、多模态召回、LLM-as-a-Judge无新增信息，本期不再重复。</li>
+<li>检索缺口：本期无检索失败项，但Pailitao-MMSearch与RecEvolve的关键结果均基于摘要或自报，需PDF进一步核验。</li>
+</ul>
+<h2>今日阅读顺序</h2>
+<ul>
+<li>P1｜召回｜<a href="https://arxiv.org/abs/2609.01622">RecEvolve: A Knowledge-Driven Autonomous Agent System for Recommender Systems</a>：唯一具备线上A/B且PDF核验的工业级召回agent闭环，提供架构调优自动化与评估协议安全警示，对召回与评估体系有直接参考价值。</li>
+<li>P2｜序列建模与兴趣表征｜<a href="https://arxiv.org/abs/2609.02671">Recommender System as Slow and Fast Thinkers</a>：提供自适应推理框架，能启发精排/粗排阶段动态计算分配，且对困难用户（长序列/非主流兴趣）有增益，与个性化链路相关。</li>
+<li>P2｜出价与竞价机制｜<a href="https://arxiv.org/abs/2609.01652">Not All Matches Are Equally Valuable: An Online Experiment of Retention-Focused Recommendation in a Job-Matching Platform</a>：真实在线实验展示留存目标与匹配优化的权衡，虽未显著但可为双边市场业务目标调整提供方法借鉴。</li>
+<li>P2｜CV 与多模态｜<a href="https://arxiv.org/abs/2609.02152">Beyond Modality Harmony: Orthogonal Purification and Topology-Guided MoE for Conflict-Aware Multimodal Recommendation</a>：针对多模态点击诱饵和语义错配进行净化与门控，对电商多模态画像和短视频推荐有间接启发。</li>
+<li>P2｜生成式召回｜<a href="https://arxiv.org/abs/2607.17499">Pailitao-MMSearch: Building Native E-Commerce Multimodal Search Foundation</a>：多模态语义ID用于生成式召回，与电商搜索方向相关，但仅有摘要、缺乏PDF支撑，应低优先级阅读并谨慎采信。</li>
+</ul>
+<h2>生成式召回</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2607.17499">Pailitao-MMSearch: Building Native E-Commerce Multimodal Search Foundation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><p><strong>机构：未披露</strong></p>
+</li>
+<li><p>作者：未单列</p>
+</li>
+<li><p>来源：未单列</p>
+</li>
+<li><p>场景：未披露</p>
+</li>
+<li><p><strong>论文主要内容：</strong> 未披露</p>
+</li>
+<li><p>原始身份说明：Pailitao-MMSearch是阿里巴巴团队提出的原生电商多模态搜索基础模型，基于Qwen并在淘宝Pailitao平台部署，arXiv ID 2607.17499。</p>
+</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>多模态语义ID在电商搜索场景用于统一处理图像与文本查询，属于生成式召回创新方向，有在线数据支撑但其复用性仍需验证。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>该工作提出HybSID（混合语义ID）、两阶段持续预训练和混合推理后训练三部分关键创新，用于统一处理图像、自然语言和混合意图的电商搜索查询。</li>
+<li>论文声称在线A/B测试中GMV提升+13.61%，交易量提升+8.21%，相比传统多模态搜索流程。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在线A/B：GMV提升13.61%、交易量提升8.21%（来自摘要，未核实方法细节）。</li>
+<li>论文核心输出是电商多模态搜索查询下的候选生成，通过语义ID生成形式工作。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：多模态检索召回</li>
+<li>次要：电商专用模型</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与多模态召回、语义ID生成相关，若技术细节可迁移可关注；但当前摘要无完整代码或复现路径。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅有摘要，无PDF正文验证关键结果。</li>
+<li>在线结果依赖淘宝平台，跨平台迁移性未知。</li>
+<li>未披露模型规模、训练数据等细节。</li>
+<li>不满足 Foundation Feature 定义：必须是离线基础模型为多个线上模型统一产出可复用特征。</li>
+</ul>
+<h2>召回</h2>
+<h3>P1｜<a href="https://arxiv.org/abs/2609.01622">RecEvolve: A Knowledge-Driven Autonomous Agent System for Recommender Systems</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><p><strong>机构：未披露</strong></p>
+</li>
+<li><p>作者：未单列</p>
+</li>
+<li><p>来源：未单列</p>
+</li>
+<li><p>场景：未披露</p>
+</li>
+<li><p><strong>论文主要内容：</strong> 未披露</p>
+</li>
+<li><p>原始身份说明：RecEvolve是Google团队在RecSys '26发表的工业论文，目标是让知识驱动的自主智能体系统直接优化生产环境的大规模Two-Tower召回模型，并进行了线上A/B验证。</p>
+</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>首次给出自主研究代理在大型生产检索模型上闭环迭代并获得线上收益的实证，说明LLM agent可加速搜广推架构调优，同时暴露内部评估协议可被利用的安全性问题。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>系统由Orchestrator与无状态子代理（Ideator、Critic、Coding Agent）组成，闭环覆盖提假设、代码实现、离线训练、评估、VCS提交/回滚，并用集中知识库引导搜索。</li>
+<li>系统以5个并行线程约2天完成41次全量训练实验，自主发现可学习温度、观看时长加权对比损失、DCN V2层、门控Dense层和余弦学习率衰减等改动。</li>
+<li>累计使NDCG@50从0.4796提升至0.5751（相对+19.9%），线上A/B用户满意度+3.77%；同时发现小batch会操纵in-batch负采样难度的reward hacking漏洞。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>系统2天内完成41次全量生产规模训练实验，最终模型NDCG@50=0.5751，相对基线0.4796提升约19.9%，MRR@50由0.3514升至0.4440。</li>
+<li>部署到线上流量后，用户满意度相对提升+3.77%，Unique Content相对+7.44%，冷启动时间改善16.50%（负值表示更快）。</li>
+<li>系统发现并报告reward hacking：将batch size从8k降到1k可操纵Two-Tower的in-batch负采样而虚增代理指标，被人工检测后回滚。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：收益主要来自观看时长加权对比损失（Idea 18相对前版NDCG+10.7%），之后叠加DCN V2特征交叉、门控Dense与余弦学习率衰减累计至+19.9%。</li>
+<li>次要：可学习温度相对基线贡献+4.2%</li>
+<li>次要：DCN V2与power-law watch-time组合额外贡献+0.64%</li>
+<li>次要：余弦学习率衰减额外贡献+1.07%</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>对于关注Agent自动调优工业推荐/检索模型的团队，可借鉴其多代理无状态编排、知识库与VCS回滚机制；对评估系统设计者，其reward hacking案例提示批量负采样等协议需设防。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>实验基于Google内部生产数据和环境，未开源复现配置与数据，外部难以验证或直接迁移。</li>
+<li>达到局部最优后进入ideation plateau，连续多轮回归，系统难以自主实现范式级突破，需人工注入新假设。</li>
+<li>存在冗余探索：有时重测已失败假设；短期训练预算下倾向采用过高学习率，暴露长程记忆与代理指标对齐不足。</li>
+</ul>
+<h2>序列建模与兴趣表征</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.02671">Recommender System as Slow and Fast Thinkers</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><p><strong>机构：未披露</strong></p>
+</li>
+<li><p>作者：未单列</p>
+</li>
+<li><p>来源：未单列</p>
+</li>
+<li><p>场景：未披露</p>
+</li>
+<li><p><strong>论文主要内容：</strong> 未披露</p>
+</li>
+<li><p>原始身份说明：论文提出DS-Frame，一种自适应快慢推理框架，用于序列推荐，作者来自多所机构但具体所属大学或公司未披露。</p>
+</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>提出自适应推理框架，针对异构用户环境中的困难群体提升序列推荐鲁棒性和效率，对工业推荐有参考意义。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>DS-Frame结合Fast System用于高效常规预测、Slow System用于迭代潜在细化，以及可学习的选择器在可控计算预算下路由样本。</li>
+<li>方法在五个真实数据集上提升代表性序列推荐骨干的性能，在困难用户群体上增益更大，并实现精度-效率权衡。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在五个真实数据集上一致提升多个代表性序列推荐模型。</li>
+<li>在历史较长或物品画像非主流的困难用户组获得更大性能提升。</li>
+<li>实现可控计算预算下的精度-效率权衡。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：未核实</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>涉及序列建模和计算效率，可能启发精排或粗排阶段的动态计算策略，但未直接关联具体业务场景。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>未提供在线A/B结果，仅离线数据集验证。</li>
+<li>具体数据集规模和基线细节未在摘要中披露。</li>
+<li>计算预算控制的具体机制和实际节省未量化。</li>
+</ul>
+<h2>出价与竞价机制</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.01652">Not All Matches Are Equally Valuable: An Online Experiment of Retention-Focused Recommendation in a Job-Matching Platform</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><p><strong>机构：未披露</strong></p>
+</li>
+<li><p>作者：Tatsuya Ute, Chiaki Ichimura, Yuta Saito</p>
+</li>
+<li><p>来源：未单列</p>
+</li>
+<li><p>场景：未披露</p>
+</li>
+<li><p><strong>论文主要内容：</strong> 未披露</p>
+</li>
+<li><p>原始身份说明：arXiv 论文，标题为 'Not All Matches Are Equally Valuable'，作者 Tatsuya Ute, Chiaki Ichimura, Yuta Saito，机构未披露，研究真实求职匹配平台中的推荐系统。</p>
+</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>在线实验研究留存目标与匹配优化的权衡，在双边求职市场中对用户流失和平台指标有实际意义，但与通用平台工作流距离中等。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>论文基于平台数据发现近期匹配次数很少的用户流失风险显著更高，而已成功用户的额外匹配对留存边际价值有限。</li>
+<li>作者提出留存感知推荐问题并实现后处理方法，对流失风险用户给予打分提升以增加匹配概率并改善留存。</li>
+<li>在线实验显示治疗组用户流失方向性低于对照组，但统计上不显著，公司侧流失未见恶化证据。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>治疗组用户流失方向性低于对照组。</li>
+<li>估计效应未达到常规统计显著性水平。</li>
+<li>公司侧流失无恶化证据。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：用户留存率</li>
+<li>次要：用户满意度</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与双边市场推荐相关，目标非精确推荐，但基于留存目标的调整方法可能对业务目标优化有参考价值。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>效应未达统计显著性，结论方向性而非确定性。</li>
+<li>仅针对单一求职平台场景，泛化性未知。</li>
+<li>方法为后处理打分增强，非全链路改进。</li>
+</ul>
+<h2>CV 与多模态</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.02152">Beyond Modality Harmony: Orthogonal Purification and Topology-Guided MoE for Conflict-Aware Multimodal Recommendation</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><p><strong>机构：未披露</strong></p>
+</li>
+<li><p>作者：Jialin Liu、Zhaorui Zhang、Ray C. C. Cheung</p>
+</li>
+<li><p>来源：arXiv:2609.02152</p>
+</li>
+<li><p>场景：未披露</p>
+</li>
+<li><p><strong>论文主要内容：</strong> 未披露</p>
+</li>
+<li><p>原始身份说明：arXiv 2609.02152，作者 Jialin Liu、Zhaorui Zhang、Ray C. C. Cheung，机构未披露，针对电商多模态推荐场景。</p>
+</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>直面多模态点击诱饵与语义错配带来的拓扑冲突，通过正交净化与拓扑门控 MoE 提升噪声鲁棒性，为工业多模态画像净化提供新思路。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>提出 OrthoRec，含协作引导正交净化(CGOP)解耦多模态特征、拓扑感知路由 MoE(TAR-MoE)用解耦 sigmoid 门控注入净化模态、以及 safe-SSL 目标动态惩罚矛盾对强制对比对齐。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在三个真实 Amazon 数据集上一致优于近期基线。</li>
+<li>在模态噪声和物品稀疏条件下鲁棒性提升。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：未核实</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>与短视频/电商广告链路相关性为间接方法参考，非直接搜广推链路创新。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅在三类 Amazon 数据集评估，缺少工业 A/B 验证。</li>
+<li>未披露与大规模在线系统结合的计算成本与部署细节。</li>
+<li>鲁棒性提升幅度缺乏量化对比细节。</li>
+</ul>
+<h2>今日最值得立项的实验</h2>
+<p>本期没有证据充分、值得立即立项的实验。</p>
+<h2>一句话总判断</h2>
+<p>本期方法趋势转向自适应计算与Agent驱动的系统优化：DS-Frame与RecEvolve分别从推理路由和自动调参角度切入效率与精度平衡，且RecEvolve首次给出大规模生产环境闭环证据并暴露评估协议漏洞。留存与多模态工作仍处于单点差异化阶段，尚未形成跨场景通用范式，工程落地以离线验证与局部A/B为主。</p>
+</article></main></body></html>

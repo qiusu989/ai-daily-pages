@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>搜广推论文日报｜2026-11-23 · AI日报</title>
+<meta name="description" content="搜广推论文日报｜2026-11-23，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/papers/2026-11-23/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>搜广推论文日报｜2026-11-23</h1>
+<ul>
+<li>P0｜生成式召回｜<a href="https://arxiv.org/abs/2611.12180">阿里巴巴｜TS-GEAR: Taobao Shangou GEnerative Ad Retrieval</a>：面向淘宝闪购搜索广告的生成式召回框架TS-GEAR，用Geo-Semantic ID把商家标识拆为地理前缀与语义后缀，使可达性成为预测目标；用Query-Geo Target Attention以实时查询和位置为双目标聚合行为；用GMPO在GRPO内以去重组奖励和边际优势优化候选集合。已在线部署0.1B骨干、日服务超1.5亿查询，工业落地价值高。</li>
+<li>P0｜精排与排序｜<a href="https://arxiv.org/abs/2611.27514"><strong>AI VK、Lomonosov Moscow State University</strong>｜DCDN｜Deep Cross-Division Network for Product-and-Ratio Feature Interactions in Industrial Ranking</a>：提出DCDN，在DCNv2式交叉层中加入除法分支，同时学习乘积、比值及混合交互，并用Laurent多项式刻画可表达项。线上替换DCNv2后去掉手工比值特征，输入特征减少40.1%，A/B中点赞、分享等指标显著提升，适合精排特征交互阅读。</li>
+<li>P0｜生成式召回｜<a href="https://arxiv.org/abs/2607.24865">Google、YouTube｜Tokens are All You Need: Dual-purpose Semantic IDs for Achieving LLM-Level I/O Efficiency in recommendation systems</a>：针对推荐系统稠密embedding表的Memory Wall问题，提出双用途语义ID，通过分层量化把连续embedding压缩为离散ID，兼顾协同身份建模与内容重构，用轻量解码器按需近似还原embedding以降低存储与I/O开销。摘要称已离线评测并在某大型视频平台的排序与召回系统上线。</li>
+<li>P1｜精排与排序｜<a href="https://arxiv.org/abs/2508.07595">快手、北京大学｜Towards Comprehensible Recommendation with Large Language Model Fine-tuning</a>：提出 CURec 框架：先用推荐目标对 LLM 后训练，使其具备指令遵循与思维链推理能力；再用 LLM 生成与协同对齐的内容特征训练推荐模型，并以模型预测分数为奖励做强化学习微调，提升生成推荐理由的质量与可解释性。</li>
+<li>P1｜生成式召回｜<a href="https://arxiv.org/abs/2607.24402">京东、中国科学院大学网络空间安全学院、北京师范大学人工智能学院等｜CogRec: Structure-Cognitive Fast-and-Slow Reasoning for Generative Recommendation</a>：论文提出CogRec，把生成式推荐中的SID层级结构与层内语义图结合，通过Match、LateralJump、Explore等SID路由操作实现快慢推理，并用多阶段监督对齐新SID token、建立直接生成分支。在三个Amazon类别上，路由效果因数据集而异，为在SID结构上进行中间推理提供了可读的初步证据。</li>
+<li>P1｜召回｜<a href="https://arxiv.org/abs/2611.27910"><strong>Microsoft</strong>｜Decision Columns as an Index: Interpretable Embeddings for Explainable Entity Matching and Search</a>：用决策列构建可解释嵌入：每列存储决策模型对自然语言问题的校准回答（是/否/未述），记录嵌入为问题答案向量，相似度可精确分解到单问题。用于实体匹配与搜索检索，新增问题无需重编码，兼具可解释与可扩展，并与稠密检索互补。</li>
+<li>P1｜精排与排序｜<a href="https://arxiv.org/abs/2611.23910">Meta｜MLE Agents: Autonomous ML Engineering in Large-scale Recommendation Systems</a>：该文构建人在环的MLE agent，在大规模搜索排序器上自动提出、实现、训练并评估模型改动，用并行训练、对齐线上影响的目标和上下文工程应对反馈慢与指标不一致；一轮实验1097个、接受325个，最佳模型A/B提升搜索量0.23%。</li>
+<li>P2｜评测与评估｜<a href="https://arxiv.org/abs/2611.24757"><strong>Microsoft、DeepL</strong>｜Variance-Optimal Counterfactual Policy Design for Sample-Efficient Online A/B Testing</a>：面向在线A/B测试的高方差问题，联合优化动作级采样日志策略与控制变量，基于成对离策略评估推导方差最优日志策略并提出联合优化方法；模拟实验称能更准确估计平均处理效应、提升统计功效，适合做A/B实验方差缩减的读者参考。</li>
+<li>P2｜序列建模与兴趣表征｜<a href="https://arxiv.org/abs/2611.27826"><strong>代尔夫特理工大学、胡安卡洛斯国王大学</strong>｜GAD｜Graph Signal Generation via Graph-Aware Diffusion Models</a>：提出图感知扩散GAD，将前向加噪改为图上的热扩散，并在图傅里叶域提出MASS按频带分配扩散率、对齐SNR；理论上界分析了反向SDE刚度，并在推荐、交通插补与预测上验证。可作为图上信号建模与推荐的参考方法。</li>
+<li>P2｜评测与评估｜<a href="https://arxiv.org/abs/2606.12552">Université Paris-Saclay、Inria、CEA等｜Crossing the Validation Crisis: Cross-Validation Reduces Benchmarking Variance Surprisingly Well</a>：针对基准评测中测试样本有限导致性能估计不稳的“验证危机”，论文提出用多次交叉验证划分降低评测方差，并引入sample gain量化其虚拟数据增益；在合成数据、病理切片与NLP微调上验证，还给出依据前几次划分动态早停的流程。对搜广推离线评测方差控制有参考价值。</li>
+</ul>
+</article></main></body></html>

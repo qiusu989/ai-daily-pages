@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-10-02 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-10-02，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-10-02/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-10-02</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://arxiv.org/abs/2609.37891">It's All Training: A Fully Synthetic Single-Stage Recipe for LLMs</a></h3>
+<p>首次以完整 PDF 证据显示全合成单阶段配方可在等算力下超过过滤网页数据，且 600M/MoE 以少 80–700× token 接近 Qwen3-0.6B；把数据质量与可学习性提升为与参数、token 数并列的独立缩放轴，改变对预训练数据来源的判断。</p>
+<p>证据：arXiv:2609.37891v1（NeurIPS 2026）同行评审论文，PDF 正文已核验；含 22 项多选与 8 项开放任务、FActScore 与数据消融，但基线架构/tokenizer/后训练不一致，作者自称非受控比较，无线上 A/B。</p>
+<h3>2. <a href="https://arxiv.org/abs/2609.38672">Provable Test-Time Scaling for Beam Search in LLM Reasoning</a></h3>
+<p>给出 beam search 首个样本复杂度下界与修正算法，说明长 horizon 下 beam 剪枝会以高概率丢掉最优响应，把 test-time scaling 的判断从经验调参推进到可证明的解码策略设计。</p>
+<p>证据：arXiv:2609.38672v1（NeurIPS 2026）同行评审论文，PDF 正文已核验；Theorem 1、Corollary 1 与 regret 上界为形式化结果，数值实验主要在合成 LLM 模拟器上，真实模型验证有限。</p>
+<h3>3. <a href="https://arxiv.org/abs/2609.39329">PatchKV: Weight-Space Compensation of KV Cache</a></h3>
+<p>提出与 token 空间压缩正交的权重空间补偿，把精度恢复成本从每 query 移到一次性 context-loading，且前向图与每 token 成本不变；为更激进 KV 压缩与长上下文服务成本结构提供新路径。</p>
+<p>证据：arXiv:2609.39329v1（NeurIPS 2026）同行评审论文，PDF 正文已核验；在 KVzip、Attention Matching 与多架构多基准上一致提升，但需访问 full KV cache 作 teacher，参考 query 分布近似，多上下文并发服务未解决。</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://arxiv.org/abs/2609.37891">It's All Training: A Fully Synthetic Single-Stage Recipe for LLMs</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：PleIAs、Sorbonne Center for AI、EPFL、TU Munich、KU Leuven 等（据 PDF 首页 affiliation）</strong></li>
+<li>作者：Pierre-Carl Langlais、Pieter Delobelle、Yannick Detrois、Pavel Chizhov 等 10 人</li>
+<li>来源：arXiv:2609.37891v1（NeurIPS 2026）</li>
+<li>场景：通用 LLM 全合成单阶段预训练，非搜广推任务</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>发布 SYNTH 语料：约 80B token 合成文本、8 种语言，种子为 58,698 篇维基百科文章，把预训练、中期训练与后训练压缩为单一训练阶段</li>
+<li>两阶段流程：阶段 1 用前沿 LLM 蒸馏数据微调 query 模型（Gemma-3-12B-base LoRA）与 reasoning 模型</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>等算力下 SYNTH 优于过滤网页数据</li>
+<li>Baguettotron-600M/MoE 位于 token 效率前沿，22 项多选题平均落后 Qwen3-0.6B 4.7 分、8 项开放任务落后 0.7 分，而训练 token 少 80–700×</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>值得读在于它把预训练、中期训练与后训练压成单阶段并给出可复现数据配方与消融，若成立则数据配方质量可与模型规模并列成为缩放轴，直接影响预训练算力预算与开源数据策略</li>
+<li>同时明确暴露参数知识上限受种子规模约束这一失效模式</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>参数知识上限受约 58k 维基种子文章限制，在依赖广泛网页知识的基准（ARC-Challenge、GeoBench）明显落后</li>
+<li>对比基线在架构、tokenizer、数据与后训练上均不同，作者自称仅作参照而非受控同条件比较</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2609.38672">Provable Test-Time Scaling for Beam Search in LLM Reasoning</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：The Ohio State University、University of Pennsylvania、National University of Singapore</strong></li>
+<li>作者：Qijia He、Yu Huang、Yuan Cheng、Yuxin Chen、Yingbin Liang</li>
+<li>来源：arXiv:2609.38672v1，NeurIPS 2026</li>
+<li>场景：LLM 推理的测试时计算（beam search 解码）</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>提出 Confidence-Filtered Beam Search（CF-Beam），在 beam search 每步按估计 token 概率过滤低概率 token，再选 top-b 轨迹</li>
+<li>证明 vanilla beam search 的样本复杂度下界为 Ω(C⋆(x)^2)，CF-Beam 在 prefix competitiveness 下将足够覆盖依赖从二次降至近线性</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Theorem 1 构造难实例，证明 vanilla beam search 在 N≤(C⋆(x))²/16 时以至少 0.5 概率剪掉最优响应</li>
+<li>Corollary 1 表明 CF-Beam 每前缀样本量 N=Õ(C⋆_max)，总查询预算 Õ(bL³C⋆_max)，仅多项式依赖 L</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>值得读在于它把 beam search 的测试时扩展从经验技巧变为带下界与 regret 上界的理论对象</li>
+<li>并揭示前缀可竞争性是优势成立的前提</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>实验主要在合成 LLM 模拟器上进行，真实预训练 LLM 上的验证有限（附录 H.2）</li>
+<li>优势依赖 prefix competitiveness 假设（Assumption 3），即似然与最终奖励对齐</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2609.39329">PatchKV: Weight-Space Compensation of KV Cache</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：KAIST</strong></li>
+<li>作者：Chanryeol Lee、Chanhyuk Lee、Yeonwoo Choi、Donggyun Kim、Seunghoon Hong</li>
+<li>来源：arXiv:2609.39329v1，NeurIPS 2026（40th Conference on Neural Information Processing Systems）</li>
+<li>场景：单上下文多查询长上下文 LLM 推理下的 KV cache 压缩补偿（长文 QA、检索、数学推理基准）</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>PatchKV 为训练无关框架：在现成压缩 KV cache 之上构造上下文特定的权重补丁，仅在 context-loading 阶段计算一次并服务该上下文后续所有查询，补丁合并后前向图与每 token 推理成本不变</li>
+<li>补丁由闭式 ridge 回归导出，对每个 transformer block 对齐参考 query token 在 full cache（teacher）与 compressed cache（student）下的 block 激活，补丁加在 MLP 输出投影（down-projection）上，并采用逐 block 贪心求解与自适应 ridge 缩放</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 KVzip（token eviction）与 Attention Matching（cache approximation）两种压缩方法上，PatchKV 在激进预算区间（b/n 0.02–0.1）一致优于仅压缩基线</li>
+<li>SQuAD 上即使不保留任何 KV cache 仍恢复最多 73% 的 full-KV 准确率</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>值得读在于它把 KV 压缩的精度恢复从 token 选择转到权重补丁，且补丁可低秩存储、与前向图解耦，可与 eviction、cache approximation、KV 量化叠加</li>
+<li>为长上下文服务的显存与带宽权衡提供新的正交手段</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>参考 query 只是未知下游 query 分布的近似，作者明确指出分布偏移较大时补丁的恢复能力可能受限</li>
+<li>补丁构造需一次性预处理成本，且必须访问 full KV cache 作为 teacher，适合单上下文多查询或足够长解码的场景</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<h3>P2｜<a href="https://www.cognitiverevolution.ai/ai-am-was-trump-xi-anything-what-counts-as-utopia-aws-gpus-cost-3x-ai-diagnoses-rare-diseases/">The Cognitive Revolution｜AI:AM: Was Trump-Xi Anything? What Counts as Utopia? + AWS GPUs Cost 3X &amp; AI Diagnoses Rare Diseases</a></h3>
+<p><strong>这一期讲什么</strong></p>
+<p>来源：The Cognitive Revolution 播客单集（2026-10-01，时长约89分钟）；作者：Nathan Labenz、Prakash Narayanan；机构：未披露；场景：AI 行业周报式对谈，覆盖中美 AI 事件沟通、算力租赁定价、AI 辅助小说创作与 AI 基因组重分析；节目讨论中美 AI 事故沟通的现实路径，但摘要未给出具体机…</p>
+<p><strong>为什么值得听</strong></p>
+<p>涉及算力定价、中美 AI 沟通与 AI 医疗重分析等一线从业者判断，但均为播客口述，无量化证据，不足以支撑技术或商业结论。</p>
+<p><strong>与你的关联</strong></p>
+<p>算力经济性与 AI 医疗重分析话题对大模型基础设施判断有背景参考价值，但与搜广推链路无直接关系。</p>
+<p><strong>来源与局限</strong></p>
+<p>播客官方 RSS 节目页。全部内容来自播客口述，无论文、技术报告或线上数据支撑；GPU 定价与基因组重分析均未披露具体数字、样本量或验证协议；中美 AI 沟通部分属政治与政策讨论，技术增量有限。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<p>今日无可能改变公司、市场或 Quant 判断的新变量。</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">medium</td>
+  <td>beam search 的样本复杂度下界与 CF-Beam 的近线性覆盖依赖，把测试时计算从经验扩展推进到可证明的解码策略设计，改变对推理期算力投放方式的判断；证据以形式化结果与合成模拟器实验为主，真实模型验证有限。</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">medium</td>
+  <td>全合成单阶段配方在等算力下优于过滤网页数据，600M/MoE 以少 80–700× token 接近 Qwen3-0.6B，FActScore 超过更大模型，显示开源小模型效率可由数据配方而非单纯规模改善；但对比非受控同条件，且无生产部署证据，故为中等置信度上行。</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">medium</td>
+  <td>PatchKV 在激进 KV 预算下用一次性权重补丁恢复 full-cache 精度且不改变每 token 前向成本，直接缓解长上下文显存与带宽瓶颈，说明权重侧补偿可与 KV 压缩正交叠加；但需访问 full KV cache 作 teacher，多上下文并发服务未解决。</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

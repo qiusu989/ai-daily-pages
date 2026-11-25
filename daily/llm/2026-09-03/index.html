@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-09-03 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-09-03，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-09-03/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-09-03</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://huggingface.co/moonshotai/Kimi-K3">Kimi-K3</a></h3>
+<p>开源2.8T级多模态模型，可能改变开源能力上限与部署格局，需重新评估推理与Agent基础设施策略。</p>
+<p>证据：官方发布，来自Hugging Face与ModelScope，属厂商声明；无独立第三方验证数据，性能量化证据不足。</p>
+<h3>2. <a href="https://arstechnica.com/ai/2026/09/google-releases-gemini-3-8-flash-its-third-flash-model-in-six-weeks/">Google releases Gemini 3.8 Flash, its third Flash model in six weeks</a></h3>
+<p>Flash模型迭代加速与定价调整影响agentic与coding场景的选型和成本，需对比Gemini 3.7与3.6。</p>
+<p>证据：Google官方声明及媒体转述；性能数据未经独立验证，OSWorld-2.0仍落后Claude Opus。</p>
+<h2>② 推荐 / 广告 / Foundation Model</h2>
+<h3><a href="https://arxiv.org/abs/2609.00986">TGR: Advancing Industrial Recommendation from Generative-Paradigm Ranking toward Unified Generation and Reasoning</a></h3>
+<p>昨日论文日报已有详细解读。</p>
+<p><strong>进入重点简报原因</strong></p>
+<p>工业生成式推荐完整落地路径，端到端A/B显著增益，直接支撑生成式推荐路线决策。</p>
+<h3><a href="https://arxiv.org/abs/2609.01240">From Language to Behavior: Scaling Sequence Transformers for Industrial Recommendation Ranking with Rec-Native Designs</a></h3>
+<p>昨日论文日报已有详细解读。</p>
+<p><strong>进入重点简报原因</strong></p>
+<p>字节跳动在广告CVR精排用Transformer序列编码获得显著收入提升，提示行为序列缩放是工业精排新轴。</p>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<h3>P0｜<a href="https://huggingface.co/moonshotai/Kimi-K3">Kimi-K3</a></h3>
+<p><strong>判断影响</strong></p>
+<p>作为首个开源 2.8T 级多模态智能体模型，Kimi-K3 在长程代码、知识工作与视觉推理上代表开源前沿能力，可能影响推理与 Agent 基础设施的部署模式。</p>
+<p><strong>关键变化</strong></p>
+<p>Moonshot AI 发布开源多模态智能体模型 Kimi-K3，总参数量 2.8T，激活参数 104B，基于 Kimi Delta Attention 和 Attention Residuals 架构，支持原生视觉与 1M token 上下文窗口；Kimi-K3 采用 Stable LatentMoE 框架，896 个专家中每 token 激活 16 个，宣称相比 Kimi K2 规模效率提升约 2.5 倍，权重在 Hugging Face 与 ModelScope 开放。</p>
+<p><strong>数据与证据</strong></p>
+<p>Kimi-K3 是首个开源的 3T 级（2.8T 参数）模型，激活参数 104B，上下文窗口 1M token；架构包含 69 层 KDA 注意力与 24 层 Gated MLA，MoE 共 896 专家，每 token 激活 16 个；官方发布。权重发布与官方宣传为主，模型能力宣称未经独立第三方验证；具体性能测试数据未在候选材料中呈现，关键量化证据不足。</p>
+<h3>P1｜<a href="https://simonwillison.net/2026/Sep/2/llm-gemini/">llm-gemini 0.34</a></h3>
+<p><strong>判断影响</strong></p>
+<p>Gemini 3.8 Flash 是 Google 新一代快速模型，支持分级思考模式，对编码和网页生成场景有实际价值，且 llm-gemini 工具链已同步支持。</p>
+<p><strong>关键变化</strong></p>
+<p>llm-gemini 0.34 发布，新增 gemini-3.8-flash 模型支持，含低、中、高思考级别；Google 同日发布 Gemini 3.8 Flash 及 3.8 Flash Cyber（后者仅供受信任防御者使用）；该版本修复了异步响应未能记录已解析模型版本的问题；Simon Willison 使用 Gemini 3.8 Flash 通过编码智能体扩展其 markdown-svg-renderer 工具，支持 HTML 渲染。</p>
+<p><strong>数据与证据</strong></p>
+<p>Gemini 3.8 Flash 生成 HTML demo 耗时 13 秒，成本 1.8 美分；Simon Willison 认为 Gemini Flash 快速、便宜且擅长 HTML 与 JavaScript；媒体或社区报道。证据来自第三方博客，非 Google 官方公告或基准测试数据；性能描述为个人主观评价，无系统化 A/B 或基准验证；3.8 Flash Cyber 仅限受信任防御者，普通用户不可用。</p>
+<h3>P1｜<a href="https://arstechnica.com/ai/2026/09/google-releases-gemini-3-8-flash-its-third-flash-model-in-six-weeks/">Google releases Gemini 3.8 Flash, its third Flash model in six weeks</a></h3>
+<p><strong>判断影响</strong></p>
+<p>新 Flash 模型声称在推理和 coding 上超越前代并登顶 DeepSWE，同时推出针对网络安全调优的变体，反映模型迭代加速与细分场景扩展。</p>
+<p><strong>关键变化</strong></p>
+<p>Google 于 2026 年 9 月 2 日发布 Gemini 3.8 Flash 与 Gemini 3.8 Flash Cyber，这是六周内第三个 Flash 模型；Gemini 3.8 Flash 标准版定位workhorse模型，适用于 agentic 任务与软件开发；Cyber 版在相同基础上针对漏洞检测与缓解调优；API 提供入门价：每百万输入 token 0.75 美元、每百万输出 3.75 美元，常规价为 1.50/7.50 美元，入门价持续到年底；Google 报告该模型在 DeepSWE…</p>
+<p><strong>数据与证据</strong></p>
+<p>Google 宣称 Gemini 3.8 Flash Cyber 在 Chrome 安全团队测试中补丁准确率提升 2.6 倍；Google Cloud 团队报告 3.8 Flash Cyber 在两小时内发现一个关键漏洞；基准数字显示较 3.7 Flash 多数测试边际提升，coding 评测提升更明显；媒体或社区报道。所有性能数字均来自 Google 官方声明或第三方媒体转述，未经独立验证；OSWorld-2.0 计算机使用表现仍落后 Claude Opus；Pro 版本更新暂停，Gemini 3.5 Pro 是否推出存疑。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.tomshardware.com/tech-industry/semiconductors/hybrid-bonding-roadmap-examined">The current state of Hybrid Bonding in 2026 — TSMC sits at 6 microns and the HBM delay that nobody expected</a></h3>
+<p><strong>判断影响</strong></p>
+<p>指示逻辑芯片混合键合已量产但HBM应用推迟，影响先进封装及HBM供应链计划。</p>
+<p><strong>关键变化</strong></p>
+<p>汤姆硬件于2026年9月报道混合键合技术现状，属第三方媒体行业综述；TSMC SoIC已从9微米缩至6微米间距，计划2029年达4.5微米；Intel Foveros Direct已在Clearwater Forest CPU量产，AMD自3D V-Cache起量产；JEDEC将HBM封装高度上限从720提至775微米，使16层HBM4仍可用微凸块连接，混合键合在HBM4E/HBM5才引入；SK海力士、三星、美光已在扩充先进封装产能，但混合键合在内存中部署已推迟至2027年后。</p>
+<p><strong>数据与证据</strong></p>
+<p>TSMC声称面对面混合键合信号密度约14000/平方毫米，对比穿硅通孔堆叠约1500；蚀刻商声称混合键合热阻较热压键合降超20%；贝西Chameo键合机约2000片/时，下一代目标放置精度50纳米；媒体或社区报道。来源为集成报道，含多方引用与厂商主张，非独立验证数据；文内多处数字（如散热改善、容量）出处未完全可核实；时间线为2026展望，实际达成有不确定性。</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">high</td>
+  <td>TGR在腾讯多场景实现生成式精排与整slate生成的工业全量落地，且本文档自述为今日证据，而thesis snapshot可能是旧状态。</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">medium</td>
+  <td>ReST在本时段内验证了基于原生Transformer组件的扩展与长期序列的有效性，指向序列模型跨场景复用；但尚缺统一跨业务目标的基础模型证据。</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">medium</td>
+  <td>ReST通过行为序列缩放改进精排，并引入辅助目标缓解特征饥饿，侧面支持语义/序列特征扩展与量化梯度；仍需更直接证据。</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">medium</td>
+  <td>混合键合在逻辑侧量产但HBM部署推迟，逻辑与内存融合方向获多个案例支持；数据仍需多方验证。</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

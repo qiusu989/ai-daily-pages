@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-09-17 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-09-17，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-09-17/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-09-17</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<p>今日无达到 P0/P1 与证据门槛的新变量。</p>
+<h2>② 最新 LLM 论文</h2>
+<h3><a href="https://arxiv.org/abs/2609.16760">Turn-level Multiscale Density Ratio Estimation for LLM Agents</a>｜近两日补录</h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：Alibaba Group</strong></li>
+<li>作者：Zishuo Zhao、Kai Chen、Ao Li、Yuan Liu</li>
+<li>来源：arXiv 2609.16760v1</li>
+<li>场景：LLM Agent 多轮任务的后训练对齐优化，非推荐/广告系统</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>摘要未披露</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在多种 agent benchmark 上与 PPO/DPO/DIL/GRPO 等对齐方法相比取得有竞争力表现（摘要级证据，无具体数字）</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>与搜广推链路无直接关系；仅在用 LLM agent 做复杂多轮任务后训练时具间接参考价值。</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>仅摘要级证据，未核实 PDF 正文、具体指标与实验设置</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.hpcwire.com/off-the-wire/mlcommons-sets-participation-record-with-new-mlperf-inference-v6-1-benchmark-results/">MLCommons Sets Participation Record with New MLPerf Inference v6.1 Benchmark Results</a></h3>
+<p><strong>判断影响</strong></p>
+<p>为 AI 推理硬件选型提供第三方可复现对比数据，且新基准开始覆盖 RAG 多阶段流水线与 agentic 长会话负载，反映推理部署形态向多模型编排与多轮交互演进。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：HPCwire 转 MLCommons 新闻稿（2026-09-16）；作者：未披露；机构：MLCommons；场景：AI 推理系统基准测试；MLPerf Inference v6.1 新增端到端 RAG 测试，流水线为 embedding 检索向量库、retriever 取候选段落、re-ranker 精排、LLM 推理生成答案；新增 Edge Agentic Inference 测试，采用将发布的 MLPerf Agentic 数据中心基准框架，含单流编码负载、延迟指标与准确率门控；v6.1 在交互场景为…</p>
+<p><strong>数据与证据</strong></p>
+<p>VLM 服务器场景单加速器最佳结果较 v6.0（六个月前）提升 2.99 倍；DeepSeek R1 测试单加速器服务器场景最佳结果较 v5.1（一年前）提升 5.7 倍；出现迄今最大提交系统（512 加速器）及两套异构系统，其中一套跨太平洋地理分布；技术报告。未披露端到端 RAG 与 Edge Agentic 测试的具体延迟、吞吐数值，仅说明测试构成；性能倍数提升以单加速器服务器场景最佳结果口径给出，未说明绝对指标、配置与是否可跨厂商比较；信息来源为厂商/联盟新闻稿经媒体转载，非独立第三方复现</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

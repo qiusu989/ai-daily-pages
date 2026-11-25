@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-10-21 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-10-21，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-10-21/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-10-21</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://arxiv.org/abs/2610.23946">How Data Scales in Agentic Reinforcement Learning: Laws and Synthesis Strategies</a></h3>
+<p>把 agentic RL 的数据瓶颈从“总量”重新定义为 task/environment/trajectory 三轴预算分配问题，并给出可验证的幂律指数、合成数据折扣和 compute-optimal 配方，直接改变 Agent 后训练数据合成与算力投放的判断依据。</p>
+<p>证据：arXiv v2 原始论文，PDF 正文已核验；在 Qwen3-4B/8B/14B、Llama-3.1-8B、Qwen2.5-7B 与 PPO/GRPO 上做受控单轴扫描，并用 held-out Qwen3-14B 验证配方；但均为作者离线实验，无生产部署或线上 A/B，SWE 成本系数下 environment 与 task 指数不可区分。</p>
+<h3>2. <a href="https://arxiv.org/abs/2605.06046">Requests of a Feather Must Flock Together: Batch Size vs. Prefix Homogeneity in LLM Inference</a></h3>
+<p>挑战“批越大越好”的默认调度前提，用受控实验显示批内前缀同质性对 decode 吞吐的影响强于批大小，并给出可在线自适应的停止策略与低开销前缀索引，改变推理服务调度与 KV cache 局部性的判断。</p>
+<p>证据：SIGOPS ATC 2026 录用论文，PDF 正文已核验；吞吐与 CPU 开销数字为作者单卡实验（RTX 6000 Ada、A100-80GB），负载由 L-Eval/LongBench 剪枝后按 Poisson 合成，非真实生产 trace，无线上 A/B。</p>
+<h3>3. <a href="https://arxiv.org/abs/2605.04542">Power Distribution Bridges Sampling, Self-Reward RL, and Self-Distillation</a></h3>
+<p>把推理时 power sampling、自奖励 KL-RL 与离线自蒸馏统一到同一 power distribution，并给出把昂贵采样成本摊销为离线 SFT 的可行路径，改变推理时搜索成本与后训练流程取舍的判断。</p>
+<p>证据：arXiv v2（NeurIPS 2026）原始论文，PDF 正文已核验；核心数字为作者在 Qwen2.5-Math-7B 与 MATH500 等上自测，仅覆盖 7B 及以下模型，未排除基准污染，无独立复现或生产部署。</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://arxiv.org/abs/2610.23946">How Data Scales in Agentic Reinforcement Learning: Laws and Synthesis Strategies</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：MBZUAI、McGill University、CityUHK、Columbia University</strong></li>
+<li>作者：Bowei He、Yankai Chen、Xiaokun Zhang、Changjiang Han、Ye Yuan、Chong Li、Xue Liu</li>
+<li>来源：arXiv:2610.23946v2</li>
+<li>场景：LLM Agent 强化学习的数据缩放与合成预算分配</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>将 agentic 数据拆为 task、environment、trajectory 三个基数轴，并加入 reward-density 控制变量，分别拟合幂律缩放关系</li>
+<li>在 Qwen3-4B/8B/14B、Llama-3.1-8B、Qwen2.5-7B 上，跨 math+code、SWE、web、UI/tool、search 域，用 PPO 和 GRPO 做受控单轴扫描</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Qwen3-8B math+code 拟合指数为 αE=0.41±0.03、αT=0.26±0.02、ατ=0.11±0.02</li>
+<li>αE&gt;αT&gt;ατ 在 21 个设置中保持</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>提供可直接对照的按轴缩放律（αE≈0.41、αT≈0.26、ατ≈0.11）与合成/真实临界比（约 9.4/3.4/1.4），让 Agent 数据合成预算分配从经验判断变为可计算的配方，是当前 agentic RL 数据侧最值得读的方法论材料</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>作者自述在 SWE 成本系数下 environment 与 task 指数变为不可区分（0.28 vs 0.29），因此不主张 DE 在所有域占优</li>
+<li>环境结构轴受生成器 inventory 的 384 signatures 上限约束，held-out 验证预测 DE=500 中仅 384 个结构唯一</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2605.06046">Requests of a Feather Must Flock Together: Batch Size vs. Prefix Homogeneity in LLM Inference</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：Indian Institute of Technology Bombay（作者邮箱 @cse.iitb.ac.in）</strong></li>
+<li>作者：Saksham Rathi、Preeti、Mythili Vutukuru</li>
+<li>来源：arXiv 2605.06046v3（SIGOPS ATC 2026 录用论文，DOI 10.1145/3828523.3857087）</li>
+<li>场景：LLM 在线推理服务 decode 阶段，前缀共享负载（few-shot、system prompt、RAG、代码库分析）的请求批调度</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>Feather 在调度层把批构建建模为顺序决策：状态为当前批大小 b、加入请求带来的共享前缀损失 Δ、以及新深度下等待请求数 w，动作为 Add/Stop，奖励为实测 decode 吞吐，实例化了启发式、上下文 bandit（UCB）与 Q-learning 三种策略</li>
+<li>Chunked Hash Tree（CHT）用固定大小 chunk 的累积前缀哈希向量替代 token 级 radix tree 遍历，维护 working set、每请求 missing count 与惰性更新最小堆，使最佳请求选择为 O(log W)、插入为 O(T)</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 5 个 5K 前缀组、100 req/s 的负载下吞吐约为 vLLM FCFS 的 4 倍，且平均批大小更小</li>
+<li>前缀组增至 100 时相对 vLLM FCFS 达 10 倍</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把推理调度从经验规则升级为带实测奖励的顺序决策</li>
+<li>并给出可低成本集成的 CHT 前缀索引，适合自建承载 RAG/长 system prompt/Agent 流量的推理栈对照落地</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>评估均在单卡完成（RTX 6000 Ada 48GB、A100-80GB 对比 PAT），分布式与多 GPU 场景被作者列为未来工作，未验证</li>
+<li>实验负载来自 L-Eval、LongBench 按需剪枝后以 Poisson 到达合成的请求流，而非真实生产 trace，收益幅度依赖实际前缀共享度</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2605.04542">Power Distribution Bridges Sampling, Self-Reward RL, and Self-Distillation</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：The University of Tokyo</strong></li>
+<li>作者：Akiyoshi Tomihari, Issei Sato</li>
+<li>来源：arXiv:2605.04542v2（NeurIPS 2026）</li>
+<li>场景：通用 LLM 数学、代码与科学推理任务的采样、自奖励 RL 与自蒸馏分析</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>定义 power distribution π_α(y|x) ∝ π(y|x)^α，并证明当奖励取模型序列级 log-prob（self-reward）时，它是 KL 正则 RL 的闭式最优解，α=1+β^{-1}</li>
+<li>提出 power self-distillation：把自奖励 KL-RL 目标改写为对 π_α 的前向 KL，等价于在离线教师样本上做 completion-only MLE/SFT，从而把 power sampling 成本摊销到训练阶段</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Qwen2.5-Math-7B 在 MATH500 上，power sampling 将准确率从 base standard 的 0.508±0.016 提升到 0.714±0.006，self-reward 从 -0.316±0.043 提升到 -0.077±0.001</li>
+<li>同一设置下，power self-distillation 配合温度解码达到 0.722±0.009 准确率，高于 base standard 的 0.508 和 power sampling 的 0.714</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>为“推理时多采样还是离线蒸馏”这一成本取舍提供统一理论框架与可离线摊销方案，对后训练与解码成本规划有参考价值</li>
+<li>但适用模型规模与任务范围有限</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>自蒸馏继承基座模型能力，基座较弱时真实奖励增益可能很小</li>
+<li>提升基座预训练质量不在研究范围</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<h3>P2｜<a href="https://www.cognitiverevolution.ai/a-world-model-of-life-biohub-s-alex-rives-on-virtual-cells-measurement-the-1-8b-data-push/">The Cognitive Revolution｜A World Model of Life: Biohub's Alex Rives on Virtual Cells, Measurement, &amp; the $1.8B Data Push</a></h3>
+<p><strong>这一期讲什么</strong></p>
+<p>来源：The Cognitive Revolution 播客单集页面；作者：主持人 Nathan Labenz、嘉宾 Alex Rives；机构：Biohub（嘉宾）、节目制作方 aipodcast.ing；场景：用细胞世界模型建模生物系统，涉及测量技术与大规模数据采集；嘉宾身份由节目介绍：Alex Rives 是 Biohub 科学负责人，曾主导 ESM…</p>
+<p><strong>为什么值得听</strong></p>
+<p>展示前沿 AI for Science 组织如何把大模型范式扩展为生命系统的预测性世界模型，并强调数据与测量基础设施可能成为瓶颈；对判断 AI4Science 路线与资源投入方向有参考价值。</p>
+<p><strong>与你的关联</strong></p>
+<p>与搜广推、LLM 推理工程、Agent 训练链路无直接关系；仅可作为 AI for Science 长期趋势与跨领域世界模型的背景参考，不改变当前技术判断。</p>
+<p><strong>来源与局限</strong></p>
+<p>播客官方 RSS 节目页。仅为播客访谈，嘉宾观点未经同行评审或独立验证；18亿美元计划与五年路线图缺乏公开细节，无法核实其可行性；主题聚焦生物细胞建模，与大模型工业链路距离远</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P1｜<a href="https://www.tomshardware.com/tech-industry/big-tech/us-takes-unprecedented-step-of-recommissioning-nuclear-plants-due-to-ai-power-demand-2-25-gw-currently-on-tap-from-refurbished-reactors">US restarts three shut-down nuclear reactors to feed AI data centers</a></h3>
+<p><strong>判断影响</strong></p>
+<p>AI 数据中心的电力约束正从“预测”进入“具体工程与合同落地”阶段：微软、Google 通过长期购电锁定核电供给，说明算力扩张的瓶颈已向上游电力基础设施传导，可能影响未来几年可获得的算力总量与成本结构。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Tom's Hardware 新闻报道；作者：Bruno Ferreira；机构：未披露；场景：AI 数据中心供电与算力基础设施；三座美国核反应堆重启：密歇根州 Palisades（预计 2027 年 3 月前后 800 MW）、宾州 Three Mile Island 的 Crane Clean Energy Center（预计 2027 年 835 MW）、爱荷华州 Duane Arnold（预计 2029 年 615 MW）；Three Mile Island 一号机组由 Constellation E…</p>
+<p><strong>数据与证据</strong></p>
+<p>三座反应堆合计规划带来 2.25 GW 装机容量，但投运时间分散在 2027 年前后至 2029 年；Palisades 已于 2026 年 8 月装料；Three Mile Island 一号机组仍需核管会批准后才可装料；媒体或社区报道。属第三方媒体转述，未提供监管文件或企业公告原文，数字与时间表未经独立核实；2.25 GW 为规划容量，实际投运时间可能因审批、工期和经济条件推迟；报道中数据中心用电预测被原文明确标注为宽区间、包含未落地项目</p>
+<h3>P2｜<a href="https://nvidianews.nvidia.com/news/nvidia-runs-record-simulation-of-fault-tolerant-quantum-computing-at-julich-supercomputing-centre">NVIDIA Runs Record Simulation of Fault-Tolerant Quantum Computing at Jülich Supercomputing Centre</a></h3>
+<p><strong>判断影响</strong></p>
+<p>该事件显示 GPU 加速的超算可模拟更大规模的容错量子方案，并降低所需量子比特数；属于量子计算与算力交叉的进展，并非推荐或广告系统技术更新。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：NVIDIA 新闻稿；作者：未披露；机构：NVIDIA、Jülich 超算中心（JUPITER）；场景：在 exascale 超算上运行容错量子计算模拟；NVIDIA 称在 JUPITER 上完成创纪录规模的模拟，使研究者可完整探索并验证 magic state cultivation；该模拟方法所需量子比特比此前方法少 90%。</p>
+<p><strong>数据与证据</strong></p>
+<p>NVIDIA 声称此次模拟为创纪录规模，magic state cultivation 所需量子比特较此前方法减少 90%；官方发布。数字来自 NVIDIA 官方新闻稿，未见独立基准或第三方复现；未披露模拟规模、所用资源、耗时及 90% 降幅的具体对照方法；无 PDF 正文可核验，细节仅限摘要级信息。</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>power distribution 工作把推理时 power sampling 与离线自蒸馏统一，说明推理时搜索的计算可被摊销并部分迁移到训练阶段，改变对推理时计算成本边界的判断；但仅为单一论文的作者自测。</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>agentic RL 数据缩放律覆盖 SWE 与 tool 域，为 coding Agent 后训练的数据合成预算提供可计算配方，指向该方向训练方法正在工程化沉淀；但为作者受控离线实验，无生产验证。</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>Feather 用前缀同质性提升 KV cache 空间与时间局部性、强调批内前缀共享对 decode 吞吐的影响强于批大小，为内存/带宽约束作为推理瓶颈提供新证据；但为单卡离线实验。</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

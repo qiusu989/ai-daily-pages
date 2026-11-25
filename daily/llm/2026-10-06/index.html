@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-10-06 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-10-06，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-10-06/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-10-06</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://arxiv.org/abs/2610.02835">All Work And No Play Makes Jack a Dull Boy: Understanding and Preventing Catastrophic Strategy Collapse in RLVR</a></h3>
+<p>为 RLVR 后期策略崩溃提供可证伪的机制解释和在线预警指标，并提出可复现的防止方法；若成立可影响 reasoning 模型后训练与 RL 配方设计。</p>
+<p>证据：技术报告</p>
+<h3>2. <a href="https://arxiv.org/abs/2610.03361">Follow the Winners: Conservative Policy Improvement with the Cross-Entropy Method for Critic-Free RFT</a></h3>
+<p>提出可替代价值模型和组 rollout 的 critic-free RFT 算法，并从理论上统一 GRPO/DPO、分析风险偏移，对 agentic LLM 后训练的资源效率与稳定性有参考价值。</p>
+<p>证据：同行评审论文</p>
+<h3>3. <a href="https://arxiv.org/abs/2610.02438">Are you Synthesizing or Recalling? Evaluating LLMs on Algorithmic Code Retrieval</a></h3>
+<p>把广为人知算法的代码生成重构为可单独度量的“参数化代码检索”能力，给出 599 题、15 模型的可复现评测，并指出最危险的失败是可运行但结果错误的 wrong output；同时给出提示增强、SFT 与 GRPO 三种补救路径的量化对比。</p>
+<p>证据：技术报告</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://arxiv.org/abs/2610.02835">All Work And No Play Makes Jack a Dull Boy: Understanding and Preventing Catastrophic Strategy Collapse in RLVR</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：Peking University</strong></li>
+<li>作者：Qiyuan Huang、Tianshi Xu、Meng Li</li>
+<li>来源：arXiv:2610.02835v1</li>
+<li>场景：RLVR 后训练中的 LLM 数学、代码与科学推理稳定性</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>通过 trajectory-level policy-update coupling kernel 定义 strategy 等价类，并证明 GRPO、DAPO、GSPO 在 non-collapse regime 下会将策略概率质量集中到单一策略，与维持准确率所需的最小策略容量冲突</li>
+<li>提出 Mirrored Entanglement Index（MEI）作为轻量在线预警信号，由 rollout logits 梯度构造</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Qwen3-4B 上 AIME26 从最强 RLVR 基线 43.3% 提升到 56.7%，提升 13.4 pp</li>
+<li>Qwen2.5-7B-Instruct 上各基准提升 1.6–3.4 pp</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把 RLVR 后期崩溃从现象学经验升级为可证伪的策略集中机制</li>
+<li>并给出在线预警信号与不依赖推理期额外模型的防崩溃训练配方，直接影响 reasoning 模型后训练配方设计</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>仅在离线 benchmark 评测，未提供线上 A/B 或生产部署结果</li>
+<li>MEI 的 3σ 阈值在 Qwen2.5-7B-Instruct、Qwen3-4B 与 3 个数据集上标定，跨模型泛化仍需更多验证</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2610.03361">Follow the Winners: Conservative Policy Improvement with the Cross-Entropy Method for Critic-Free RFT</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：Trent AI Limited 与 University of Cambridge</strong></li>
+<li>作者：Joery A. de Vries, Neil D. Lawrence, Zhenwen Dai</li>
+<li>来源：arXiv:2610.03361v1；NeurIPS 2026</li>
+<li>场景：agentic LLM 的 critic-free 强化微调，Sokoban 与 Search-R1 基准</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>FTW 把交叉熵方法适配到 critic-free RFT：在重放缓冲区样本上按 return 做序数过滤，每小批保留 top-K 精英，替代 GRPO 的重复组 rollout，并产生 return 序统计量的多项式集中</li>
+<li>通过 control-as-inference 推导，GRPO 对应多项式势的 Jensen 上界且风险中性，DPO 对应 Plackett-Luce 势</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Sokoban 上 Qwen2.5-VL-3B-Instruct：FTW-K1-C5 与 FTW-K2-C5 和 GRPO/PPO 学习速度及验证成功率相当，FTW-K3-C5 在峰值约 0.4 后崩溃</li>
+<li>Search-R1 50k+ 测试集：FTW-K1-C4 平均 exact-match 35.46±0.15 SD，与公布的 Search-R1 PPO 32.5 和 GRPO 33.6 在噪声内匹配</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>用重放缓冲区的序数精英过滤替代价值模型与重复组 rollout</li>
+<li>并在理论上统一 GRPO/DPO 的风险偏移视角，为 agentic LLM 后训练提供以 CPU 内存换 GPU 资源的替代路径</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>FTW 的风险偏移在 aleatoric 噪声下会将固定点偏置到均值最优策略之外，不适合大不可约噪声环境</li>
+<li>使用重放缓冲区带来内存开销</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2610.02438">Are you Synthesizing or Recalling? Evaluating LLMs on Algorithmic Code Retrieval</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：University of Edinburgh 信息学院（首页 affiliation 与 @ed.ac.uk 邮箱一致）</strong></li>
+<li>作者：Nickil Maveli、Antonio Vergari、Shay B. Cohen</li>
+<li>来源：arXiv:2610.02438v1（cs.LG）</li>
+<li>场景：LLM 零样本复现经典算法的参数化代码检索能力评测</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>构建 AlgoREval 基准，599 道题覆盖 77 个经典算法、14 个领域、7 种编程语言与 4 种图输入表示，零样本生成后沙箱执行并与参考答案比对标准输出</li>
+<li>评测 15 个模型（7B–34B，含开源模型与 GPT-4o-mini、GPT-4.1-mini 闭源 API），失败划分为静态失败、运行时错误、超时、错误输出四类</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>15 个模型零样本宏平均 Pass@1 为 41.2%</li>
+<li>gpt-oss-20B 最高 88.0%，高于 QwQ-32B 的 69.6% 与 GPT-4o-mini 的 66.3%，通过率与模型规模或代码专精程度关联弱</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把经典算法代码生成拆成可单独度量的参数化代码检索能力</li>
+<li>并指出最危险失败是可运行但结果错误</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>每题仅用固定单一测试输入判定正确性，未覆盖空图、非连通分量、重复键、负权环等边界，正确率可能被高估</li>
+<li>核心假设是 77 个算法均出现在所有评测模型的预训练语料中，但预训练数据构成未披露，检索失败与知识覆盖缺失无法区分</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.tomshardware.com/tech-industry/semiconductors/china-stockpiled-343-immersion-duv-tools-for-advanced-chipmaking-report-claims-270-asml-scanners-can-produce-7nm-processors-without-sanctioned-euv-tools">China stockpiled 343 immersion DUV tools for advanced chipmaking</a></h3>
+<p><strong>判断影响</strong></p>
+<p>若浸没式 DUV 存量可转用于 7nm 级多重曝光，则现行只限 EUV 与部分机型的出口管制存在被绕过的通道，直接影响先进制程产能与设备供应链预期。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Tom's Hardware 新闻，引述 Centre for Technology &amp; Statecraft（CTS）报告；作者：Anton Shilov；机构：Tom's Hardware（新闻媒体），报告方为 CTS；场景：半导体设备出口管制与晶圆制造产能；CTS 估算中国芯片厂 2012 年至 2026 年初累计进口 343 台 ASML 浸没式 DUV 光刻机，不含在华跨国晶圆厂进口；CTS 称其中 270 台为 NXT:1980i（38nm 分辨率、2.5nm 匹配机套刻），另有 22 台 NXT…</p>
+<p><strong>数据与证据</strong></p>
+<p>按 CTS 数字推算，中国占 ASML 浸没式 DUV 出货的 70%（2024）和 68%（2025）；ASML 对华净系统销售额占比由 2024 年 41%、2025 年 33% 降至 2026 年 Q1 的 19% 与 Q2 的 14%；CTS 的 90/89 台分年数字无法用 ASML 公开财务数据独立重建，仅能作为合理性校验；媒体或社区报道。核心数字来自 CTS 报告，报道本身明确部分估算可疑且无法独立重建；中国未回应，实际可运行机台数量不明，维修与备件支持受 ASML 停供影响；来源为第三方媒体报道，非公司或监管官方披露</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>AlgoREval 显示零样本算法代码通过率与模型规模、代码专精关联弱，输入表示变化即可致通过率下降超 10pp，且执行奖励微调相对 SFT 存在按语言分化的差距，提示代码 Agent 可靠性仍受参数化检索边界约束，评测方法论价值上升。</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>gpt-oss-20B 在 AlgoREval 零样本 Pass@1 达 88.0%，高于 QwQ-32B 的 69.6% 与 GPT-4o-mini 的 66.3%；该结果来自单一离线基准，仅作弱信号。</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-10-16 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-10-16，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-10-16/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-10-16</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://arxiv.org/abs/2601.21590">Scalable Power Sampling: Unlocking Efficient, Training-Free Reasoning for LLMs via Distribution Sharpening</a></h3>
+<p>把免训练推理的锐化采样从 MCMC 迭代重采样改为 token 级自回归缩放，报告推理延迟较 MCMC 下降超过 10 倍并匹配 one-shot GRPO，改变了 inference-time compute 与后训练替代方案的成本判断。</p>
+<p>证据：arXiv 论文（ICML 2026, PMLR 306），已核验 PDF 正文，Huawei Noah's Ark Lab 与 UCL 作者自测，属作者自报结果；未见独立复现或线上部署证据。</p>
+<h3>2. <a href="https://arxiv.org/abs/2605.17862">$\boldsymbol{f}$-OPD: Stabilizing Long-Horizon On-Policy Distillation with Freshness-Aware Control</a></h3>
+<p>将异步 on-policy distillation 的陈旧数据问题从 buffer 级刷新细化为样本级新鲜度控制，同时建模学生 rollout drift 与教师 supervision drift，改变长程 agentic 后训练中质量-吞吐折中的可行方案判断。</p>
+<p>证据：arXiv 论文（NeurIPS 2026），已核验 PDF 正文，港理工作者自测，覆盖数学推理、工具调用与 SWE-bench Verified 编码 agent；无第三方复现，最大规模学生 8B。</p>
+<h3>3. <a href="https://arxiv.org/abs/2610.19210">Titan-Llama: Retrofitting Pre-trained LLMs with External Neural Memory Modules</a></h3>
+<p>用外部神经记忆模块近似历史注意力残差、冻结骨干仅增加约 1% 可训练参数，把长上下文改造从重新预训练转为推理时分块测试时训练，改变已有注意力骨干复用与长上下文成本的判断。</p>
+<p>证据：arXiv preprint，已核验 PDF 正文，MIT 与 Cornell 作者自测；实验仅 1B 模型，作者明确键值重构是代理目标且无独立复现与部署验证。</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://arxiv.org/abs/2601.21590">Scalable Power Sampling: Unlocking Efficient, Training-Free Reasoning for LLMs via Distribution Sharpening</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：Huawei Noah’s Ark Lab、UCL Centre for Artificial Intelligence</strong></li>
+<li>作者：Xiaotong Ji、Rasul Tutunov、Matthieu Zimmer、Haitham Bou Ammar</li>
+<li>来源：arXiv:2601.21590v2，ICML 2026 (PMLR 306)</li>
+<li>场景：LLM 推理的免训练推理与采样（数学、代码、QA）</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>证明自回归 power distribution 可分解为 token 级缩放的低温分布：p(pow)_α(x_t|·) ∝ p_α(x_t|·)ζ_t(x_t)，其中 ζ_t(x'_t) 是未来轨迹在基座模型下的期望似然，从而将全局轨迹级依赖局部化为每 token 标量</li>
+<li>提出训练免费且无需 verifier 的 Scalable Power Sampling：每步用 Top-K_t 候选，对每个候选做 M_t 次 lookahead rollout 估计 ζ_t，并用 jackknife 估计器校正蒙特卡洛比率偏差，将偏差从 O(1/M_t) 降至 O(1/M_t^2)</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Qwen2.5-7B：MATH500 0.708、HumanEval 0.756、GPQA 0.349，分别高于 MCMC 的 0.706/0.622/0.318，并在多个基准上匹配或超过 one-shot GRPO（MATH500 0.740、HumanEval 0.561、GPQA 0.354）</li>
+<li>Qwen2.5-Math-7B MATH500 上 MCMC 平均 2.5 分钟/提示，本文方法 0.22 分钟/提示</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>免训练、无需 verifier 的 power 分布采样，把全局轨迹锐化局部化为每 token 标量缩放，用 jackknife 降偏，值得读以评估其替代 MCMC 与部分 RL 后训练流程的可行性边界</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>实验限于 MATH500、HumanEval、GPQA 等通用推理基准，未在推荐、广告、搜索排序或工业线上场景验证</li>
+<li>方法仍需多次 rollout 和前向计算，绝对推理成本高于标准解码</li>
+<li>且未与 Best-of-N 在不同预算下全面对比</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2605.17862">$\boldsymbol{f}$-OPD: Stabilizing Long-Horizon On-Policy Distillation with Freshness-Aware Control</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：The Hong Kong Polytechnic University</strong></li>
+<li>作者：Xianwei Chen、Shimin Zhang、Jibin Wu</li>
+<li>来源：arXiv:2605.17862v2，NeurIPS 2026</li>
+<li>场景：LLM 的 on-policy distillation 后训练，覆盖短程数学推理、中程工具调用与长程 SWE coding-agent 任务</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>将异步 OPD 相对同步 OPD 的目标差分解为 rollout drift（学生策略陈旧导致前缀分布偏移）与 supervision drift（教师条件上下文过期导致监督偏移），并给出基于 TV/KL 的上界式诊断</li>
+<li>提出样本级 freshness score：用更新滞后 τ_i 与 token 级 KL 诊断 D_roll、D_sup 组合，式 f_i=(τ_i+1)^-1 exp(-α√D_roll-β√D_sup)，作为单调代理而非精确估计</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>SWE-bench Verified 编码 agent：f-OPD 达 1.46× 同步 OPD 吞吐、39.4 resolve，约为同步 41.8 的 94%，post-patch regression 2.6，collapse 0/5</li>
+<li>Vanilla async OPD 吞吐 1.61×，但 resolve 降至 26.8、collapse 3/5</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把异步蒸馏的不稳定性归因为 rollout drift 与 supervision drift</li>
+<li>并给出样本级新鲜度控制机制，对异步 RL/蒸馏系统设计与长程 Agent 训练稳定性有直接参考价值</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>最大学生/教师模型为 8B/30B，未验证更大规模</li>
+<li>作者明确将结论限定在小规模</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2610.19210">Titan-Llama: Retrofitting Pre-trained LLMs with External Neural Memory Modules</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：MIT（sarahpan@mit.edu）、Cornell University（ab2947@cornell.edu）</strong></li>
+<li>作者：Sarah Pan、Ali Behrouz</li>
+<li>来源：arXiv:2610.19210v1（preprint）</li>
+<li>场景：长上下文语言建模与推理，非搜广推任务</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>方法：将Llamatransformer的注意力输出拆为历史项与局部项，保留局部全保真注意力，用外部神经记忆模块（NMM）读取的残差近似历史注意力，混合权重λ由查询经RMSNorm加线性层预测</li>
+<li>写入方式：推理时以自监督键值重构损失Lc=||M(Kc)-Vc||^2对NMM做分块梯度更新（带学习到的动量、衰减、步长），骨干参数冻结</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Llama-3.2-1B-Instruct上QuALITY准确率由分段注意力基线的23.87%提升至40.51%，LongHealth由14.50%提升至40.75%</li>
+<li>推理基准：prefill快20%以上、中等上下文decode快37%、稳态decode显存低24%（80GB A100，batch size 1）</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>提出免重训的长上下文改造路径：局部全保真注意力加固定大小外部记忆，仅约 1% 新增参数，值得读以判断外部记忆模块相对线性注意力与循环方案的效率取舍</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>NMM对历史注意力的近似不保证无损，作者明确键值重构只是有用记忆的代理目标，而非精确复现历史注意力</li>
+<li>RULER上多值检索在所有长度均低于全注意力，32K（超出16K训练长度）性能下降，长度泛化有限</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<h3>P2｜<a href="6fed676e-c84d-11f1-a40c-678dc1ca0b76">No Priors｜The Changing Physics of Cybersecurity and Drug Development with OpenAI President Greg Brockman</a></h3>
+<p><strong>这一期讲什么</strong></p>
+<p>来源：No Priors 播客官方 RSS 单集（时长约39分钟）；作者：未披露；机构：OpenAI（嘉宾 Greg Brockman 为 OpenAI 总裁兼联合创始人）、No Priors（主持人 Sarah Guo、Elad Gil）；场景：前沿模型在数学、生物/药物发现、网络安全与 Agent 生产力上的应用讨论；节目主题覆盖前沿模型进展、用 AI…</p>
+<p><strong>为什么值得听</strong></p>
+<p>本期为一线公司高管（OpenAI 总裁 Greg Brockman）对前沿模型能力边界、Agent 形态与 AI 安全落点的公开判断，可用于跟踪头部实验室对 Agent/AutoResearch 与科研自动化的叙事走向。</p>
+<p><strong>与你的关联</strong></p>
+<p>涉及 Agent 产品形态、主动式常驻 Agent 与自动化科研（数学、药物发现）的方向性判断，对关注 Agent/AutoResearch 与工具化落地的人有参考价值，但不含可复现的方法或工业级指标。</p>
+<p><strong>来源与局限</strong></p>
+<p>播客官方 RSS 节目页。证据来自播客口述摘要，无论文、技术报告或可核验数据支撑，近400个数学问题等说法无法验证；未披露模型版本、Agent 架构、工具链、评测协议与人工介入程度，技术细节不可复现；内容为观点与宣传性质访谈，无线上 A/B、系统数字或部署结论。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.tomshardware.com/desktops/mini-pcs/sipeed-reveals-chinese-made-dgx-spark-and-ryzen-ai-halo-rival-expected-to-cost-usd3-999-maixstation-pairs-axeras-ax8860p-with-128gb-of-lpddr5x-at-273-gb-s-with-promising-local-ai-performance-claims">Sipeed reveals Chinese-made DGX Spark and Ryzen AI Halo rival, expected to cost $3,999</a></h3>
+<p><strong>判断影响</strong></p>
+<p>该事件显示国产边缘/AI 迷你主机开始以相同内存规格和带宽对标 Nvidia DGX Spark 与 AMD Ryzen AI Halo，并在价格上形成明显差异，可能影响本地大模型推理硬件选型与成本结构。 争议点集中在厂商自报性能与第三方缺乏实测：10% 或 25%/30% 领先均来自 Sipeed 口径，作者指出 prefill 受算力限制、AX8860P 256 TOPS 低于 DGX Spark dense 约 500 TFLOP…</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Tom's Hardware 报道；作者：Shane Downing；机构：Sipeed/Axera 为被报道厂商；场景：面向本地大模型推理的 AI 迷你主机与边缘算力硬件；Sipeed 公布 MaixStation，采用 Axera AX8860P，128GB LPDDR5X、256-bit 总线、273 GB/s 带宽，预计售价约 3999 美元，年底 Kickstarter 众筹，NPU 工具链本月底发布；AX8860P 为 16 核 Arm Cortex-A55，搭载自研 NPU，原生 FP4 无…</p>
+<p><strong>数据与证据</strong></p>
+<p>Sipeed 对外邮件口径：单节点运行 Qwen 3.8-27B 时，FP4、关闭投机解码条件下，prefill 与 decode 均约领先 DGX Spark 10%；Sipeed 早期宣称单节点跑 Qwen 27B 时 prefill 快 25%、decode 快 30%，公司称更宽的领先幅度测试尚非官方结果；作者测算 decode 声称在 4-bit 27B 模型（约 13.5GB）下量级合理，接近 20 tokens/s 约…；媒体或社区报道。性能数据全部来自 Sipeed 自报，Tom's Hardware 明确表示需等待工具链和样机落地后才能验证；AX8860P 的 NPU 工具链、Pulsar2、ax-llm、AXCL 尚未列出该芯片支持，文档中 LLM 章节对旧芯片只列 4-bit 整数权重，无 FP4；S…</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">medium</td>
+  <td>免训练 power 采样以 token 级缩放替代 MCMC 迭代重采样并报告延迟大幅下降，指向推理时计算可扩展性提升；但仅作者自测、通用推理基准，无工业部署证据。</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>f-OPD 在 SWE-bench Verified 编码 agent 上以更高吞吐维持接近同步蒸馏的 resolve 率，降低长程 agentic 后训练的稳定性风险；但为论文自测、规模限于 8B/30B。</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>搜广推论文日报｜2026-09-23 · AI日报</title>
+<meta name="description" content="搜广推论文日报｜2026-09-23，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/papers/2026-09-23/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>搜广推论文日报｜2026-09-23</h1>
+<h2>与上一期日报相比</h2>
+<ul>
+<li>本期新增：3 篇 primary（TailSpec-EASE、Lightweight Ranking Heads、Geometry-Aware Hyperbolic Residual Quantization），均为 2026-09-23 arXiv，上一期 10 篇 primary 本期未再出现。</li>
+<li>重大修订：本期无版本修订或接收状态变更证据，3 篇虽标 material_update 但输入未提供上一版本对比，不按重大修订展开。</li>
+<li>漏报补录：本期无 backfill 项，无漏报补录内容。</li>
+<li>持续观察：上一期 UNIQUE、LIGE-GR、MuSeR、IDProxy、LinkedIn CCR、Guided SID、SID 复现研究、BT-SR、Inherit4Rec、Netflix 可观测性本期仅未再检出，不判定行业无更新。</li>
+<li>检索缺口：HPCwire 5 篇原文读取失败（HTTPStatusError），xAI News 与 TSMC Latest News 状态页 403，仅说明这些来源本期未抓取到，不构成行业判断。</li>
+<li>本期三篇均为 primary_pdf_verified=false，仅有摘要级或技术报告级证据，无线上 A/B 或独立复现。</li>
+</ul>
+<h2>今日阅读顺序</h2>
+<ul>
+<li>P2｜多任务与目标建模｜<a href="https://arxiv.org/abs/2609.25433">Lightweight Ranking Heads: Accelerating Multi-Task Experimentation in Production Recommender Systems</a>：面向生产多任务精排的动态新增任务头，stop-gradient 与 stateless daily training 做任务隔离，直接对应用户关注的精排与多任务实验效率；但部署结论为作者声明，需核验 PDF 中的冲突量化与 A/B 指标。</li>
+<li>P2｜生成式召回｜<a href="https://arxiv.org/abs/2609.26342">Geometry-Aware Hyperbolic Residual Quantization</a>：残差量化是生成式召回中 SID/多级 token 构造的基础组件，双曲几何下的前向聚合与直通估计修正可能改善码本层级结构组织性，与 SID 方向直接相关；但仅有摘要级证据且推荐任务细节未披露。</li>
+<li>P2｜偏差与校准｜<a href="https://arxiv.org/abs/2609.26143">TailSpec-EASE: Knowledge-Graph-Regularized Linear Recommendation for Web Long-Tail Discovery</a>：在精排打分环节用轻量线性闭式解注入物品侧 KG 语义先验并自适应调节先验强度，长尾 NDCG@20 提升最高 24% 且训练成本远低于图模型基线，可作为长尾配额与流行度偏差缓解的低成本参照；但全部为离线基准。</li>
+</ul>
+<h2>生成式召回</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.26342">Geometry-Aware Hyperbolic Residual Quantization</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Universiteit van Amsterdam, Amsterdam, Netherlands</strong></li>
+<li>作者：Alessio Colombo, Melika Ayoughi</li>
+<li>来源：arXiv 2609.26342v1</li>
+<li>场景：层级化离散潜空间中的残差量化，含推荐任务评测</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>为多级残差量化生成式召回/SID 提供了双曲几何下的前向聚合与梯度估计修正，可能改善码本的层级结构组织性。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>方法针对欧氏残差向量量化（RVQ）在双曲空间的朴素扩展问题，提出几何感知的双曲残差量化。</li>
+<li>前向传播提出 Hyperbolic Residual Aggregation，在 Poincare 球上恢复残差量化的 telescoping 行为。</li>
+<li>反向传播提出 discounted Hyperbolic Straight-Through Estimator，把重建梯度作为单一几何块穿过量化器，避免跨残差阶段的递归梯度传输。</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在层级预测、推荐、图像 tokenization 与神经音频编码任务上，方法提升了双曲残差码的稳定性与结构组织性。</li>
+<li>论文观察到明确的结构-压缩权衡：纯压缩场景欧氏 RVQ 仍更优，几何感知双曲量化更适合层级化离散潜空间。</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：未核实</li>
+<li>次要：提升多级码本的结构组织性</li>
+<li>次要：改善双曲空间中残差量化的训练稳定性</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>残差量化是生成式召回中 SID/多级 token 构造的常见基础组件，该工作直接作用于此基础层。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>摘要级证据，未提供具体量化指标与实验结果数值。</li>
+<li>未披露机构信息，且未明确推荐任务的具体数据集与线上效果。</li>
+<li>论文自述欧氏 RVQ 在纯压缩场景仍更优，收益边界限于层级化潜空间。</li>
+</ul>
+<h2>多任务与目标建模</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.25433">Lightweight Ranking Heads: Accelerating Multi-Task Experimentation in Production Recommender Systems</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：Google LLC（Mountain View, CA, USA）</strong></li>
+<li>作者：Sanjay Surendranath Girija、Anniruddh Nath、Li Wei、Yanhao Jiang、Shawn Andrews、Lukasz Heldt、Yi Wu、Aditya Mahajan、Mohit Sharma</li>
+<li>来源：arXiv 2609.25433v1</li>
+<li>场景：生产级多任务推荐排序模型中新任务注入与快速在线实验</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>多任务排序模型新增任务通常需要重训 backbone 并承担任务冲突风险，该工作提出可动态注入、隔离训练的新头方案，若成立可显著提升工业多任务实验速度。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>提出 Lightweight Ranking Heads（Light Heads）框架，允许向已有多任务排序模型动态注入新预测任务，无需冷启动或重训 backbone 模型</li>
+<li>采用 stop-gradient 与 stateless daily training 将新任务与既有任务严格隔离，以缓解任务间负向冲突</li>
+<li>使用集中式配置，可同时向多个模型添加 Light Heads，从而加速训练数据生成与下游模型 co-training</li>
+<li>摘要称已成功部署于 YouTube 规模，将多任务实验迭代周期从数周缩短至数天</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>摘要称该方案在 YouTube 规模部署后，多任务实验迭代周期从数周降至数天</li>
+<li>摘要称 Light Heads 支持新排序任务的快速 A/B 实验与部署，并产生可度量的生产价值；具体指标未在摘要中披露</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：加速多任务排序新任务上线与实验迭代，降低重训 backbone 成本</li>
+<li>次要：缓解任务间负向冲突</li>
+<li>次要：集中配置支持多模型复用</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>直接对应推荐系统精排多任务建模的实验效率与任务冲突问题，可参考其 stop-gradient、stateless 训练与集中式配置设计。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅摘要级证据，未提供占位任务冲突量化、A/B 具体指标或系统延迟数据</li>
+<li>YouTube 规模部署与迭代周期缩短为作者声明，缺少独立验证</li>
+<li>未披露机构信息，且未核验 PDF 正文中的训练动态与 full head 对比细节</li>
+</ul>
+<h2>偏差与校准</h2>
+<h3>P2｜<a href="https://arxiv.org/abs/2609.26143">TailSpec-EASE: Knowledge-Graph-Regularized Linear Recommendation for Web Long-Tail Discovery</a></h3>
+<p><strong>论文、机构与场景</strong></p>
+<ul>
+<li><strong>机构：University of Montana, Missoula, MT 59812, USA</strong></li>
+<li>作者：Jianru Shen</li>
+<li>来源：arXiv:2609.26143v1</li>
+<li>场景：Web 平台长尾物品推荐，基于物品侧知识图谱的线性协同过滤排序打分</li>
+<li><strong>论文主要内容：</strong> 未披露</li>
+</ul>
+<p><strong>主要创新或优化点</strong></p>
+<ul>
+<li>在推荐精排打分环节用轻量线性闭式方法融合物品侧 KG 语义先验，兼顾长尾性能与训练成本，并提供可复现的公开基准对比与效率数据。</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>方法：将关系感知的谱域 KG 先验注入局部闭式重构目标，替代 EASE-R 的全局闭式解以规避内存不可行问题</li>
+<li>先验强度随物品流行度自适应调节，对长尾物品施加更强的语义引导</li>
+<li>在四个公开基准上与经典、线性、图协同过滤、KG 感知神经及分数级 KG 基线对比，并给出 Amazon-book 训练耗时研究</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>相对无 KG 对应模型，NDCG@20 最高提升 24%</li>
+<li>所有长尾指标相对无 KG 版本的提升在配对 bootstrap 下统计显著；整体 NDCG 在四个数据集中的三个上显著提升</li>
+<li>Amazon-book 计时研究中 CPU 训练 37 秒，对比 GPU 训练的 KGAT 2,584 秒、CPU LightGCN 15,800 秒，且在该数据集上 NDCG@20 与 Tail Recall@20 更高</li>
+</ul>
+<p><strong>收益归因</strong></p>
+<ul>
+<li>主要：长尾物品排序效果与训练成本</li>
+<li>次要：KG 语义先验注入</li>
+<li>次要：闭式解内存可行性</li>
+</ul>
+<p><strong>与你的关联</strong></p>
+<ul>
+<li>可为长尾物品打分与流行度偏差缓解提供低成本替代方案，并可作为 KG 语义先验注入排序模型的参考；但未涉及候选召回与粗排压缩环节。</li>
+</ul>
+<p><strong>风险或局限</strong></p>
+<ul>
+<li>仅摘要级证据，正文与实验设置未核验</li>
+<li>全部为离线公开基准结果，无线上 A/B 或生产部署证据</li>
+<li>机构信息未披露，方法可迁移性到工业规模目录未验证</li>
+</ul>
+<h2>今日最值得立项的实验</h2>
+<h3>多任务精排新增任务头是否可在不重训 backbone 下取得与全量重训接近的精度</h3>
+<ul>
+<li>假设：以 stop-gradient 与 stateless daily training 隔离新增预测任务头，可在不重训 backbone 的前提下取得与全量 multi-task 重训接近的排序质量，同时降低任务间负向冲突。</li>
+<li>Control：现有全量 multi-task 排序模型（新增任务需重训 backbone 的基线配置）。</li>
+<li>Treatment：在冻结 backbone 的多任务模型上仅注入 Lightweight Ranking Head 训练新任务，采用 stop-gradient 与 stateless 日训练配置。</li>
+<li>保持变量：训练样本与切分、特征输入、既有任务头参数、候选集合与排序长度、评估指标计算口径。</li>
+<li>离线指标：新增任务 AUC/GAUC 相对全量重训基线的差距；既有任务指标相对基线的变化（冲突度量）；新增任务头训练与数据生成耗时</li>
+<li>线上 Guardrail：端到端排序延迟与推理资源增量不超过现网预算；既有任务线上指标不出现显著负向；新增任务头可在配置级独立回退且不报错</li>
+</ul>
+<h3>残差量化在双曲几何下是否改善多级码本的层级结构组织性</h3>
+<ul>
+<li>假设：以几何感知的双曲残差聚合与 discounted straight-through 梯度替代欧氏 RVQ，在层级化离散潜空间下可提升多级码本的结构组织性与生成式召回候选质量。</li>
+<li>Control：现有欧氏 RVQ/OPQ 多级码本构造与现有生成式召回流程。</li>
+<li>Treatment：前向改为 Poincare 球上的 Hyperbolic Residual Aggregation，反向改为 discounted Hyperbolic Straight-Through Estimator。</li>
+<li>保持变量：物品表征与维度、码长与码本规模、生成模型与训练协议、候选生成流程、评测数据集切分。</li>
+<li>离线指标：召回 recall@K 与 NDCG@K；码本利用率与各级码分布集中度；重建误差与训练稳定性（如梯度范数）</li>
+<li>线上 Guardrail：纯压缩场景召回质量不低于欧氏 RVQ 基线；SID 生成耗时与召回延迟不超预算；码本头部集中度不恶化</li>
+</ul>
+<h2>一句话总判断</h2>
+<p>本期三篇均为摘要级/技术报告级证据，方向分化：多任务精排转向不重训 backbone 的动态任务头注入并用 stop-gradient 做任务隔离，生成式召回基础层探索用双曲几何修正残差量化的前向聚合与梯度估计，长尾推荐则用轻量线性闭式解加 KG 语义先验与流行度自适应调节。工程上，三篇的线上部署、A/B 指标与推荐任务具体数据集均未核验，仅可作为方向假设与实验设计参考，不能据此做部署决策。</p>
+</article></main></body></html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-11-13 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-11-13，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-11-13/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-11-13</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://platform.claude.com/docs/en/release-notes/overview#event=November%2012%2C%202026">Anthropic 官方更新</a></h3>
+<p>Agent 运行时与会话历史可整体落在自有基础设施且模型后端可切换，改变企业 Agent 平台“只能上云、数据必须出境”的默认假设，直接影响私有化 Agent 基础设施选型。</p>
+<p>证据：仅有 Anthropic Platform Release Notes 官方产品说明，未提供性能、吞吐、部署成本或安全审计数据，也未说明权限与迁移细节。</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://huggingface.co/tencent/KaLM-Embedding-Gemma3-12B-2511">KaLM-Embedding-Gemma3-12B-2511</a>｜近两日补录</h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：腾讯混元（Tencent Hunyuan）</strong></li>
+<li>作者：未单列</li>
+<li>来源：Tencent 官方 Hugging Face 模型卡（KaLM-Embedding-Gemma3-12B-2511，2026-11-11）</li>
+<li>场景：通用文本嵌入与检索、STS、分类、聚类、重排评测</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>基于 google/gemma-3-12b-pt 构建，模型规模 11.76B、嵌入维度 3840、最大输入 32k，并用 last-token pooling 生成句向量</li>
+<li>支持 MRL 输出 3840/2048/1024/512/256/128/64 维，允许按存储或检索预算截断向量维度</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>官方模型卡报告在 MMTEB（截至 2025-11）Borda 排名第 1，Mean(Task)=72.32、Mean(TaskType)=62.51</li>
+<li>同一表格中 Retrieval 75.66、Classification 77.88、Bitext Mining 83.76 高于 Qwen3-Embedding-8B 的 70.88、74.00、80.89</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>把开源通用嵌入基线推到 12B 级</li>
+<li>同时给出 32k 输入、MRL 可截断维度与 vLLM 部署路径，值得核实其是否可作为自有检索/重排向量化链路的候选基线</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>分数和排名均来自 Tencent 官方模型卡，未见独立复现、第三方 benchmark 或工业 A/B，不能视为已验证的线上收益</li>
+<li>模型卡未披露训练数据规模、训练目标、指令模板构造细节、评测协议，以及吞吐/延迟/显存成本</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<h3>P1｜<a href="https://platform.claude.com/docs/en/release-notes/overview#event=November%2012%2C%202026">Anthropic 官方更新</a></h3>
+<p><strong>判断影响</strong></p>
+<p>将 Agent 运行时与会话数据整体下沉到自有基础设施，可满足数据驻留与合规要求，并允许切换模型后端。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Anthropic Platform Release Notes；作者：未披露；机构：Anthropic；场景：Claude Managed Agents 自托管部署；Anthropic 发布自托管 Claude Managed Agents，用户可在自有基础设施上运行完整 Managed Agents 服务，而非仅自托管沙箱；agent、session 与会话历史均存储于用户自有基础设施，服务端将模型请求转发至用户选择的模型提供方，默认 Anthropic；访问需联系 Anthropic 客户团队申请。</p>
+<p><strong>数据与证据</strong></p>
+<p>未披露；官方发布。仅有官方发布说明，无性能、吞吐、部署成本或安全审计的具体数据；未披露自托管与云端版本的功能差异、版本支持策略及迁移路径。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<p>今日无值得保留的关键人物观点或播客。</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.hpcwire.com/off-the-wire/amd-expands-instinct-mi400-gpu-portfolio-for-hpc-and-ai-for-science/">AMD Expands Instinct MI400 GPU Portfolio for HPC and AI for Science</a></h3>
+<p><strong>判断影响</strong></p>
+<p>这是 AMD 对 Instinct MI400 产品线的扩展与配置细分，同时给出对标 Nvidia Vera Rubin 的推理吞吐与带宽数字，属于 AI 算力供给侧的量化更新。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：HPCwire 转述 AMD 官方新闻稿；作者：未披露；机构：AMD；场景：HPC 与 AI for science 的 Instinct MI400 系列 GPU 产品线更新；MI430X 面向高精度科学计算与 AI 混合负载，提供原生 FP64、432GB HBM4 与最高 23.3TB/s 内存带宽；MI455X 在 AMD Helios 机架级方案上运行 DeepSeek-R1 MLPerf Inference Offline，单 GPU 达 21,333 tokens/s；MI450X 作为新增配置…</p>
+<p><strong>数据与证据</strong></p>
+<p>AMD 自测称 MI455X 在 DeepSeek-R1 上 MLPerf Inference Offline 吞吐比 Nvidia Vera Rubin 最新公布的离线结果高最多 30%；AMD 称 Helios 的 HBM 带宽与 scale-up 带宽比 Nvidia Vera Rubin 高最多 20%，用于支撑上述推理性能；AMD 研究覆盖 11 个应用与基准的 47 种负载配置，考察 FP64 仿真可发挥作用与依赖原生双精度…；媒体或社区报道。性能数字来自 AMD 自行测试与官方新闻稿，非第三方独立复现或公开基准完整报告；与 Vera Rubin 的对比采用对方最新公布结果而非同一测试环境的受控对照；来源为第三方媒体报道，未提供完整 MLPerf 提交记录、软件版本与功耗等细节</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">↑</td>
+  <td style="text-align:center">low</td>
+  <td>Anthropic 提供自托管 Managed Agents，Agent 运行时与数据可留在客户自有基础设施，扩大了受合规与数据驻留约束企业的可采购范围；但仅官方产品说明，无部署规模或商用结果。</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>

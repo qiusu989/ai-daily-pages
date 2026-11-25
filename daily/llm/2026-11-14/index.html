@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM日报｜2026-11-14 · AI日报</title>
+<meta name="description" content="LLM日报｜2026-11-14，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/llm/2026-11-14/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>LLM日报｜2026-11-14</h1>
+<h2>① 今日最重要的 3 件事</h2>
+<h3>1. <a href="https://arxiv.org/abs/2611.15493">The Illusion of Diversity: Aligning LLM Exploration via Effective Entropy</a></h3>
+<p>把探索信号约束在验证通过的轨迹子空间，与同日另两篇 RL 后训练论文共同指向'信任域/信用分配比重要性比率更关键'，改变对 GRPO 类算法瓶颈的判断。</p>
+<p>证据：arXiv 原始论文，PDF 已核验作者机构与公式；六个数学基准结果与三 seed 一致性为作者自测，无第三方复现，MATH500 多样性结论仅限 441 道共同可解题。</p>
+<h3>2. <a href="https://arxiv.org/abs/2611.15404">Is the Importance Ratio Necessary for Stable Reinforcement Learning in LLMs?</a></h3>
+<p>指出完全 on-policy 下 ratio clipping 恒不触发而失效，并给出免旧策略似然的替代方案，改变对 PPO/GRPO 训练稳定性来源与算力开销分配的判断。</p>
+<p>证据：arXiv 原始论文，PDF 已核验机构；结论基于 1.5B/3B 小模型与 Countdown/数学任务，18% 加速相对标准 verl 配方，更大模型与更强 off-policy 未验证。</p>
+<h2>② 最新 LLM 论文 / 技术报告</h2>
+<h3><a href="https://arxiv.org/abs/2611.15493">The Illusion of Diversity: Aligning LLM Exploration via Effective Entropy</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：复旦大学（Fu、Shao）、美团（Lin、Hu）、清华大学（Fang）、北京大学（Qin）、中国科学技术大学（Zheng）</strong></li>
+<li>作者：Xiaoliang Fu、Jiaye Lin、Yangyi Fang、Cong Qin、Binbin Zheng、Chaowen Hu、Zekai Shao</li>
+<li>来源：arXiv:2611.15493v1（首页标注 Accepted at NeurIPS 2026，作者声明）</li>
+<li>场景：LLM 数学推理的 RLVR 训练与探索策略（非推荐/广告任务）</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>定义有效熵 Heff = -Σ r(o|q)·πθ(o|q)·log πθ(o|q)，将熵的度量范围从全部输出空间收缩到由二值验证器判定的有效轨迹子空间，无效轨迹贡献被置零，并用采样 rollout 的蒙特卡洛期望估计</li>
+<li>VEPO 目标为 J_GRPO + β·Heff</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>六个数学基准（AIME24/25、AMC23、MATH500、Minerva、OlympiadBench）上，1.5B 平均 Avg@32 为 50.6 vs GRPO 48.4（Pass@32 71.6 vs 70.1），7B 为 61.1 vs 58.9（Pass@32 78.5 vs 77.2），单项 Pass@32 对比互有胜负</li>
+<li>MATH500-7B 上取两方法均至少 8 条正确轨迹的 441 道题并按每题 8 条正确轨迹匹配后，策略簇数 +0.37（16.0%，95% CI [0.24,0.50]，置换检验 p&lt;1e-4），Hill-1 有效模式 1.97→2.24，最大簇占比 0.68→0.61</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>给出仅需二值验证器的轻量辅助目标，且在匹配正确样本数后仍观测到策略多样性提升，是评估'准确率增益是否等同探索改善'的可复用度量框架</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>方法依赖可靠的有效性信号，仅直接适用于可由答案匹配、单测或编译器等确定性验证器判定的 RLVR 场景</li>
+<li>受控注入假阳性噪声后增益收窄（1.5B 10% FP 时 VEPO 48.8 vs GRPO 46.8），错误验证会重新给错误输出熵激励</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2611.15404">Is the Importance Ratio Necessary for Stable Reinforcement Learning in LLMs?</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：University of Wisconsin–Madison、KRAFTON</strong></li>
+<li>作者：Shuibai Zhang, Junhyuck Kim, Gyeongman Kim, Jaewoong Cho</li>
+<li>来源：arXiv:2611.15404v1</li>
+<li>场景：LLM 强化学习后训练（Countdown 与数学推理）</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>LGPO 用当前策略对整条回复的平均 token 对数似然作为门控统计量</li>
+<li>当该均值高于阈值 τ 时，以 stop-gradient 掩码剔除该序列，默认 τ=-0.15（约 0.86 平均概率），目标为掩码后的组相对策略梯度</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>在 Qwen2.5-3B-Instruct 与 Qwen2.5-Math-1.5B 的数学推理评测（MATH500、OlympiadBench、AIME24/25，8 样本平均 Pass@1）上，LGPO 平均分 26.0 与 34.0，GRPO 为 25.5 与 33.0，性能相近</li>
+<li>在 Qwen2.5-3B-Instruct、约 7.5K 训练数据、2×H100 上，GRPO 每 epoch 3.37 小时，LGPO 2.85 小时，约 18% 加速</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>对四个 GRPO 变体做重要性比率的功能拆解</li>
+<li>并暴露完全 on-policy 崩溃这一结构性问题，直接关系后训练配方与训练成本设计</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>实验仅覆盖 Qwen2.5-3B-Instruct 与 Qwen2.5-Math-1.5B 及 Countdown/数学推理任务，更大模型和其他任务上的迁移尚未验证</li>
+<li>18% 加速是相对标准 verl 配方（重算旧策略 log-prob）测得</li>
+</ul>
+<h3><a href="https://arxiv.org/abs/2605.03327">TIDE: Token-Level Credit Assignment via Entropy-Gated Bounded Deviation</a></h3>
+<p><strong>机构、作者与来源</strong></p>
+<ul>
+<li><strong>机构：Peking University、Shenzhen University、Xi'an Jiaotong University、Huazhong University of Science and Technology</strong></li>
+<li>作者：Qiaoman Zhang、Shunhua Min、Xiang He 等</li>
+<li>来源：arXiv:2605.03327v3</li>
+<li>场景：LLM 长链思维链数学推理的 critic-free 强化学习对齐，不属于搜广推场景</li>
+</ul>
+<p><strong>核心方法</strong></p>
+<ul>
+<li>用全词表 Hellinger 距离替代 reverse KL：对每个解码步计算 d=1-Σ√(πθ·πref)，取值被限定在 [0,1]，只作为优势的乘性引导信号，损失中完全删除 KL 项，避免 πref→0 时的惩罚爆炸</li>
+<li>熵门控：对当前策略的 Shannon 熵做 log|V| 归一化得到 H̃∈[0,1]，联合得分 s=d·H̃^κ，只在正优势时使用</li>
+</ul>
+<p><strong>关键结果</strong></p>
+<ul>
+<li>Qwen2.5-32B-Base 上 AIME 2024 Avg@32 为 60.0%（±3.1），高于 FIPO 56.0%、DAPO 50.0%、GRPO 47.0%</li>
+<li>AIME 2025 上为 46.0%，高于 FIPO 43.0%、DAPO 38.0%</li>
+</ul>
+<p><strong>为什么值得读</strong></p>
+<ul>
+<li>用有界 Hellinger 偏离加熵门控做免 critic 的 token 级信用分配，消融显示两个信号缺一不可，为长链推理 RL 提供低开销细粒度监督路径</li>
+</ul>
+<p><strong>证据边界</strong></p>
+<ul>
+<li>评测以数学为主（AIME 2024 兼作调参与超参选择，AIME 2025、MATH-500、Minerva、Olympiad、AMC23、GPQA-D、LiveCodeBench 为留出集），开放生成、通用指令遵循与多轮 Agent 场景未验证</li>
+<li>留出集与 OOD 表格结果来自单 seed checkpoint，多 seed 与置信区间只覆盖 AIME</li>
+</ul>
+<h2>③ AI 模型 / Agent / Coding</h2>
+<p>今日无改变判断的新范式、Agent、RL/TTT、推理、Coding 或成本变量。</p>
+<h2>④ 关键人物观点 / 播客</h2>
+<h3>P2｜<a href="https://share.transistor.fm/s/58a69653">Practical AI｜Implementing Federated Learning to enhance Agentic AI</a></h3>
+<p><strong>这一期讲什么</strong></p>
+<p>来源：Practical AI 播客单集（Transistor RSS，2026-11-13）；作者：未披露；机构：Flower Labs（嘉宾单位，据节目介绍）；场景：联邦学习与隐私保护 AI、本地部署 Agent；嘉宾 Lorenzo Sani 为 Flower Labs 研究科学家、剑桥大学博士生，与主持人 Chris Benson 讨论联邦学习如何在…</p>
+<p><strong>为什么值得听</strong></p>
+<p>节目从隐私保护训练角度讨论联邦学习与 Agent 的结合，并关联开放权重与本地部署 Agent，属于方向性观点交流，未披露具体方法或量化结果。</p>
+<p><strong>与你的关联</strong></p>
+<p>对关注隐私合规训练数据获取、开放权重模型本地部署 Agent 的团队有背景参考价值；不涉及搜广推排序链路。</p>
+<p><strong>来源与局限</strong></p>
+<p>播客官方 RSS 节目页。输入仅为播客 show notes 与摘要，无完整转录可核实技术判断的具体依据；未披露任何实验设置、指标或对照结果，主张不能作为已验证事实；Endeavor 1.1 的技术细节未在输入中提供</p>
+<h2>⑤ 公司 / 市场 / Quant</h2>
+<h3>P2｜<a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/malaysia-and-singapore-step-up-nvidia-ai-chip-probes-as-charges-brought-against-chinese-national-over-917-smuggled-servers-firm-at-center-of-jensen-huang-controversy-announces-inventory-audit-to-account-for-all-restricted-gpus">Malaysia and Singapore step up Nvidia AI chip probes amidst Jensen Huang controversy</a></h3>
+<p><strong>判断影响</strong></p>
+<p>反映美国出口管制在东南亚转口链路上的实际执行力度，可能影响英伟达高端GPU的区域供应与合规成本。</p>
+<p><strong>关键变化</strong></p>
+<p>来源：Tom's Hardware；作者：Anton Shilov；机构：未披露；场景：英伟达芯片出口管制与东南亚供应链调查；马来西亚贸易投资部调查Megaspeed子公司Speedmatrix是否将进口AI处理器和服务器转出口，马来西亚自2025年7月起对先进AI加速器出口、过境与转运实施许可管制；新加坡对32岁中国籍人士Shi Bingzhe提起41项刑事指控，涉及2024年5月至2025年2月通过41笔交易购入含受限英伟达硬件的917台服务器；Megaspeed称已聘请美国律所对GPU库存开展全面盘点以评估出…</p>
+<p><strong>数据与证据</strong></p>
+<p>新加坡案已累计涉及5名个人和6家公司，当局冻结约5500万新元财产并查扣约100万新元银行存款；两起调查均未确认硬件最终流入中国，马来西亚总理称暂无相关证据；媒体或社区报道。仅有媒体转述，未提供官方调查结论或具体违规证据；英伟达未就此发布正式声明，芯片流向中国未获证实</p>
+<h2>⑥ 趋势与反共识信号 ⭐</h2>
+<table>
+<thead>
+<tr>
+  <th>长期主题</th>
+  <th style="text-align:center">今日变化</th>
+  <th style="text-align:center">置信度</th>
+  <th>今日证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Generative Recommendation</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Recommendation FM</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Semantic Feature Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>单纯参数 Scaling</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Inference-time Compute</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Coding Agent</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>Agent 商业化</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>开源模型性价比</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>低精度推理</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>内存中心 AI 系统</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>超大厂自研 AI 芯片</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+<tr>
+  <td>CUDA 替代风险</td>
+  <td style="text-align:center">→</td>
+  <td style="text-align:center">-</td>
+  <td>今日无改变判断的新证据</td>
+</tr>
+</tbody>
+</table>
+</article></main></body></html>
