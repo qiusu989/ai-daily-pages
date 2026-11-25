@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -25,8 +26,33 @@ jobs:
       - uses: actions/configure-pages@v5
         with:
           enablement: true
-      - uses: actions/upload-pages-artifact@v3
+      - id: upload
+        uses: actions/upload-pages-artifact@v3
         with:
           path: .
+      - name: Wait for Pages artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact_id }}
+        run: |
+          if [[ ! "$ARTIFACT_ID" =~ ^[0-9]+$ ]]; then
+            echo "::error::Upload did not return a valid github-pages artifact ID"
+            exit 1
+          fi
+          for attempt in {1..12}; do
+            if visible=$(gh api --method GET \
+              "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+              -f name=github-pages \
+              --jq ".artifacts[] | select(.id == $ARTIFACT_ID and .expired == false) | .id") &&
+              [[ "$visible" == "$ARTIFACT_ID" ]]; then
+              echo "github-pages artifact $ARTIFACT_ID is visible"
+              exit 0
+            fi
+            echo "Waiting for artifact $ARTIFACT_ID (attempt $attempt/12)"
+            if (( attempt < 12 )); then sleep 5; fi
+          done
+          echo "::error::github-pages artifact $ARTIFACT_ID is still not visible in run $GITHUB_RUN_ID"
+          exit 1
       - id: deployment
         uses: actions/deploy-pages@v4
