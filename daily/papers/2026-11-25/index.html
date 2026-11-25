@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>搜广推论文日报｜2026-11-25 · AI日报</title>
+<meta name="description" content="搜广推论文日报｜2026-11-25，AI日报历史归档。">
+<link rel="canonical" href="https://qiusu989.github.io/ai-daily-pages/daily/papers/2026-11-25/">
+<style>body{background:#f8f5ef;color:#24231f;font:1rem/1.8 system-ui,sans-serif;margin:2rem auto;max-width:66rem;padding:0 1rem}a{color:#9c4328;overflow-wrap:anywhere}pre,table{display:block;overflow:auto}img{max-width:100%}</style>
+</head><body><nav><a href="https://qiusu989.github.io/ai-daily-pages/">返回 AI日报</a></nav>
+<main><article><h1>搜广推论文日报｜2026-11-25</h1>
+<ul>
+<li>P1｜精排与排序｜<a href="https://arxiv.org/abs/2611.31951">韩国科学技术院｜UF2O｜User-Adaptive Fusion of Multiple Foundation Models for Recommender Systems</a>：提出UF2O，将多个基础模型的推荐贡献建模为用户特定：为每个基础模型维护独立推荐视图，并按用户自适应融合分数，避免直接对齐异构表示空间。在4个数据集联合4个基础模型的静动态推荐实验中优于融合基线，最高提升7%。</li>
+<li>P1｜召回｜<a href="https://arxiv.org/abs/2611.32855"><strong>Etsy Inc.</strong>｜SIDECAR｜Speculative Decoding for Semantic-ID-Based Generative Recommendations</a>：面向SID生成式推荐的推测解码方法SIDECAR：用近似草案候选与树注意力一次打分整棵草案，并对未探索SID前缀给出概率上界以认证精确top-K；未包含时用分支定界回退，在至多L次调用内完成认证，并可在预算内给出1+δ的精确性因子。阅读价值在于为生产级生成式召回提供可检测的质量与调用预算权衡。</li>
+<li>P1｜精排与排序｜<a href="https://arxiv.org/abs/2611.33036">University of Wisconsin–Madison、Northwestern University、University of California, Los Angeles等｜Towards Realistic Evaluation of Uncertainty Quantification for LLM-Based Recommender Systems</a>：提出固定排序基准，在统一输出契约下评测八种异构UQ信号作为记录级监控器，覆盖四个推荐数据集和两个LLM主干。发现UQ方法排序随主干变化、Top10Mass在Error@10检测较强但对热门尾部优势收窄、标量信号难以区分控制项差异。对LLM推荐的可靠性评估有参考价值。</li>
+<li>P1｜精排与排序｜<a href="https://arxiv.org/abs/2611.32590">阿里巴巴｜LazUnirec: Unifying Retrieval and Ranking in Multi-scenario Industrial Recommendation</a>：面向多场景工业推荐，将原本级联的召回与排序统一到一个Transformer框架，通过任务共享/私有参数、LoRA调制注意力、任务自适应稀疏MoE和不确定性估计缓解两任务梯度冲突，并用排序到召回的知识蒸馏做跨任务迁移；摘要称离线实验与在线A/B验证有效且已部署。</li>
+<li>P2｜精排与排序｜<a href="https://arxiv.org/abs/2611.32780"><strong>南洋理工大学</strong>｜C3H: Compression-to-Consensus Criteria Hijacking in Multimodal LLM Recommender Systems</a>：论文指出多模态LLM推荐中的压缩与跨模态融合会形成C2C偏置，使压缩后显著且跨模态一致的内容在候选比较中获得过大影响。作者提出推理时攻击C3H，通过调整目标商品的多模态内容对齐推荐器隐含决策标准来提升其曝光，实验称在保持整体推荐效用下显著提高目标商品曝光。</li>
+<li>P2｜LLM 增强与对话推荐｜<a href="https://arxiv.org/abs/2611.32660">Bathys: Advancing Deep Search Agents</a>：提出Bathys 9B/27B深度搜索智能体及训练框架：可验证问题合成、SFT、KTO与CM-GSPO在线RL，在上下文压缩下优化多轮检索与查询改写。BrowseComp达66.51%/80.49%，对LLM增强检索与智能体训练有参考价值。</li>
+<li>P2｜召回｜<a href="https://arxiv.org/abs/2611.31259"><strong>广岛大学</strong>｜noise-augmented retrieve-and-rerank｜RecipeADQA: A User-aware Question-Answering Dataset for Multi-Constraint Recipe Recommendation</a>：构建由真实用户行为驱动的食谱推荐问答数据集 RecipeADQA，用 LLM 抽取偏好信号并映射到知识图谱标签，配合贪心约束选择与标签重排，产出 12.8 万条含自然语言问题、结构化约束和答案集的数据，并提出噪声增强检索-重排模型，可用于推荐评测与约束式检索参考。</li>
+<li>P2｜精排与排序｜<a href="https://arxiv.org/abs/2611.31466"><strong>中佛罗里达大学人工智能研究所</strong>｜AdProducer: Towards Agentic Advertising Video Generation</a>：提出端到端智能体广告视频生成框架，用多模态智能体检索产品信息并生成卖点驱动的分镜，引导冻结的视频生成器出片；经SFT与强化学习联合优化分镜级与视频级奖励，并构建评测基准与指标。</li>
+</ul>
+</article></main></body></html>
